@@ -7,6 +7,7 @@ nav {
       width: 100%;
     }
   }
+
   .navbar {
     .navbar-toggler {
       margin-top: -12px;
@@ -28,6 +29,7 @@ nav {
         font-size: 22px;
         font-weight: 500;
       }
+
       @media only screen and (max-width: 991px) {
         margin-left: 10px;
       }
@@ -35,7 +37,6 @@ nav {
   
     .navbar-collapse {
       .navbar-nav {
-        margin: 10px;
         .nav-link {
           color: var(--body-color);
           font-family: var(--font-family-sans-serif);
@@ -47,7 +48,7 @@ nav {
           position: relative;
   
           @media only screen and (max-width: 991px) {
-            margin-left: 5px;
+            margin-left: 10px;
           }
         }
       }

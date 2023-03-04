@@ -4,7 +4,7 @@ import { App } from './components/App'
 import './main.scss'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from './components/home/Home';
-import { Movies } from './components/movies/Movies';
+import { Screenings } from './components/screenings/Screenings';
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -12,8 +12,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <React.StrictMode>
         <App>
           <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/movies" element={<Movies />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/movies" element={<Screenings />} />
           </Routes>
         </App>
       </React.StrictMode>

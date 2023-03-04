@@ -8,6 +8,7 @@ import { Movie } from '../../domain/models/Movie';
 import { MoviePosterContainer } from './MoviePosterContainer';
 import { mapToMovies } from '../../data/utils/mapping_utils';
 import { shuffle } from '../../data/utils/list_utils';
+import { Loading } from './Loading';
 
 export const Hero = () => {
   const [heroMovies, setHeroMovies] = useState<Movie[]>([]);
@@ -27,11 +28,15 @@ export const Hero = () => {
         <h1>Escape reality, one film at a time.</h1>
         <Container fluid className='featured-movies'>
           <Row>
-            {heroMovies.map(movie => (
-              <Col key={movie.id} xl={3} lg={4} md={6} sm={12}>
-                <MoviePosterContainer movie={movie} />
-              </Col>
-            ))}
+          {
+            heroMovies.length > 0 ? (<>
+              {heroMovies.map(movie => (
+                <Col key={movie.id} xl={3} lg={6} md={6} sm={12}>
+                  <MoviePosterContainer movie={movie} />
+                </Col>
+              ))}
+            </>) : <div className='loading-container'><Loading></Loading></div>
+          }
           </Row>
         </Container>
       </header>

@@ -8,7 +8,7 @@ interface MoviePosterContainerProps {
 
 export const MoviePosterContainer: React.FC<MoviePosterContainerProps> = (props) => {
   return (
-    <div className='text-center'>
+    <Container className='text-center mb-5'>
       <img key={props.movie.id} src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
       <Container className='featured-movie-info-container'>
         <p id='featured-movie-title'>{props.movie.title}</p>
@@ -20,6 +20,6 @@ export const MoviePosterContainer: React.FC<MoviePosterContainerProps> = (props)
           })
         }</ul>
       </Container>
-    </div>
+    </Container>
   )
 }
