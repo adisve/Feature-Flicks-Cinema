@@ -12,7 +12,9 @@ type MiddlewareFn = (response: any) => any;
  * @returns request promise
  */
 export const get = (url: string, middleware?: MiddlewareFn[]) => {
-  let request = axios.get(url);
+  let request = axios.get(url, {
+    withCredentials: true
+  });
   if (middleware && middleware.length > 0) {
     middleware.forEach(fn => {
       request = request.then(fn);

@@ -1,11 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './scss/App.scss'
+import React, { ReactNode } from 'react';
+import { BootstrapNavbar } from './nav/BootstrapNavbar';
 
-import React from 'react'
-
-export const App = () => {
-  return (
-    <div>App</div>
-  )
+interface AppProps {
+  children: ReactNode;
 }
+
+export const App = ({ children }: AppProps) => {
+  return (
+    <div className="app">
+      <BootstrapNavbar />
+      {children}
+    </div>
+  );
+};
