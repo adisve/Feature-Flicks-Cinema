@@ -1,12 +1,10 @@
-@font-face {
-  font-family: 'Thunder';
-  src: url('./assets/fonts/thunder.ttf');
-}
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-$background: #242424;
-$primary: #EF4242;
-$font-family-sans-serif: 'Thunder';
-$body-color: #FEFEFE;
+$background: #272727;
+$primary: #ebeff3;
+$font-family-sans-serif: 'Montserrat';
+$font-family-base: 'Climate Crisis';
+$body-color: #ebeff3;
 
 @import 'bootstrap/scss/bootstrap.scss';
 
@@ -16,6 +14,7 @@ $body-color: #FEFEFE;
   --font-family-sans-serif: #{$font-family-sans-serif};
   --font-family-base: #{$font-family-base};
   --primary-color: #{$primary};
+  --body-color: #{$body-color};
 
   font-weight: 400;
 

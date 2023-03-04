@@ -1,0 +1,49 @@
+.hero {
+  font-weight: 300;
+  .hero-content {
+    margin: 50px;
+
+    h5 {
+      margin-top: 25px;
+      font-family: var(--font-family-sans-serif);
+    }
+
+    .featured-movies {
+      margin-top: 100px;
+      .featured-movie-info-container {
+        p {
+          width: 100%;
+          padding-top: 30px;
+          font-family: var(--font-family-sans-serif);
+          font-size: 18px;
+          font-weight: 700;
+        }
+  
+        img {
+          height: 400px;
+          width: 270px;
+        }
+        
+        .fetured-movie-categories {
+          list-style: none;
+          display: flex;
+          li {
+            margin: 10px;
+            font-weight: 600;
+            font-size: 12px;
+            font-family: var(--font-family-sans-serif);
+            color: #272727;
+          }
+  
+          .featured-movie-category-container {
+            background-color: #FEFEFE;
+            padding: 2px;
+            padding-left: 7px;
+            padding-right: 7px;
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+  }
+}

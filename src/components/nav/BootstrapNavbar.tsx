@@ -5,8 +5,8 @@ import '../../scss/BootstrapNavbar.scss';
 
 export const BootstrapNavbar = () => {
   return (
-    <Navbar collapseOnSelect variant='dark' bg='transparent' expand="lg">
-      <Container>
+    <nav>
+      <Navbar collapseOnSelect variant='light' bg='transparent' expand="lg">
         <Navbar.Brand>
           <p>FEATURE FLICKS</p>
         </Navbar.Brand>
@@ -17,7 +17,8 @@ export const BootstrapNavbar = () => {
             <NavLink eventKey={2} as={Link} to='/movies'><p>MOVIES</p></NavLink>
           </Nav>
         </Navbar.Collapse>
-      </Container>
-    </Navbar>
+      </Navbar>
+      <hr/>
+    </nav>
   )
 }
