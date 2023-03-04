@@ -1,0 +1,88 @@
+.movie-list-container {
+  font-weight: 300;
+  margin-top: 80px;
+  .movie-list-container-content {
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+      text-align: center;
+    }
+
+    h3 {
+      padding-top: 50px;
+      font-family: var(--font-family-sans-serif);
+      font-weight: 700;
+    }
+
+    .featured-movies {
+      margin-top: 80px;
+      
+      .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+      }
+
+      .featured-movie {
+        width: 300px;
+        cursor: pointer;
+        transition: all ease-in-out .1s;
+        &:hover {
+          transform: scale(1.05);
+        }
+
+        img {
+          height: 400px;
+          width: 270px;
+          border-radius: 2.5px;
+        }
+        .featured-movie-info-container {
+
+          .featured-movie-title {
+            padding-top: 30px;
+            width: 100%;
+            font-family: var(--font-family-sans-serif);
+            font-size: 18px;
+            font-weight: 700;
+          }
+
+          .featured-movie-length {
+            font-family: var(--font-family-sans-serif);
+            font-weight: 500;
+            span {
+              padding-right: 10px;
+            }
+          }
+
+          .fetured-movie-categories {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            p {
+              font-weight: 600;
+              font-size: 12px;
+              font-family: var(--font-family-sans-serif);
+              color: #272727;
+              margin: 5px;
+            }
+          
+            .featured-movie-category-container {
+              background-color: #FEFEFE;
+              padding: 2px;
+              padding-left: 7px;
+              padding-right: 7px;
+              border-radius: 5px;
+            }
+          }
+          
+        }
+      }
+    }
+  }
+}

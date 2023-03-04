@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import '../../scss/Hero.scss';
+import '../../scss/MovieLists.scss';
 import { Container, Row, Col } from 'react-bootstrap';
-import { get } from '../../data/axios/network_manager';
+import { get, request } from '../../data/axios/network_manager';
 import { checkStatus } from '../../data/axios/middleware_functons';
 import { moviesURL } from '../../data/configuration/config_url';
 import { Movie } from '../../domain/models/Movie';
@@ -14,24 +14,24 @@ export const Hero = () => {
   const [heroMovies, setHeroMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    get(moviesURL, [checkStatus])
+    get(request(moviesURL, {'limit' : 4, 'sort' : '-title'}), [checkStatus])
       .then(response => {
         const movies: any[] = response.data;
-        setHeroMovies(shuffle(mapToMovies(movies)));
+        setHeroMovies(mapToMovies(movies));
       })
       .catch(error => console.error(error));
   }, []);
 
   return (
-    <div className='hero'>
-      <header className='hero-content'>
-        <h1>Escape reality, one film at a time.</h1>
+    <div className='movie-list-container'>
+      <header className='movie-list-container-content'>
+        <h1>Escape reality, one flick at a time.</h1>
         <Container fluid className='featured-movies'>
           <Row>
           {
             heroMovies.length > 0 ? (<>
               {heroMovies.map(movie => (
-                <Col key={movie.id} xl={3} lg={6} md={6} sm={12}>
+                <Col key={movie.id} xxl={3} xl={6} lg={6} md={6} sm={12}>
                   <MoviePosterContainer movie={movie} />
                 </Col>
               ))}

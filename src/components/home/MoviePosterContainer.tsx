@@ -1,6 +1,9 @@
 import React from 'react'
 import { Movie } from '../../domain/models/Movie'
-import { Col, Container } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
+import { formatMinutes } from '../../data/utils/format_utils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClock } from '@fortawesome/free-solid-svg-icons'
 
 interface MoviePosterContainerProps {
   movie: Movie
@@ -8,17 +11,16 @@ interface MoviePosterContainerProps {
 
 export const MoviePosterContainer: React.FC<MoviePosterContainerProps> = (props) => {
   return (
-    <Container className='text-center mb-5'>
-      <img key={props.movie.id} src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
+    <Container className='text-center mb-5 featured-movie'>
+      <img src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
       <Container className='featured-movie-info-container'>
-        <p id='featured-movie-title'>{props.movie.title}</p>
-        <ul className='fetured-movie-categories me-4 justify-content-center'>{
-          props.movie.categories.map((category) => {
-            return <li key={category}>
-              <Container className='featured-movie-category-container'>#{category}</Container>
-            </li>
+        <p className='featured-movie-title'>{props.movie.title}</p>
+        <p className='featured-movie-length'><span><FontAwesomeIcon icon={faClock}/></span>{formatMinutes(props.movie.length)}</p>
+        <div className='fetured-movie-categories'>{
+          props.movie.categories.map((category, index) => {
+            return <p key={index.toString()} className='featured-movie-category-container'>#{category}</p>
           })
-        }</ul>
+        }</div>
       </Container>
     </Container>
   )

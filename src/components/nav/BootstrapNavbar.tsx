@@ -10,13 +10,15 @@ export const BootstrapNavbar = () => {
     <nav>
       <Navbar collapseOnSelect variant='dark' bg='transparent' expand="lg">
         <Navbar.Brand>
-          <p>FEATURE FLICKS<span style={{marginLeft: '20px'}}><FontAwesomeIcon icon={faTicket}/></span></p>
+          <div className='d-flex'>
+          <p>FEATURE FLICKS</p><span style={{marginLeft: '20px', marginTop: '2px'}}><FontAwesomeIcon icon={faTicket}/></span>
+          </div>
         </Navbar.Brand>
         <Navbar.Toggle/>
         <Navbar.Collapse>
           <Nav className='me-auto'>
             <NavLink eventKey={1} as={Link} to='/'><p className='hover-underline-animation'>Home</p></NavLink>
-            <NavLink eventKey={2} as={Link} to='/movies'><p className='hover-underline-animation'>Screenings</p></NavLink>
+            <NavLink eventKey={2} as={Link} to='/screenings'><p className='hover-underline-animation'>Screenings</p></NavLink>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

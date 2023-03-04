@@ -1,7 +1,69 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { ListGroup } from 'react-bootstrap';
+import { checkStatus } from '../../data/axios/middleware_functons';
+import { get, request } from '../../data/axios/network_manager';
+import {  moviesURL, screeningsURL, } from '../../data/configuration/config_url';
+import { mapToMovies } from '../../data/utils/mapping_utils';
+import { Movie } from '../../domain/models/Movie';
+import { Loading } from '../home/Loading';
+import '../../scss/Screenings.scss';
+import { ScreeningItem } from './ScreeningItem';
 
 export const Screenings = () => {
+
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    fetchDataAndUpdateState();
+  }, []);
+
   return (
-    <div></div>
-  )
+    <div className='screenings'>
+        <ListGroup variant='flush'>
+          {
+            movies.length > 0 ? (
+              movies.map((movie) => {
+                return <ScreeningItem key={movie.id} movie={movie} />
+              })
+            ) : <Loading />
+          }
+        </ListGroup>
+      </div>
+  );
+
+
+  function fetchDataAndUpdateState() {
+    Promise.all([
+      get(request(moviesURL, { sort: "title" })),
+      get(screeningsURL),
+    ])
+      .then((responses) => {
+        const moviesData = responses[0].data;
+        const screeningsData = responses[1].data;
+
+        const movies: Movie[] = mapToMovies(moviesData);
+        const screeningsDict: { [id: number]: Date[] } = {};
+
+        screeningsData.forEach((screening: any) => {
+          const movieId = screening.movieId;
+          if (!screeningsDict[movieId]) {
+            screeningsDict[movieId] = [];
+          }
+          screeningsDict[movieId].push(new Date(screening.time));
+        });
+
+        movies.forEach((movie) => {
+          if (screeningsDict[movie.id]) {
+            movie.screenings = screeningsDict[movie.id];
+          } else {
+            movie.screenings = [];
+          }
+        });
+        // Sort movies based on the first screening date
+        movies.sort((a, b) => a.screenings[0].getTime() - b.screenings[0].getTime());
+        setMovies(movies);
+      })
+      .catch((error) => console.error(error));
+    }
+
 }

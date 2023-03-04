@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { BootstrapNavbar } from './nav/BootstrapNavbar';
 import '../scss/App.scss'
+import { Footer } from './footer/Footer';
 
 interface AppProps {
   children: ReactNode;
@@ -8,9 +9,9 @@ interface AppProps {
 
 export const App = ({ children }: AppProps) => {
   return (
-    <div id="app">
+    <main id="app">
       <BootstrapNavbar />
       {children}
-    </div>
+    </main>
   );
 };

@@ -1,8 +1,3 @@
-export const request = (baseUrl: string, queryParams: Record<string, any>): string => {
-  const urlParams = new URLSearchParams(queryParams);
-  return `${baseUrl}?${urlParams}`;
-}
-
 /* Static URLs */
 
 /* returns list of ticket types */
@@ -10,6 +5,12 @@ export const ticketTypesURL = '/api/ticketTypes';
 
 /* returns list of movies */
 export const moviesURL = '/api/movies';
+
+export const moviesByCategoryURL = '/api/movies_by_category';
+
+export const screeningsURL = '/api/screenings';
+
+export const screeningsOverviewURL = '/api/screenings_overview';
 
 /* returns the logged in user if one exists. */
 export const loginURL = '/api/login';

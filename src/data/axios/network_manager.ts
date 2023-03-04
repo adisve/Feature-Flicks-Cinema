@@ -22,3 +22,9 @@ export const get = (url: string, middleware?: MiddlewareFn[]) => {
   }
   return request;
 }
+
+export const request = (baseUrl: string, queryParams: Record<string, any>): string => {
+  const urlParams = new URLSearchParams(queryParams);
+  console.log(`${baseUrl}?${urlParams}`)
+  return `${baseUrl}?${urlParams}`;
+}
