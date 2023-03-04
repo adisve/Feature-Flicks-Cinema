@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '../../scss/MovieLists.scss';
+import '../../scss/Hero.scss';
 import { Container, Row, Col } from 'react-bootstrap';
 import { get, request } from '../../data/axios/network_manager';
 import { checkStatus } from '../../data/axios/middleware_functons';
@@ -23,8 +23,8 @@ export const Hero = () => {
   }, []);
 
   return (
-    <div className='movie-list-container'>
-      <header className='movie-list-container-content'>
+    <div className='hero-list-container'>
+      <header className='hero-list-container-content'>
         <h1>Escape reality, one flick at a time.</h1>
         <Container fluid className='featured-movies'>
           <Row>
