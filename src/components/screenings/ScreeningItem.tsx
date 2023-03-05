@@ -8,6 +8,12 @@ interface ScreeningItemProps {
   movie: Movie
 }
 
+/**
+ * This component renders a single screening item, which can
+ * be viewed on the screening page in a list of available screenings.
+ * @param props: The specific movie contained in the screening item.
+ * @returns: A screening item.
+ */
 export const ScreeningItem: React.FC<ScreeningItemProps> = (props) => {
   return (
     <div className='screening-container'>

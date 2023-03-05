@@ -1,5 +1,10 @@
 import { Movie } from "../../domain/models/Movie";
 
+/**
+ * Converts a raw movie object into its corresponding DTO
+ * @param movies 
+ * @returns 
+ */
 export const mapToMovies = (movies: any[]): Movie[] => {
   return movies.map((movieData: any) => {
     return new Movie(

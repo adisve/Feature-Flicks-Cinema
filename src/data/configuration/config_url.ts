@@ -6,11 +6,11 @@ export const ticketTypesURL = '/api/ticketTypes';
 /* returns list of movies */
 export const moviesURL = '/api/movies';
 
+/* returns list of movies ordered by category */
 export const moviesByCategoryURL = '/api/movies_by_category';
 
+/* returns a list of screenings */
 export const screeningsURL = '/api/screenings';
-
-export const screeningsOverviewURL = '/api/screenings_overview';
 
 /* returns the logged in user if one exists. */
 export const loginURL = '/api/login';

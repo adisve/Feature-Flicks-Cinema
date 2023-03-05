@@ -1,3 +1,10 @@
+
+/**
+ * Formats a string for display in the UI, specifically for use
+ * in components that require the running time of the movie.
+ * @param minutes 
+ * @returns 
+ */
 export function formatMinutes(minutes: number): string {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;

@@ -7,6 +7,12 @@ interface AppProps {
   children: ReactNode;
 }
 
+/**
+ * Main app entry point
+ * 
+ * @param children: ReactNode containing the current page content
+ * @returns: Main application
+ */
 export const App = ({ children }: AppProps) => {
   return (
     <main id="app">

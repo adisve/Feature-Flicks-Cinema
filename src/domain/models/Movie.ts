@@ -1,3 +1,7 @@
+
+/**
+ * Movie class, used as DTO
+ */
 export class Movie {
   id: number;
   title: string;

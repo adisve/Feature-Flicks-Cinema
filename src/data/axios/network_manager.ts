@@ -23,7 +23,13 @@ export const get = (url: string, middleware?: MiddlewareFn[]) => {
   return request;
 }
 
-export const request = (baseUrl: string, queryParams: Record<string, any>): string => {
+/**
+ * Creates a url with query params dynamically
+ * @param baseUrl 
+ * @param queryParams 
+ * @returns 
+ */
+export const createRequestURL = (baseUrl: string, queryParams: Record<string, any>): string => {
   const urlParams = new URLSearchParams(queryParams);
   console.log(`${baseUrl}?${urlParams}`)
   return `${baseUrl}?${urlParams}`;

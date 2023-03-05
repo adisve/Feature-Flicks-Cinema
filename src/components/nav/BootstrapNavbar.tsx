@@ -5,6 +5,11 @@ import { Navbar, Nav, NavLink, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../../scss/BootstrapNavbar.scss';
 
+/**
+ * This is the navbar component that is static across pages
+ * and does not need to be rendered on every page.
+ * @returns: Navbar Component built with react-bootstrap
+ */
 export const BootstrapNavbar = () => {
   return (
     <nav>

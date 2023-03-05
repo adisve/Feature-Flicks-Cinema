@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import '../../scss/Hero.scss';
 import { Container, Row, Col } from 'react-bootstrap';
-import { get, request } from '../../data/axios/network_manager';
+import { get, createRequestURL } from '../../data/axios/network_manager';
 import { checkStatus } from '../../data/axios/middleware_functons';
 import { moviesURL } from '../../data/configuration/config_url';
 import { Movie } from '../../domain/models/Movie';
 import { MoviePosterContainer } from './MoviePosterContainer';
 import { mapToMovies } from '../../data/utils/mapping_utils';
-import { shuffle } from '../../data/utils/list_utils';
 import { Loading } from './Loading';
 
+/**
+ * Can be seen on the home/landing page, displaying
+ * a collection of movies that the user can press and see.
+ * @returns: Hero component
+ */
 export const Hero = () => {
   const [heroMovies, setHeroMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    get(request(moviesURL, {'limit' : 4, 'sort' : '-title'}), [checkStatus])
+    get(createRequestURL(moviesURL, {'limit' : 4, 'sort' : '-title'}), [checkStatus])
       .then(response => {
         const movies: any[] = response.data;
         setHeroMovies(mapToMovies(movies));

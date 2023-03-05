@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ListGroup } from 'react-bootstrap';
-import { checkStatus } from '../../data/axios/middleware_functons';
-import { get, request } from '../../data/axios/network_manager';
+import { get, createRequestURL } from '../../data/axios/network_manager';
 import {  moviesURL, screeningsURL, } from '../../data/configuration/config_url';
 import { mapToMovies } from '../../data/utils/mapping_utils';
 import { Movie } from '../../domain/models/Movie';
@@ -9,6 +8,11 @@ import { Loading } from '../home/Loading';
 import '../../scss/Screenings.scss';
 import { ScreeningItem } from './ScreeningItem';
 
+/**
+ * Component that renders the screenings list.
+ * On each render, it fetches the list of screenings from the API.
+ * @returns: a list of screenings
+ */
 export const Screenings = () => {
 
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -34,7 +38,7 @@ export const Screenings = () => {
 
   function fetchDataAndUpdateState() {
     Promise.all([
-      get(request(moviesURL, { sort: "title" })),
+      get(createRequestURL(moviesURL, { sort: "title" })),
       get(screeningsURL),
     ])
       .then((responses) => {

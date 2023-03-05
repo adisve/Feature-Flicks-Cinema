@@ -9,6 +9,11 @@ interface MoviePosterContainerProps {
   movie: Movie
 }
 
+/**
+ * Renders a poster for a movie. The poster is rendered as an image
+ * with the name of the movie, and the movie's runtime in minutes.
+ * @returns: A poster for a movie.
+ */
 export const MoviePosterContainer: React.FC<MoviePosterContainerProps> = (props) => {
   return (
     <Container className='text-center mb-5 featured-movie'>
