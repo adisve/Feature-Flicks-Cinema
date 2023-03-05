@@ -11,7 +11,7 @@ type MiddlewareFn = (response: any) => any;
  * @param middleware 
  * @returns request promise
  */
-export const get = (url: string, middleware?: MiddlewareFn[]) => {
+export const get = (url: string, middleware?: MiddlewareFn[]): Promise<any> => {
   let request = axios.get(url, {
     withCredentials: true,
     timeout: 10000 // timeout in milliseconds
