@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { ListGroup } from 'react-bootstrap';
-import { get, createRequestURL } from '../../data/axios/network_manager';
-import {  moviesURL, screeningsURL, } from '../../data/configuration/config_url';
-import { mapToMovies } from '../../data/utils/mapping_utils';
 import { Movie } from '../../domain/models/Movie';
 import { Loading } from '../home/Loading';
 import '../../scss/Screenings.scss';
 import { ScreeningItem } from './ScreeningItem';
+import { 
+  fetchMovies, 
+  fetchScreenings, 
+  mapMoviesDataToModel, 
+  sortMoviesByScreeningDate } from '../../data/services/movie_service'
+import { ErrorMessage } from '../errors/ErrorMessage';
 
 /**
  * Component that renders the screenings list.
@@ -16,6 +19,7 @@ import { ScreeningItem } from './ScreeningItem';
 export const Screenings = () => {
 
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetchDataAndUpdateState();
@@ -23,51 +27,40 @@ export const Screenings = () => {
 
   return (
     <div className='screenings'>
-        <ListGroup variant='flush'>
-          {
-            movies.length > 0 ? (
-              movies.map((movie) => {
-                return <ScreeningItem key={movie.id} movie={movie} />
-              })
-            ) : <Loading />
-          }
-        </ListGroup>
+        {error ? (
+          <ErrorMessage />
+        ) : (
+          <ListGroup variant='flush'>
+            {
+              movies.length > 0 ? (
+                movies.map((movie) => {
+                  return <ScreeningItem key={movie.id} movie={movie} />
+                })
+              ) : <Loading />
+            }
+          </ListGroup>
+        )}
       </div>
   );
 
 
   function fetchDataAndUpdateState() {
     Promise.all([
-      get(createRequestURL(moviesURL, { sort: "title" })),
-      get(screeningsURL),
+      fetchMovies(),
+      fetchScreenings(),
     ])
       .then((responses) => {
-        const moviesData = responses[0].data;
-        const screeningsData = responses[1].data;
+        const moviesData = responses[0];
+        const screeningsData = responses[1];
 
-        const movies: Movie[] = mapToMovies(moviesData);
-        const screeningsDict: { [id: number]: Date[] } = {};
+        const movies: Movie[] = mapMoviesDataToModel(moviesData, screeningsData);
+        const sortedMovies: Movie[] = sortMoviesByScreeningDate(movies);
 
-        screeningsData.forEach((screening: any) => {
-          const movieId = screening.movieId;
-          if (!screeningsDict[movieId]) {
-            screeningsDict[movieId] = [];
-          }
-          screeningsDict[movieId].push(new Date(screening.time));
-        });
-
-        movies.forEach((movie) => {
-          if (screeningsDict[movie.id]) {
-            movie.screenings = screeningsDict[movie.id];
-          } else {
-            movie.screenings = [];
-          }
-        });
-        // Sort movies based on the first screening date
-        movies.sort((a, b) => a.screenings[0].getTime() - b.screenings[0].getTime());
-        setMovies(movies);
+        setMovies(sortedMovies);
       })
-      .catch((error) => console.error(error));
-    }
-
-}
+      .catch((error) => {
+        console.error(error);
+        setError(true);
+      });
+  }
+};

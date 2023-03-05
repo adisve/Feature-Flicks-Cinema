@@ -13,7 +13,8 @@ type MiddlewareFn = (response: any) => any;
  */
 export const get = (url: string, middleware?: MiddlewareFn[]) => {
   let request = axios.get(url, {
-    withCredentials: true
+    withCredentials: true,
+    timeout: 10000 // timeout in milliseconds
   });
   if (middleware && middleware.length > 0) {
     middleware.forEach(fn => {
@@ -22,7 +23,7 @@ export const get = (url: string, middleware?: MiddlewareFn[]) => {
   }
   return request;
 }
-
+  
 /**
  * Creates a url with query params dynamically
  * @param baseUrl 
@@ -31,6 +32,5 @@ export const get = (url: string, middleware?: MiddlewareFn[]) => {
  */
 export const createRequestURL = (baseUrl: string, queryParams: Record<string, any>): string => {
   const urlParams = new URLSearchParams(queryParams);
-  console.log(`${baseUrl}?${urlParams}`)
   return `${baseUrl}?${urlParams}`;
 }
