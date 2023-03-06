@@ -32,22 +32,24 @@ export const ScreeningListItem: React.FC<ScreeningListItemProps> = (props) => {
               </div>
             </div>
           </div>
-          <div className='screening-date-time-container'>
-            <h5>{
-              props.movie.screenings[0].toLocaleString('en-EN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                weekday: 'long',
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: false,
-              })
-            }</h5>
-            <p className='screening-time'>
-              <span style={{paddingRight: '10px'}}><FontAwesomeIcon icon={faClock}/></span>
-              {formatMinutes(props.movie.length)}
-            </p>
+          <div className="text-end">
+            <div className='screening-date-time-container'>
+              <h5>{
+                props.movie.screenings[0].toLocaleString('en-EN', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  weekday: 'long',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                  hour12: false,
+                })
+              }</h5>
+              <p className='screening-time'>
+                <span style={{paddingRight: '10px'}}><FontAwesomeIcon icon={faClock}/></span>
+                {formatMinutes(props.movie.length)}
+              </p>
+            </div>
           </div>
         </div>
       </div>

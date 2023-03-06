@@ -17,3 +17,21 @@ export const mapToMovies = (movies: any[]): Movie[] => {
     );
   });
 };
+
+export const getAvailableCategories = (movies: Movie[], filteredMovies: Movie[]): {
+  category: string;
+  count: number;
+}[] => {
+  return Array.from(new Set(movies.flatMap((movie) => movie.categories)))
+  .sort()
+  .map((category) => {
+    const count = filteredMovies.filter((movie) => movie.categories.includes(category)).length;
+    return { category, count };
+  });
+}
+
+export const filterMoviesByCategories = (movies: Movie[], selectedCategories: string[]): Movie[] => {
+  return selectedCategories.length > 0
+    ? movies.filter((movie) => selectedCategories.every((category) => movie.categories.includes(category)))
+    : movies;
+}
