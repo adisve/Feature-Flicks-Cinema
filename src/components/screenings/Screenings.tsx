@@ -72,9 +72,9 @@ export const Screenings = () => {
           </ListGroup>
           <Offcanvas placement='end' show={showOffcanvas} onHide={toggleOffcanvas}>
             <Offcanvas.Header>
-              <button className='clear-filter-btn' onClick={toggleOffcanvas}>Done</button>
+              <button className='offcanvas-btn' onClick={toggleOffcanvas}>Done</button>
               <Offcanvas.Title>Filters</Offcanvas.Title>
-              <button className='clear-filter-btn' onClick={() => setSelectedCategories([])}>Clear filters</button>
+              <button className='offcanvas-btn' onClick={() => setSelectedCategories([])}>Clear filters</button>
             </Offcanvas.Header>
             <Offcanvas.Body>
               <h5>Categories</h5>
