@@ -21,7 +21,7 @@ export const MoviePosterContainer: React.FC<MoviePosterContainerProps> = (props)
       <Container className='featured-movie-info-container'>
         <p className='featured-movie-title'>{props.movie.title}</p>
         <p className='featured-movie-length'><span><FontAwesomeIcon icon={faClock}/></span>{formatMinutes(props.movie.length)}</p>
-        <div className='fetured-movie-categories'>{
+        <div className='featured-movie-categories'>{
           props.movie.categories.map((category, index) => {
             return <p key={index.toString()} className='featured-movie-category-container'>#{category}</p>
           })

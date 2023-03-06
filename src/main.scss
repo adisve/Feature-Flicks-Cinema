@@ -24,12 +24,11 @@ $body-color: #ebeff3;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
 }
 
 html, body {
   background-color: var(--background-color);
   padding: 0px;
   margin: 0px;
-  display: flex;
-  flex-direction: column;
 }

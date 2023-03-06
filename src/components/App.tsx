@@ -1,7 +1,12 @@
 import React, { ReactNode } from 'react';
 import { BootstrapNavbar } from './nav/BootstrapNavbar';
 import '../scss/App.scss'
-import { Footer } from './footer/Footer';
+
+export enum pageState {
+  LOADING,
+  SUCCESS,
+  ERROR
+}
 
 interface AppProps {
   children: ReactNode;

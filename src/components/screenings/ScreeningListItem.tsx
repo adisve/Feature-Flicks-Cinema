@@ -1,10 +1,11 @@
-import { faChevronCircleRight, faClock, faTicket } from '@fortawesome/free-solid-svg-icons'
+import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { formatMinutes } from '../../data/utils/format_utils'
 import { Movie } from '../../domain/models/Movie'
+import '../../scss/ScreenigsListView.scss'
 
-interface ScreeningItemProps {
+interface ScreeningListItemProps {
   movie: Movie
 }
 
@@ -14,7 +15,7 @@ interface ScreeningItemProps {
  * @param props: The specific movie contained in the screening item.
  * @returns: A screening item.
  */
-export const ScreeningItem: React.FC<ScreeningItemProps> = (props) => {
+export const ScreeningListItem: React.FC<ScreeningListItemProps> = (props) => {
   return (
     <div className='screening-container'>
       <div className='screening-item'>
@@ -22,10 +23,10 @@ export const ScreeningItem: React.FC<ScreeningItemProps> = (props) => {
         <div className='inner-screening-container'>
           <div className='screening-meta'>
             <h4>{props.movie.title}</h4>
-            <div className='screening-category-date-container'>
+            <div className='screening-category-container'>
               <div className='screening-categories'>
                 {props.movie.categories.map((category, index) => {
-                  return (<p key={index.toString()} className='screening-category'>{category}</p>
+                  return (<p key={index.toString()} className='screening-category'>#{category}</p>
                   );
                 })}
               </div>
@@ -33,10 +34,11 @@ export const ScreeningItem: React.FC<ScreeningItemProps> = (props) => {
           </div>
           <div className='screening-date-time-container'>
             <h5>{
-              props.movie.screenings[0].toLocaleString('se-SE', {
+              props.movie.screenings[0].toLocaleString('en-EN', {
                 year: 'numeric',
-                month: 'numeric',
+                month: 'long',
                 day: 'numeric',
+                weekday: 'long',
                 hour: 'numeric',
                 minute: 'numeric',
                 hour12: false,

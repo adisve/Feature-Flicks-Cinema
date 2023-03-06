@@ -1,0 +1,114 @@
+.screening-container {
+  cursor: pointer;
+  width: 100%;
+  padding: 10px;
+  transition: all ease-in-out .1s;
+
+  @media only screen and (max-width: 767px) {
+    &:hover {
+      transform: none;
+    }
+  }
+
+  @media only screen and (min-width: 767px) {
+    &:hover {
+      transform: scale(1.01);
+    }
+  }
+
+  .screening-item {
+
+    margin-bottom: -10px;
+    margin-top: -10px;
+    display: flex;
+
+    img {
+      height: 102px;
+      width: 68px;
+      border-radius: 2.5px;
+      margin-right: 25px;
+    }
+    .inner-screening-container {
+      justify-content: space-between;
+      width: 100%;
+      display: flex;
+      @media only screen and (max-width: 767px) {
+        display: block;
+      }
+
+      h4 {
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .screening-meta {
+        align-self: flex-end;
+        .screening-category-container {
+          display: flex;
+          justify-content: space-between;
+          margin-right: 10px;
+          margin-top: 20px;
+          .screening-categories {
+            display: flex;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            @media only screen and (max-width: 767px) {
+              margin-top: 10px;
+            }
+          }
+
+          .screening-category {
+            margin-right: 7px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--background-color);
+            background-color: #FEFEFE;
+            border-radius: 5px;
+            @media only screen and (max-width: 767px) {
+              margin-right: 10px;
+              margin-top: -15px;
+            }
+          }
+        }
+      }
+      .screening-date-time-container {
+        display: block;
+        margin-right: 15px;
+        margin-top: 15px;
+        align-items: center;
+        cursor: pointer;
+
+        @media only screen and (max-width: 767px) {
+          margin-top: 0px;
+        }
+
+        .screening-time {
+          display: flex;
+          align-items: flex-start;
+          font-weight: 700;
+          padding-top: 7px;
+          @media only screen and (max-width: 767px) {
+            font-size: 13px;
+          }
+        }
+
+        h5 {
+          display: flex;
+          align-items: flex-start;
+          margin-right: 15px;
+          font-size: 16px;
+          font-weight: 700;
+          @media only screen and (max-width: 767px) {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}

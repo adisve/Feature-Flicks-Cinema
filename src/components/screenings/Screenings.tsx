@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ListGroup, Dropdown, DropdownButton, Offcanvas, Badge } from 'react-bootstrap';
+import { ListGroup, Dropdown, DropdownButton, Offcanvas, Badge, Button } from 'react-bootstrap';
 import { Movie } from '../../domain/models/Movie';
 import { Loading } from '../home/Loading';
 import '../../scss/Screenings.scss';
 import '../../scss/Offcanvas.scss'
-import { ScreeningItem } from './ScreeningItem';
+import { ScreeningListItem } from './ScreeningListItem';
 import { 
   fetchMovies, 
   fetchScreenings, 
@@ -13,7 +13,11 @@ import {
   sortMoviesByScreeningDate } from '../../data/services/movie_service'
 import { ErrorMessage } from '../errors/ErrorMessage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faBox, faFilter, faImage, faList } from '@fortawesome/free-solid-svg-icons';
+import { Categories } from './Categories';
+import { ScreeningsListView } from './ScreeningsListView';
+import { ScreeningsPosterView } from './ScreeningsPosterView';
+import { pageState } from '../App';
 
 /**
  * Component that renders the screenings list.
@@ -21,9 +25,9 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
  * @returns: a list of screenings
  */
 export const Screenings = () => {
-
+  const [pageStatus, setPageStatus] = useState(pageState.LOADING);
+  const [viewType, setViewType] = useState('list');
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [error, setError] = useState(false);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -52,46 +56,55 @@ export const Screenings = () => {
       return { category, count };
     });
   
+  if (pageStatus === pageState.LOADING) {
+    return <div className='screenings'><Loading /></div>;
+  }
+
+  if (pageStatus === pageState.ERROR) {
+    return <div className="screenings"><ErrorMessage /></div>;
+  }
 
   return (
-    <div className='screenings'>
-      {error ? (
-        <ErrorMessage />
-      ) : (
-        <div>
-          <div className='d-flex justify-content-between filter-div'>
+    <div className='screenings' >
+      <div>
+          <div className='justify-content-between screenings-header'>
             <h2 id='available-screenings'>Available Screenings</h2>
-            <button onClick={toggleOffcanvas} className="d-flex btn"><span><FontAwesomeIcon icon={faFilter} /></span><p>Filters</p></button>
+            <div className="d-flex view-types-filter">
+              <div className='view-types'>
+                <Button variant='custom'
+                  onClick={() => setViewType('list')} 
+                  className={`d-flex btn ${viewType === 'list' ? 'selected-view-type' : ''}`}>
+                    <span><FontAwesomeIcon icon={faList} /></span><p>List</p></Button>
+                <Button variant='custom'
+                  onClick={() => setViewType('posters')} 
+                  className={`d-flex btn ${viewType === 'posters' ? 'selected-view-type' : ''}`}>
+                  <span><FontAwesomeIcon icon={faImage} /></span><p>Posters</p></Button>
+              </div>
+              <div>
+                <Button onClick={toggleOffcanvas} variant='custom' className="d-flex btn"><span><FontAwesomeIcon icon={faFilter} /></span><p>Filters</p></Button>
+              </div>
+            </div>
           </div>
-          <ListGroup variant='flush'>
-            {filteredMovies.length > 0 ? (
-              filteredMovies.map((movie) => {
-                return <ScreeningItem key={movie.id} movie={movie} />
-              })
-            ) : <h1>No movies matching your criteria</h1>}
-          </ListGroup>
+          <div className='screenings-list-parent'>
+            <ul>
+              {
+                filteredMovies.length > 0 ?(
+                  viewType === 'list' ? (<ScreeningsListView movies={filteredMovies} />) : <ScreeningsPosterView movies={filteredMovies}/>)
+              : <h3>No movies matching your criteria</h3>
+              }
+            </ul>
+          </div>
           <Offcanvas placement='end' show={showOffcanvas} onHide={toggleOffcanvas}>
             <Offcanvas.Header>
-              <button className='offcanvas-btn' onClick={toggleOffcanvas}>Done</button>
+              <Button variant='custom' onClick={toggleOffcanvas}>Done</Button>
               <Offcanvas.Title>Filters</Offcanvas.Title>
-              <button className='offcanvas-btn' onClick={() => setSelectedCategories([])}>Clear filters</button>
+              <Button variant='custom' onClick={() => setSelectedCategories([])}>Clear filters</Button>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              <h5>Categories</h5>
-            {categories.map(({ category, count }) => (
-              <Badge
-                bg={selectedCategories.includes(category) ? 'dark' : 'light'}
-                key={category}
-                className='m-1'
-                onClick={() => handleCategoryClick(category)}
-              >
-                <p className={selectedCategories.includes(category) ? 'light-badge-font' : 'dark-badge-font'}>{`${category} `}<span>{`(${count})`}</span></p>
-              </Badge>
-            ))}
+              <Categories selectedCategories={selectedCategories} categories={categories} handleCategoryClick={handleCategoryClick} />
             </Offcanvas.Body>
           </Offcanvas>
         </div>
-      )}
     </div>
   );
 
@@ -106,10 +119,11 @@ export const Screenings = () => {
         const moviesAndScreenings: Movie[] = mapMoviesDataToModel(movies, screeningsData);
         const sortedMovies: Movie[] = sortMoviesByScreeningDate(moviesAndScreenings);
         setMovies(sortedMovies);
+        setPageStatus(pageState.SUCCESS);
       })
       .catch((error) => {
         console.error(error);
-        setError(true);
+        setPageStatus(pageState.ERROR);
       });
   }
   
