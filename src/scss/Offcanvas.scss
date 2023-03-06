@@ -1,0 +1,56 @@
+.offcanvas {
+  font-family: var(--font-family-sans-serif);
+  color: var(--background-color);
+  
+  .offcanvas-header {
+    .clear-filter-btn {
+      background: none;
+      color: var(--primary-color);
+      border: none;
+      padding: 0;
+      font-weight: 800;
+      cursor: pointer;
+      outline: inherit;
+    }
+    .offcanvas-title {
+      font-weight: 800;
+      font-size: 20px;
+    }
+  }
+  
+
+  .offcanvas-body {
+    margin-top: 20px;
+    .badge {
+      cursor: pointer;
+      font-size: 13px;
+      padding: 10px 15px;
+      font-weight: 600;
+      margin: 5px;
+      padding-right: 20px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+      p {
+        font-size: 14px;
+        margin-bottom: 0px;
+        span {
+          color: gray;
+        }
+      }
+      .light-badge-font {
+        color: #FEFEFE;
+      }
+
+      .dark-badge-font {
+        color: var(--background-color);
+      }
+    }
+    h5 {
+      font-weight: 800;
+      margin-bottom: 20px;
+      margin-left: 3px;
+    }
+  }
+}

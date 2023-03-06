@@ -18,7 +18,7 @@ export const ScreeningItem: React.FC<ScreeningItemProps> = (props) => {
   return (
     <div className='screening-container'>
       <div className='screening-item'>
-        <img src={`assets${props.movie.posterImage}`} alt='movie cover'></img>
+        <img draggable='false' src={`assets${props.movie.posterImage}`} alt='movie cover'></img>
         <div className='inner-screening-container'>
           <div className='screening-meta'>
             <h4>{props.movie.title}</h4>
