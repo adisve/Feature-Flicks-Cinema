@@ -1,11 +1,12 @@
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import { formatMinutes } from '../../data/utils/format_utils'
-import { Movie } from '../../domain/models/Movie'
-import '../../scss/ScreenigsListView.scss'
+import { formatMinutes } from '../../../../data/utils/format_utils'
+import { Movie } from '../../../../domain/models/Movie'
+import '../../../../scss/ScreeningsListView.scss'
+import { useNavigate } from 'react-router-dom'
 
-interface ScreeningListItemProps {
+interface ScreeningListContainerProps {
   movie: Movie
 }
 
@@ -15,9 +16,16 @@ interface ScreeningListItemProps {
  * @param props: The specific movie contained in the screening item.
  * @returns: A screening item.
  */
-export const ScreeningListItem: React.FC<ScreeningListItemProps> = (props) => {
+export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (props) => {
+
+  const navigateToBookingScreen = (movie: Movie) => {
+    // Only navigate to the new route when clicked
+    const navigate = useNavigate();
+    navigate(`/booking/${movie}`, { state: { movie: movie } });
+  }
+
   return (
-    <div className='screening-container'>
+    <div onClick={() => navigateToBookingScreen(props.movie)} className='screening-container'>
       <div className='screening-item'>
         <img draggable='false' src={`assets${props.movie.posterImage}`} alt='movie cover'></img>
         <div className='inner-screening-container'>

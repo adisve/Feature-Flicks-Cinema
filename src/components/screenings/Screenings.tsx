@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Movie } from '../../domain/models/Movie';
 import { Loading } from '../home/Loading';
+import { useNavigate } from 'react-router-dom';
 import '../../scss/Screenings.scss';
 import '../../scss/Offcanvas.scss'
 import { 
@@ -16,7 +17,7 @@ import { ScreeningsList } from './ScreeningsList';
 import { filterMoviesByCategories, getAvailableCategories } from '../../data/utils/mapping_utils';
 
 
-interface ScreenState {
+interface ScreeningsState {
   pageStatus: pageState;
   viewType: string;
   movies: Movie[];
@@ -30,7 +31,7 @@ interface ScreenState {
  * @returns: a list of screenings
  */
 export const Screenings = () => {
-  const [state, setState] = useState<ScreenState>({
+  const [state, setState] = useState<ScreeningsState>({
     pageStatus: pageState.LOADING,
     viewType: 'list',
     movies: [],
@@ -94,14 +95,24 @@ export const Screenings = () => {
         toggleOffcanvas={toggleOffcanvas}
       />
       <ScreeningsList
-        filteredMovies={filterMoviesByCategories(state.movies, state.selectedCategories)}
+        filteredMovies={
+          filterMoviesByCategories(
+            state.movies, 
+            state.selectedCategories
+          )
+        }
         viewType={state.viewType}
       />
       <FilteringOffcanvas
         showOffcanvas={state.showOffcanvas}
         toggleOffcanvas={toggleOffcanvas}
         selectedCategories={state.selectedCategories}
-        categories={getAvailableCategories(state.movies, filterMoviesByCategories(state.movies, state.selectedCategories))}
+        categories={
+          getAvailableCategories(
+            state.movies, 
+            filterMoviesByCategories(state.movies, state.selectedCategories)
+          )
+        }
         setSelectedCategories={setSelectedCategories}
         handleCategoryClick={handleCategoryClick}
       />

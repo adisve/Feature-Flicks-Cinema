@@ -1,18 +1,26 @@
 import React from 'react'
-import { Movie } from '../../domain/models/Movie'
+import { Movie } from '../../../../domain/models/Movie'
 import { Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
-import { formatMinutes } from '../../data/utils/format_utils'
-import '../../scss/ScreeningsPosterView.scss'
+import { formatMinutes } from '../../../../data/utils/format_utils'
+import '../../../../scss/ScreeningsPosterView.scss'
+import { useNavigate } from 'react-router-dom'
 
-interface ScreeningPosterItemProps {
+interface ScreeningPosterContainerProps {
   movie: Movie
 }
 
-export const ScreeningPosterItem: React.FC<ScreeningPosterItemProps> = (props) => {
+export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> = (props) => {
+
+  const navigateToBookingScreen = (movie: Movie) => {
+    // Only navigate to the new route when clicked
+    const navigate = useNavigate();
+    navigate(`/booking/${movie}`, { state: { movie: movie } });
+  }
+
   return (
-    <div className='poster-screening'>
+    <div onClick={() => navigateToBookingScreen(props.movie)} className='poster-screening'>
       <img draggable="false" src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
       <div className='poster-screening-metadata'>
         <p className='poster-screening-title'>{props.movie.title}</p>

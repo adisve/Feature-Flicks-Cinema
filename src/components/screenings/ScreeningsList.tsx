@@ -1,7 +1,7 @@
 import React from 'react'
 import { Movie } from '../../domain/models/Movie'
-import { ScreeningsListView } from './ScreeningsListView';
-import { ScreeningsPosterView } from './ScreeningsPosterView';
+import { ScreeningsListView } from './list_view_types/ScreeningsListView';
+import { ScreeningsPosterView } from './list_view_types/ScreeningsPosterView';
 
 interface ScreeningsListProps {
   filteredMovies: Movie[];
