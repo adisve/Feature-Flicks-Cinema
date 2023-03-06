@@ -89,4 +89,10 @@
     }
   }
 
+  @media (max-width: 767px) {
+    .hero-list-container-content .featured-movies {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }
