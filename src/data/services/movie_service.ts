@@ -10,12 +10,12 @@ import { checkStatus } from '../axios/middleware_functons';
  */
 export const fetchMovies = async (): Promise<any> => {
   try {
-        const response = await get(createRequestURL(moviesURL, { sort: "title" }));
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Request timed out');
-    }
+    const response = await get(createRequestURL(moviesURL, { sort: "title" }));
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Request timed out');
+  }
 };
 
 /**
@@ -24,12 +24,12 @@ export const fetchMovies = async (): Promise<any> => {
  */
 export const fetchScreenings = async (): Promise<any> => {
   try {
-        const response = await get(screeningsURL);
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Request timed out');
-    }
+    const response = await get(screeningsURL);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Request timed out');
+  }
 };
 
 /**
@@ -38,14 +38,14 @@ export const fetchScreenings = async (): Promise<any> => {
  * @returns Promise
  */
 export const fetchHeroMovies = async (): Promise<any> => {
-    try {
-        const response = await get(createRequestURL(moviesURL, { 'limit': 4, 'sort': '-title' }), [checkStatus]);
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Request timed out');
-    }
-  };
+  try {
+    const response = await get(createRequestURL(moviesURL, { 'limit': 4, 'sort': '-title' }), [checkStatus]);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Request timed out');
+  }
+};
 
 /**
  * Sorts movies by their most recent screening date
@@ -55,6 +55,31 @@ export const fetchHeroMovies = async (): Promise<any> => {
 export const sortMoviesByScreeningDate = (movies: Movie[]): Movie[] => {
   return movies.sort((a, b) => a.screenings[0].getTime() - b.screenings[0].getTime());
 };
+
+/**
+ * Sorts movies by category
+ * @param movies 
+ * @returns List of movies
+ */
+export const sortMoviesByCategory = (movies: Movie[]): Movie[] => {
+  const categories: Set<string> = new Set<string>();
+  movies.forEach((movie) => {
+    movie.categories.forEach((category) => {
+      categories.add(category);
+    });
+  });
+  const sortedMovies: Movie[] = [];
+  categories.forEach((category) => {
+    const categoryMovies: Movie[] = movies.filter((movie) => movie.categories.includes(category));
+    categoryMovies.forEach((movie) => {
+      if (!sortedMovies.includes(movie)) {
+        sortedMovies.push(movie);
+      }
+    });
+  });
+  return sortedMovies;
+};
+
 
 /**
  * Maps the movies to a list of movies, along with each movie's available
@@ -69,12 +94,12 @@ export const mapMoviesDataToModel = (moviesData: any[], screeningsData?: any[]):
 
   if (screeningsData) {
     screeningsData.forEach((screening) => {
-        const movieId = screening.movieId;
-        if (!screeningsDict[movieId]) {
-          screeningsDict[movieId] = [];
-        }
-        screeningsDict[movieId].push(new Date(screening.time));
-      });
+      const movieId = screening.movieId;
+      if (!screeningsDict[movieId]) {
+        screeningsDict[movieId] = [];
+      }
+      screeningsDict[movieId].push(new Date(screening.time));
+    });
   }
 
   movies.forEach((movie) => {

@@ -1,7 +1,7 @@
-import { faTicket } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react'
-import { Navbar, Nav, NavLink, Container, NavDropdown } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Navbar, Nav, NavLink } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../../scss/BootstrapNavbar.scss';
 
@@ -11,19 +11,25 @@ import '../../scss/BootstrapNavbar.scss';
  * @returns: Navbar Component built with react-bootstrap
  */
 export const BootstrapNavbar = () => {
+
+  const [navOpened, setNavOpened] = useState(false);
+  const toggleNav = () => setNavOpened(!navOpened);
+  
+  const handleNavLinkClick = () => setNavOpened(false); // function to handle nav link click
+
   return (
     <nav>
       <Navbar collapseOnSelect variant='dark' bg='transparent' expand="lg">
         <Navbar.Brand>
           <div className='d-flex'>
-          <p>FEATURE FLICKS</p><span style={{marginLeft: '20px', marginTop: '2px'}}><FontAwesomeIcon icon={faTicket}/></span>
+            <p>FEATURE FLICKS</p>
           </div>
         </Navbar.Brand>
-        <Navbar.Toggle/>
+        <Navbar.Toggle onClick={toggleNav}><FontAwesomeIcon style={{color: '#FEFEFE'}} icon={navOpened ? faXmark : faBars} size='lg'/></Navbar.Toggle>
         <Navbar.Collapse>
-          <Nav className='me-auto'>
-            <NavLink eventKey={1} as={Link} to='/'><p className='hover-underline-animation'>Home</p></NavLink>
-            <NavLink eventKey={2} as={Link} to='/screenings'><p className='hover-underline-animation'>Screenings</p></NavLink>
+          <Nav>
+            <NavLink eventKey={1} as={Link} to='/' onClick={handleNavLinkClick}><p className='hover-underline-animation'>Home</p></NavLink>
+            <NavLink eventKey={2} as={Link} to='/screenings' onClick={handleNavLinkClick}><p className='hover-underline-animation'>Screenings</p></NavLink>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

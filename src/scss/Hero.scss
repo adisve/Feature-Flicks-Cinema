@@ -1,6 +1,7 @@
 .hero-list-container {
   font-weight: 300;
   margin-top: 80px;
+
   .hero-list-container-content {
     margin: 50px;
     display: flex;
@@ -9,6 +10,8 @@
 
     h1 {
       text-align: center;
+      font-size: 45px;
+      margin: 0;
     }
 
     h3 {
@@ -19,19 +22,19 @@
 
     .featured-movies {
       margin-top: 80px;
-      
+
       .loading-container {
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100%;
-
       }
 
       .featured-movie {
         width: 300px;
         cursor: pointer;
         transition: all ease-in-out .1s;
+
         &:hover {
           transform: scale(1.05);
         }
@@ -39,8 +42,9 @@
         img {
           height: 400px;
           width: 270px;
-          border-radius: 2.5px;
+          border-radius: 10px;
         }
+
         .featured-movie-info-container {
 
           .featured-movie-title {
@@ -54,6 +58,7 @@
           .featured-movie-length {
             font-family: var(--font-family-sans-serif);
             font-weight: 500;
+
             span {
               padding-right: 10px;
             }
@@ -63,7 +68,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            
+
             p {
               font-weight: 600;
               font-size: 12px;
@@ -71,7 +76,7 @@
               color: #272727;
               margin: 5px;
             }
-          
+
             .featured-movie-category-container {
               background-color: #FEFEFE;
               padding: 2px;
@@ -80,8 +85,19 @@
               border-radius: 5px;
             }
           }
-          
         }
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero-list-container-content .featured-movies {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .featured-movie {
+        margin: 0 20px 40px;
       }
     }
   }

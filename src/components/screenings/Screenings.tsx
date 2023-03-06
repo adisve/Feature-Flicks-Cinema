@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { ListGroup } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { ListGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Movie } from '../../domain/models/Movie';
 import { Loading } from '../home/Loading';
 import '../../scss/Screenings.scss';
@@ -8,8 +8,11 @@ import {
   fetchMovies, 
   fetchScreenings, 
   mapMoviesDataToModel, 
+  sortMoviesByCategory, 
   sortMoviesByScreeningDate } from '../../data/services/movie_service'
 import { ErrorMessage } from '../errors/ErrorMessage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Component that renders the screenings list.
@@ -27,20 +30,24 @@ export const Screenings = () => {
 
   return (
     <div className='screenings'>
-        {error ? (
-          <ErrorMessage />
-        ) : (
+      {error ? (
+        <ErrorMessage />
+      ) : (
+        <div>
+          <div className='d-flex justify-content-between filter-div'>
+            <h2 id='available-screenings'>Available Screenings</h2>
+            <div className="d-flex"><span><FontAwesomeIcon icon={faFilter} /></span><p>Filters</p></div>
+          </div>
           <ListGroup variant='flush'>
-            {
-              movies.length > 0 ? (
-                movies.map((movie) => {
-                  return <ScreeningItem key={movie.id} movie={movie} />
-                })
-              ) : <Loading />
-            }
+            {movies.length > 0 ? (
+              movies.map((movie) => {
+                return <ScreeningItem key={movie.id} movie={movie} />
+              })
+            ) : <Loading />}
           </ListGroup>
-        )}
-      </div>
+        </div>
+      )}
+    </div>
   );
 
 
@@ -50,12 +57,10 @@ export const Screenings = () => {
       fetchScreenings(),
     ])
       .then((responses) => {
-        const moviesData = responses[0];
+        const movies = responses[0];
         const screeningsData = responses[1];
-
-        const movies: Movie[] = mapMoviesDataToModel(moviesData, screeningsData);
-        const sortedMovies: Movie[] = sortMoviesByScreeningDate(movies);
-
+        const moviesAndScreenings: Movie[] = mapMoviesDataToModel(movies, screeningsData);
+        const sortedMovies: Movie[] = sortMoviesByScreeningDate(moviesAndScreenings);
         setMovies(sortedMovies);
       })
       .catch((error) => {

@@ -17,7 +17,7 @@ interface MoviePosterContainerProps {
 export const MoviePosterContainer: React.FC<MoviePosterContainerProps> = (props) => {
   return (
     <Container className='text-center mb-5 featured-movie'>
-      <img src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
+      <img draggable="false" src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
       <Container className='featured-movie-info-container'>
         <p className='featured-movie-title'>{props.movie.title}</p>
         <p className='featured-movie-length'><span><FontAwesomeIcon icon={faClock}/></span>{formatMinutes(props.movie.length)}</p>

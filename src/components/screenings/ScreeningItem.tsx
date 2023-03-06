@@ -22,7 +22,7 @@ export const ScreeningItem: React.FC<ScreeningItemProps> = (props) => {
         <div className='inner-screening-container'>
           <div className='screening-meta'>
             <h4>{props.movie.title}</h4>
-            <div className='screening-category-length-container'>
+            <div className='screening-category-date-container'>
               <div className='screening-categories'>
                 {props.movie.categories.map((category, index) => {
                   return (<p key={index.toString()} className='screening-category'>{category}</p>
@@ -31,7 +31,7 @@ export const ScreeningItem: React.FC<ScreeningItemProps> = (props) => {
               </div>
             </div>
           </div>
-          <div className='screening-book-tickets-container'>
+          <div className='screening-date-time-container'>
             <h5>{
               props.movie.screenings[0].toLocaleString('se-SE', {
                 year: 'numeric',
