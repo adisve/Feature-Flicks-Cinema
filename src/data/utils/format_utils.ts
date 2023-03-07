@@ -10,3 +10,8 @@ export function formatMinutes(minutes: number): string {
   const remainingMinutes = minutes % 60;
   return `${hours.toString()} h ${remainingMinutes.toString()} min`;
 }
+
+export const dateHasPassed = (date: Date): boolean => {
+  const currentDate = new Date();
+  return date < currentDate;
+}

@@ -22,7 +22,7 @@ export const mapToMovies = (movies: any[], allMovieScreenings?: Screening[]): Mo
 };
 
 
-export const mapToMovie = (movieData: any, movieScreenings: Screening[]): Movie => {
+export const mapToMovie = (movieData: any, movieScreenings?: Screening[]): Movie => {
   return new Movie(
     movieData.id,
     movieData.title,

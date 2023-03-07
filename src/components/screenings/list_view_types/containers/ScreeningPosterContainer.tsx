@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { formatMinutes } from '../../../../data/utils/format_utils'
-import '../../../../scss/ScreeningsPosterView.scss'
+import '../../../../scss/screenings/ScreeningsPosterView.scss'
 import { Link, useNavigate } from 'react-router-dom'
 
 interface ScreeningPosterContainerProps {
@@ -14,7 +14,7 @@ interface ScreeningPosterContainerProps {
 export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> = (props) => {
 
   return (
-    <Link to={`/booking/${props.movie.id}`} className='poster-screening'>
+    <Link to={`/book/${props.movie.id}`} className='poster-screening'>
       <img draggable="false" src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
       <div className='poster-screening-metadata'>
         <p className='poster-screening-title'>{props.movie.title}</p>

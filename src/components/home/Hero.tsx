@@ -3,10 +3,10 @@ import '../../scss/Hero.scss';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Movie } from '../../domain/models/Movie';
 import { MoviePosterContainer } from './MoviePosterContainer';
-import { Loading } from './Loading';
+import { Loading } from '../animations/Loading';
 import { fetchHeroMovies } from '../../data/services/movie_service';
 import { ErrorMessage } from '../errors/ErrorMessage';
-import { pageState } from '../App';
+import { PageStatus } from '../App';
 import { mapToMovies } from '../../data/utils/mapping_utils';
 
 /**
@@ -16,26 +16,26 @@ import { mapToMovies } from '../../data/utils/mapping_utils';
  */
 export const Hero = () => {
   const [heroMovies, setHeroMovies] = useState<Movie[]>([]);
-  const [pageStatus, setPageStatus] = useState(pageState.LOADING);
+  const [pageStatus, setPageStatus] = useState(PageStatus.LOADING);
 
   useEffect(() => {
     fetchHeroMovies()
       .then((moviesData) => {
         const movies: Movie[] = mapToMovies(moviesData);
         setHeroMovies(movies);
-        setPageStatus(pageState.SUCCESS);
+        setPageStatus(PageStatus.SUCCESS);
       })
       .catch((error) => {
-        setPageStatus(pageState.ERROR);
+        setPageStatus(PageStatus.ERROR);
       });
   }, []);
 
-  if (pageStatus === pageState.LOADING) {
-    return <div className="text-center m-5"><Loading /></div>;
+  if (pageStatus === PageStatus.LOADING) {
+    return <Loading />;
   }
 
-  if (pageStatus === pageState.ERROR) {
-    return <div className="text-center m-5"><ErrorMessage /></div>
+  if (pageStatus === PageStatus.ERROR) {
+    return <ErrorMessage />
   }
 
   return (

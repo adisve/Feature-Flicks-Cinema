@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { BootstrapNavbar } from './nav/BootstrapNavbar';
 import '../scss/App.scss'
 
-export enum pageState {
+export enum PageStatus {
   LOADING,
   SUCCESS,
   ERROR

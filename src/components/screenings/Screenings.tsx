@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Movie } from '../../domain/models/Movie';
-import { Loading } from '../home/Loading';
+import { Loading } from '../animations/Loading';
 import { useNavigate } from 'react-router-dom';
-import '../../scss/Screenings.scss';
+import '../../scss/screenings/Screenings.scss';
 import '../../scss/Offcanvas.scss'
 import { 
   fetchMovies, 
   fetchScreenings, 
   sortMoviesByScreeningDate } from '../../data/services/movie_service'
 import { ErrorMessage } from '../errors/ErrorMessage';
-import { pageState } from '../App';
+import { PageStatus } from '../App';
 import { ScreeningsHeader } from './ScreeningsHeader';
 import { FilteringOffcanvas } from './FilteringOffcanvas';
 import { ScreeningsList } from './ScreeningsList';
@@ -17,7 +17,7 @@ import { filterMoviesByCategories, getAvailableCategories, mapToMovies, mapToScr
 
 
 interface ScreeningsState {
-  pageStatus: pageState;
+  pageStatus: PageStatus;
   viewType: string;
   movies: Movie[];
   showOffcanvas: boolean;
@@ -31,7 +31,7 @@ interface ScreeningsState {
  */
 export const Screenings = () => {
   const [state, setState] = useState<ScreeningsState>({
-    pageStatus: pageState.LOADING,
+    pageStatus: PageStatus.LOADING,
     viewType: 'list',
     movies: [],
     showOffcanvas: false,
@@ -70,21 +70,21 @@ export const Screenings = () => {
         const screenings = mapToScreenings(screeningsData);
         const movies = mapToMovies(movieDataArray, screenings);
         const sortedMovies: Movie[] = sortMoviesByScreeningDate(movies);
-        setState((prevState) => ({ ...prevState, movies: sortedMovies, pageStatus: pageState.SUCCESS }));
+        setState((prevState) => ({ ...prevState, movies: sortedMovies, pageStatus: PageStatus.SUCCESS }));
       })
       .catch((error) => {
         console.error(error);
-        setState((prevState) => ({ ...prevState, pageStatus: pageState.ERROR }));
+        setState((prevState) => ({ ...prevState, pageStatus: PageStatus.ERROR }));
       });
   }, []);
   
   
-  if (state.pageStatus === pageState.LOADING) {
-    return <div className='screenings'><Loading /></div>;
+  if (state.pageStatus === PageStatus.LOADING) {
+    return <Loading />;
   }
 
-  if (state.pageStatus === pageState.ERROR) {
-    return <div className="screenings"><ErrorMessage /></div>;
+  if (state.pageStatus === PageStatus.ERROR) {
+    return <ErrorMessage />;
   }
 
   return (

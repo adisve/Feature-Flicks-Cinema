@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { formatMinutes } from '../../../../data/utils/format_utils'
 import { Movie } from '../../../../domain/models/Movie'
-import '../../../../scss/ScreeningsListView.scss'
+import '../../../../scss/screenings/ScreeningsListView.scss'
 import { Link } from 'react-router-dom'
 
 interface ScreeningListContainerProps {
@@ -19,7 +19,7 @@ interface ScreeningListContainerProps {
 export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (props) => {
 
   return (
-    <Link to={`/booking/${props.movie.id}`} className='screening-container'>
+    <Link to={`/book/${props.movie.id}`} className='screening-container'>
       <div className='screening-item'>
         <img draggable='false' src={`assets${props.movie.posterImage}`} alt='movie cover'></img>
         <div className='inner-screening-container'>
@@ -36,19 +36,21 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
           </div>
           <div className="text-end">
             <div className='screening-date-time-container'>
-              <h5>{
-                props.movie.screenings && (
-                  props.movie.screenings[0].time.toLocaleString('en-EN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    weekday: 'long',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: false,
-                  })
-                )
-              }</h5>
+              <div className="d-flex">
+                <h5>{
+                  props.movie.screenings && (
+                    props.movie.screenings[0].time.toLocaleString('en-EN', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      weekday: 'long',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      hour12: false,
+                    })
+                  )
+                }</h5>
+              </div>
               <p className='screening-time'>
                 <span style={{paddingRight: '10px'}}><FontAwesomeIcon icon={faClock}/></span>
                 {formatMinutes(props.movie.length)}

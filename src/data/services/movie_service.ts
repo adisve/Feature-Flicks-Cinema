@@ -17,9 +17,20 @@ export const fetchMovies = async (): Promise<any> => {
   }
 };
 
-export const fetchMovieById = async (movieId: string): Promise<Movie> => {
+export const fetchMovieById = async (movieId: string): Promise<any> => {
   try {
+    console.log(createRequestURL(moviesURL, { id: movieId }))
     const response = await get(createRequestURL(moviesURL, { id: movieId }), [checkStatus]);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Request timed out');
+  }
+}
+
+export const fetchScreeningsByMovieId = async (id: string): Promise<any> => {
+  try {
+    const response = await get(createRequestURL(screeningsURL, { movieId: id }), [checkStatus]);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -29,7 +40,7 @@ export const fetchMovieById = async (movieId: string): Promise<Movie> => {
 
 export const fetchScreeningById = async (id: string): Promise<any> => {
   try {
-    const response = await get(createRequestURL(screeningsURL, { movieId: id }), [checkStatus]);
+    const response = await get(createRequestURL(screeningsURL, { id: id }), [checkStatus]);
     return response.data;
   } catch (error) {
     console.error(error);

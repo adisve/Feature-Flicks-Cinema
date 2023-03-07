@@ -2,7 +2,7 @@ import { faFilter, faImage, faList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { Button } from 'react-bootstrap';
-import '../../scss/ScreeningsHeader.scss'
+import '../../scss/screenings/ScreeningsHeader.scss'
 
 interface ScreeningsHeaderProps {
   setViewType: (viewType: string) => void;

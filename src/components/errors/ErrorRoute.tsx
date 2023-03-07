@@ -1,5 +1,5 @@
 import React from 'react'
-import '../../scss/ErrorRoute.scss'
+import '../../scss/errors/ErrorRoute.scss'
 
 export const ErrorRoute = () => {
   return (

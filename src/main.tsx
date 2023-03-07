@@ -7,6 +7,7 @@ import { Home } from './components/home/Home';
 import { Screenings } from './components/screenings/Screenings';
 import { Booking } from './components/booking/Booking';
 import { ErrorRoute } from './components/errors/ErrorRoute';
+import { BookScreening } from './components/booking/BookScreening';
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -16,7 +17,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/screenings" element={<Screenings />} />
-            <Route path="/booking/:id" element={<Booking />} />
+            <Route path="/book/:id" element={<Booking />} />
+            <Route path="/book/screening/:id" element={<BookScreening />} />
             <Route path="*" element={<ErrorRoute />} />
           </Routes>
         </App>

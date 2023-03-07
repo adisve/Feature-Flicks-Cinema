@@ -1,32 +1,33 @@
 import React, { useEffect } from 'react';
 import { Movie } from '../../domain/models/Movie';
 import { useParams } from 'react-router-dom';
-import { fetchMovieById, fetchScreeningById } from '../../data/services/movie_service';
+import { fetchMovieById, fetchScreeningsByMovieId } from '../../data/services/movie_service';
 import { mapToMovie, mapToScreenings } from '../../data/utils/mapping_utils';
-import '../../scss/Booking.scss';
+import '../../scss/booking/Booking.scss';
 import { AuditoriumName, BookingDateContainer } from './BookingDateContainer';
-import { pageState } from '../App';
+import { PageStatus } from '../App';
 import { groupScreeningsByAuditorium } from '../../data/utils/list_utils';
-import { Loading } from '../home/Loading';
+import { Loading } from '../animations/Loading';
+import { ErrorMessage } from '../errors/ErrorMessage';
 
 interface ScreeningState {
   movie?: Movie;
-  pageStatus: pageState;
+  pageStatus: PageStatus;
 }
 
 export const Booking = () => {
   const { id } = useParams<{ id: string }>();
   const [state, setState] = React.useState<ScreeningState>({
     movie: undefined,
-    pageStatus: pageState.LOADING,
+    pageStatus: PageStatus.LOADING,
   });
 
   useEffect(() => {
-    setState(prevState => ({...prevState, pageStatus: pageState.LOADING }));
+    setState(prevState => ({...prevState, pageStatus: PageStatus.LOADING }));
     if (id) {
       Promise.all([
         fetchMovieById(id), 
-        fetchScreeningById(id)
+        fetchScreeningsByMovieId(id)
       ])
         .then((responses) => {
           const movieDataArray: any = responses[0];
@@ -34,16 +35,21 @@ export const Booking = () => {
           const screenings = mapToScreenings(screeningsData);
           const movie = mapToMovie(movieDataArray[0], screenings);
           setState(prevState => ({ ...prevState, movie: movie }));
-          setState(prevState => ({...prevState, pageStatus: pageState.SUCCESS }));
+          setState(prevState => ({...prevState, pageStatus: PageStatus.SUCCESS }));
         })
         .catch(error => {
           console.error('Error fetching movie and screenings', error);
+          setState(prevState => ({...prevState, pageStatus: PageStatus.ERROR }));
         });
     }
   }, [id]);
 
-  if (state.pageStatus === pageState.LOADING) {
-    return <div className='text-center'><Loading /></div>
+  if (state.pageStatus === PageStatus.LOADING) {
+    return <Loading />
+  }
+
+  if (state.pageStatus === PageStatus.ERROR) {
+    return <ErrorMessage />
   }
 
   return (
@@ -68,7 +74,7 @@ export const Booking = () => {
             </div>
             <ul>
               {screenings.map(screening => (
-                <BookingDateContainer key={screening.id} screening={screening} />
+                <BookingDateContainer key={screening.id} movie={state.movie!} screening={screening} />
               ))}
             </ul>
           </div>

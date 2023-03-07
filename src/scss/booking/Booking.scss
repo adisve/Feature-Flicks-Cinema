@@ -7,14 +7,22 @@
   .booking-header {
     margin-top: 50px;
     display: flex;
+    text-align: left;
+    margin-left: 10px;
+    margin-right: 10px;
     h2 {
       font-weight: 800;
       margin-left: 30px;
     }
     img {
-      height: 200px;
-      width: 140px;
+      height: 288px;
+      width: 192px;
       border-radius: 5px;
+
+      @media only screen and (max-width: 1039px) {
+        width: 110px;
+        height: 165px;
+      }
     }
     .booking-movie-categories {
       display: flex;
@@ -52,7 +60,9 @@
       font-weight: 700;
       text-decoration: underline;
       text-decoration-color: #FEFEFE;
-      text-decoration-thickness: 1px; /* adjust the value as needed */
+      text-decoration-thickness: 1px; 
+      margin-bottom: 30px;
+      margin-left: 10px;
     }
   }
   
@@ -69,19 +79,41 @@
       list-style: none;
       padding: 0;
       @media only screen and (max-width: 1123px) {
-        width: 100%;
+        width: 100% !important;
       }
       li {
         text-align: left;
+        padding-right: 10px;
+        padding-left: 10px;
       }
       .btn {
-        text-align: right;
-        color: var(--primary-color);
-        border: none;
-        padding: 0;
-        margin: 0;
-        font-weight: 800;
+        background-color: var(--primary-color);
+        border-radius: 8px;
+        border-style: none;
+        box-sizing: border-box;
+        color: #FEFEFE;
         cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 700;
+        height: 40px;
+        line-height: 20px;
+        list-style: none;
+        margin: 0;
+        outline: none;
+        padding: 10px 16px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        transition: color 100ms;
+        vertical-align: baseline;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      .btn:hover,
+      .btn:focus {
+        background-color: #fc5c51;
       }
     }
   }

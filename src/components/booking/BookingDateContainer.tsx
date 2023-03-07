@@ -1,10 +1,12 @@
 import React from 'react'
 import { Screening } from '../../domain/models/Screening'
-import '../../scss/BookingDateContainer.scss'
-import { Button } from 'react-bootstrap'
+import '../../scss/booking/BookingDateContainer.scss'
+import { Link } from 'react-router-dom'
+import { Movie } from '../../domain/models/Movie'
 
 interface BookingDateContainerProps {
-  screening: Screening
+  screening: Screening;
+  movie: Movie;
 }
 
 export enum AuditoriumName {
@@ -32,7 +34,7 @@ export const BookingDateContainer: React.FC<BookingDateContainerProps> = (props)
             }
           </p>
         </div>
-        <button className='btn'>Choose seats</button>
+        <Link to={`/book/screening/${props.screening.id}`}><button className='btn'>Choose seats</button></Link>
       </div>
       <hr />
     </li>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Spinner } from 'react-bootstrap';
+import '../../scss/Loading.scss'
 
 /**
  * Custom loading animation component.
@@ -8,8 +9,10 @@ import { Spinner } from 'react-bootstrap';
  */
 export const Loading = () => {
   return (
-    <Spinner animation="border" variant='light' role="status">
-      <span className="visually-hidden">Loading...</span>
-    </Spinner>
+    <div className='loading'>
+      <Spinner animation="border" variant='light' role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    </div>
   );
 }
