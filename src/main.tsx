@@ -5,9 +5,9 @@ import './main.scss'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from './components/home/Home';
 import { Screenings } from './components/screenings/Screenings';
-import { Booking } from './components/booking/Booking';
+import { SelectScreening } from './components/booking/SelectScreening';
 import { ErrorRoute } from './components/errors/ErrorRoute';
-import { BookScreening } from './components/booking/BookScreening';
+import { Booking } from './components/booking/book_screening/Booking';
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -17,8 +17,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/screenings" element={<Screenings />} />
-            <Route path="/book/:id" element={<Booking />} />
-            <Route path="/book/screening/:id" element={<BookScreening />} />
+            <Route path="/book/:id" element={<SelectScreening />} />
+            <Route path="/book/screening/:id" element={<Booking />} />
             <Route path="*" element={<ErrorRoute />} />
           </Routes>
         </App>

@@ -1,16 +1,16 @@
-.booking-date-container {
+.select-screeningdate-container {
   display: flex;
   margin-bottom: -15px;
   p {
     font-weight: 600;
     padding-right: 20px;
   }
-  .booking-time-auditorium-container {
-    .booking-auditorium {
+  .select-screeningtime-auditorium-container {
+    .select-screeningauditorium {
       font-weight: 600;
       font-size: 14px;
     }
-    .booking-time {
+    .select-screeningtime {
       @media only screen and (max-width: 1123px) {
         padding-right: 175px;
       }

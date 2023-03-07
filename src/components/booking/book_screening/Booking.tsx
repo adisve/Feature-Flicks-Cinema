@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import '../../scss/booking/BookScreening.scss'
-import { fetchMovieById, fetchScreeningById, fetchScreeningsByMovieId } from '../../data/services/movie_service';
-import { Screening } from '../../domain/models/Screening';
-import { Movie } from '../../domain/models/Movie';
-import { mapToMovie, mapToScreening } from '../../data/utils/mapping_utils';
-import { PageStatus } from '../App';
-import { Loading } from '../animations/Loading';
-import { ErrorMessage } from '../errors/ErrorMessage';
+import '../../../scss/booking/BookScreening.scss'
+import { fetchMovieById, fetchScreeningById, fetchScreeningsByMovieId } from '../../../data/services/movie_service';
+import { Screening } from '../../../domain/models/Screening';
+import { Movie } from '../../../domain/models/Movie';
+import { mapToMovie, mapToScreening } from '../../../data/utils/mapping_utils';
+import { PageStatus } from '../../App';
+import { Loading } from '../../animations/Loading';
+import { ErrorMessage } from '../../errors/ErrorMessage';
+import { TicketSelection } from './TicketSelection';
+import { MovieScreeningInformation } from './MovieScreeningInformation';
 
 interface BookScreeningState {
   screening?: Screening
@@ -15,7 +17,7 @@ interface BookScreeningState {
   pageStatus: PageStatus
 }
 
-export const BookScreening = () => {
+export const Booking = () => {
   const { id } = useParams<{ id: string }>();
   const [state, setState] = useState<BookScreeningState>({
     screening: undefined,
@@ -69,6 +71,18 @@ export const BookScreening = () => {
   }
 
   return (
-    <div>{id}</div>
+    <div>
+        {/* Ticket selection (amount), movie information/screening information */}
+        <div className='booking-header d-flex'>
+
+          { /* Choose number of tickets (regular, child, senior) */ }
+          <TicketSelection />
+
+          { /* Movie information (name, hall name, time/day/date) 
+            and amount of tickets and total price */ }
+          <MovieScreeningInformation movie={state.movie!} screening={state.screening!}/>
+        </div>
+        {/* Choose seats (grid) */}
+    </div>
   )
 }

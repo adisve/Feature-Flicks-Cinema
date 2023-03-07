@@ -3,8 +3,9 @@ import { Screening } from '../../domain/models/Screening'
 import '../../scss/booking/BookingDateContainer.scss'
 import { Link } from 'react-router-dom'
 import { Movie } from '../../domain/models/Movie'
+import { screeningTimeToString } from '../../data/utils/mapping_utils'
 
-interface BookingDateContainerProps {
+interface ScreeningDateContainerProps {
   screening: Screening;
   movie: Movie;
 }
@@ -14,21 +15,13 @@ export enum AuditoriumName {
   'Stora salen',
 }
 
-export const BookingDateContainer: React.FC<BookingDateContainerProps> = (props) => {
+export const ScreeningDateContainer: React.FC<ScreeningDateContainerProps> = (props) => {
   return (
     <li>
-      <div className='booking-date-container justify-content-between'>
-        <div className='booking-time-auditorium-container'>
-          <p className='booking-time'>{ props.screening.time.toLocaleString('en-EN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            weekday: 'long',
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: false,
-          })}</p>
-          <p className='booking-auditorium'>
+      <div className='select-screeningdate-container justify-content-between'>
+        <div className='select-screeningtime-auditorium-container'>
+          <p className='select-screeningtime'>{screeningTimeToString(props.screening.time)}</p>
+          <p className='select-screeningauditorium'>
             {
               AuditoriumName[props.screening.auditoriumId - 1]
             }

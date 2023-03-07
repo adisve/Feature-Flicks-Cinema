@@ -44,7 +44,7 @@ export const mapToScreenings = (screeningsData: any[]): Screening[] => {
 export const mapToScreening = (screeningData: any): Screening => {
   return new Screening(
     screeningData.id,
-    screeningData.time,
+    new Date(screeningData.time),
     screeningData.movieId,
     screeningData.auditoriumId  
   )
@@ -66,4 +66,16 @@ export const filterMoviesByCategories = (movies: Movie[], selectedCategories: st
   return selectedCategories.length > 0
     ? movies.filter((movie) => selectedCategories.every((category) => movie.categories.includes(category)))
     : movies;
+}
+
+export const screeningTimeToString = (screeningTime: Date): string => {
+  return screeningTime.toLocaleString('en-EN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  })
 }

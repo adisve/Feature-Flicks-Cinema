@@ -1,0 +1,25 @@
+.ticket-selection {
+  h4 {
+    font-weight: 800;
+  }
+
+  .ticket-select-amount-container {
+    margin-top: 30px;
+    justify-content: space-between;
+    .ticket-type {
+      font-weight: 800;
+      font-size: 20px;
+    }
+    .ticket-amount {
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .btn {
+      border: none;
+      background-color: #333333;
+      .icon {
+        color: #FEFEFE;
+      }
+    }
+  }
+}
