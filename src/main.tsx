@@ -5,6 +5,8 @@ import './main.scss'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from './components/home/Home';
 import { Screenings } from './components/screenings/Screenings';
+import { Booking } from './components/booking/Booking';
+import { ErrorRoute } from './components/errors/ErrorRoute';
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -14,6 +16,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/screenings" element={<Screenings />} />
+            <Route path="/booking/:id" element={<Booking />} />
+            <Route path="*" element={<ErrorRoute />} />
           </Routes>
         </App>
       </React.StrictMode>

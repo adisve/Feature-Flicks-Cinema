@@ -1,22 +1,54 @@
 import { Movie } from "../../domain/models/Movie";
+import { Screening } from "../../domain/models/Screening";
 
 /**
  * Converts a raw movie object into its corresponding DTO
- * @param movies 
+ * @param movies
+ * @param screenings
  * @returns 
  */
-export const mapToMovies = (movies: any[]): Movie[] => {
+export const mapToMovies = (movies: any[], allMovieScreenings?: Screening[]): Movie[] => {
   return movies.map((movieData: any) => {
+    const movieScreenings = allMovieScreenings?.filter((screening: Screening) => screening.movieId === movieData.id);
     return new Movie(
       movieData.id,
       movieData.title,
       movieData.description.length,
       movieData.description.categories,
       movieData.description.posterImage,
-      movieData.screenings
+      movieScreenings
     );
   });
 };
+
+
+export const mapToMovie = (movieData: any, movieScreenings: Screening[]): Movie => {
+  return new Movie(
+    movieData.id,
+    movieData.title,
+    movieData.description.length,
+    movieData.description.categories,
+    movieData.description.posterImage,
+    movieScreenings
+  )
+}
+
+export const mapToScreenings = (screeningsData: any[]): Screening[] => {
+  return screeningsData.map((item: any) => {
+    const { id, time, movieId, auditoriumId } = item;
+    const screeningTime = new Date(time);
+    return new Screening(id, screeningTime, movieId, auditoriumId);
+  });
+}
+
+export const mapToScreening = (screeningData: any): Screening => {
+  return new Screening(
+    screeningData.id,
+    screeningData.time,
+    screeningData.movieId,
+    screeningData.auditoriumId  
+  )
+}
 
 export const getAvailableCategories = (movies: Movie[], filteredMovies: Movie[]): {
   category: string;

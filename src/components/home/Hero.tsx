@@ -4,9 +4,10 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Movie } from '../../domain/models/Movie';
 import { MoviePosterContainer } from './MoviePosterContainer';
 import { Loading } from './Loading';
-import { fetchHeroMovies, mapMoviesDataToModel } from '../../data/services/movie_service';
+import { fetchHeroMovies } from '../../data/services/movie_service';
 import { ErrorMessage } from '../errors/ErrorMessage';
 import { pageState } from '../App';
+import { mapToMovies } from '../../data/utils/mapping_utils';
 
 /**
  * Can be seen on the home/landing page, displaying
@@ -20,7 +21,7 @@ export const Hero = () => {
   useEffect(() => {
     fetchHeroMovies()
       .then((moviesData) => {
-        const movies: Movie[] = mapMoviesDataToModel(moviesData);
+        const movies: Movie[] = mapToMovies(moviesData);
         setHeroMovies(movies);
         setPageStatus(pageState.SUCCESS);
       })

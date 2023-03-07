@@ -1,5 +1,4 @@
 .screenings {
-  margin-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +10,6 @@
 
   .screenings-list-parent {
     text-align: center;
-
     ul {
       width: 65vw;
       list-style: none;

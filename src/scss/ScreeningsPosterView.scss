@@ -1,9 +1,12 @@
 .screenings-poster-view {
   .poster-screening {
+    text-decoration: none;
+    color: inherit;
     cursor: pointer;
     margin-bottom: 40px;
     transition: all ease-in-out .1s;
-
+    display: block;
+    
     &:hover {
       transform: scale(1.05);
     }

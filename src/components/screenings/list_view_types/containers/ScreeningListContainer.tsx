@@ -4,7 +4,7 @@ import React from 'react'
 import { formatMinutes } from '../../../../data/utils/format_utils'
 import { Movie } from '../../../../domain/models/Movie'
 import '../../../../scss/ScreeningsListView.scss'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 interface ScreeningListContainerProps {
   movie: Movie
@@ -18,14 +18,8 @@ interface ScreeningListContainerProps {
  */
 export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (props) => {
 
-  const navigateToBookingScreen = (movie: Movie) => {
-    // Only navigate to the new route when clicked
-    const navigate = useNavigate();
-    navigate(`/booking/${movie}`, { state: { movie: movie } });
-  }
-
   return (
-    <div onClick={() => navigateToBookingScreen(props.movie)} className='screening-container'>
+    <Link to={`/booking/${props.movie.id}`} className='screening-container'>
       <div className='screening-item'>
         <img draggable='false' src={`assets${props.movie.posterImage}`} alt='movie cover'></img>
         <div className='inner-screening-container'>
@@ -43,15 +37,17 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
           <div className="text-end">
             <div className='screening-date-time-container'>
               <h5>{
-                props.movie.screenings[0].toLocaleString('en-EN', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  weekday: 'long',
-                  hour: 'numeric',
-                  minute: 'numeric',
-                  hour12: false,
-                })
+                props.movie.screenings && (
+                  props.movie.screenings[0].time.toLocaleString('en-EN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    weekday: 'long',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: false,
+                  })
+                )
               }</h5>
               <p className='screening-time'>
                 <span style={{paddingRight: '10px'}}><FontAwesomeIcon icon={faClock}/></span>
@@ -62,7 +58,7 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
         </div>
       </div>
       <hr />
-    </div>
+    </Link>
   )
 }
 

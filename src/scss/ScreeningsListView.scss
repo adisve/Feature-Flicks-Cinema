@@ -3,6 +3,9 @@
   width: 100%;
   padding: 10px;
   transition: all ease-in-out .1s;
+  color: inherit;
+  text-decoration: none;
+  display: block;
 
   @media only screen and (max-width: 767px) {
     &:hover {
@@ -13,6 +16,7 @@
   @media only screen and (min-width: 767px) {
     &:hover {
       transform: scale(1.01);
+      color: inherit;
     }
   }
 

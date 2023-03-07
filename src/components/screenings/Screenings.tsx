@@ -7,14 +7,13 @@ import '../../scss/Offcanvas.scss'
 import { 
   fetchMovies, 
   fetchScreenings, 
-  mapMoviesDataToModel, 
   sortMoviesByScreeningDate } from '../../data/services/movie_service'
 import { ErrorMessage } from '../errors/ErrorMessage';
 import { pageState } from '../App';
 import { ScreeningsHeader } from './ScreeningsHeader';
 import { FilteringOffcanvas } from './FilteringOffcanvas';
 import { ScreeningsList } from './ScreeningsList';
-import { filterMoviesByCategories, getAvailableCategories } from '../../data/utils/mapping_utils';
+import { filterMoviesByCategories, getAvailableCategories, mapToMovies, mapToScreenings } from '../../data/utils/mapping_utils';
 
 
 interface ScreeningsState {
@@ -66,10 +65,11 @@ export const Screenings = () => {
       fetchScreenings(),
     ])
       .then((responses) => {
-        const movies = responses[0];
+        const movieDataArray = responses[0];
         const screeningsData = responses[1];
-        const moviesAndScreenings: Movie[] = mapMoviesDataToModel(movies, screeningsData);
-        const sortedMovies: Movie[] = sortMoviesByScreeningDate(moviesAndScreenings);
+        const screenings = mapToScreenings(screeningsData);
+        const movies = mapToMovies(movieDataArray, screenings);
+        const sortedMovies: Movie[] = sortMoviesByScreeningDate(movies);
         setState((prevState) => ({ ...prevState, movies: sortedMovies, pageStatus: pageState.SUCCESS }));
       })
       .catch((error) => {

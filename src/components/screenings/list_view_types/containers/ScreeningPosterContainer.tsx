@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { formatMinutes } from '../../../../data/utils/format_utils'
 import '../../../../scss/ScreeningsPosterView.scss'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 interface ScreeningPosterContainerProps {
   movie: Movie
@@ -13,19 +13,14 @@ interface ScreeningPosterContainerProps {
 
 export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> = (props) => {
 
-  const navigateToBookingScreen = (movie: Movie) => {
-    // Only navigate to the new route when clicked
-    const navigate = useNavigate();
-    navigate(`/booking/${movie}`, { state: { movie: movie } });
-  }
-
   return (
-    <div onClick={() => navigateToBookingScreen(props.movie)} className='poster-screening'>
+    <Link to={`/booking/${props.movie.id}`} className='poster-screening'>
       <img draggable="false" src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
       <div className='poster-screening-metadata'>
         <p className='poster-screening-title'>{props.movie.title}</p>
         <p className='poster-screening-date'>{
-          props.movie.screenings[0].toLocaleString('en-EN', {
+         props.movie.screenings && (
+          props.movie.screenings[0].time.toLocaleString('en-EN', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -34,6 +29,7 @@ export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> =
             minute: 'numeric',
             hour12: false,
           })
+         )
         }</p>
         <p className='poster-screening-runtime'>
           <span style={{paddingRight: '5px'}}><FontAwesomeIcon icon={faClock}/></span>
@@ -46,6 +42,6 @@ export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> =
           })}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

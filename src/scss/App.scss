@@ -1,10 +1,9 @@
 #app {
-  background-image: url('assets/images/unsplash/cinema-room.jpg');
+  background-image: url('/assets/images/unsplash/cinema-room.jpg');
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: center top;
   min-height: 100vh;
-
 
   .hover-underline-animation {
     display: inline-block;

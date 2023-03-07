@@ -1,9 +1,7 @@
 .hero-list-container {
   font-weight: 300;
-  margin-top: 80px;
-
+  
   .hero-list-container-content {
-    margin: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,7 +9,7 @@
     h1 {
       text-align: center;
       font-size: 45px;
-      margin: 0;
+      margin: 50px;
     }
 
     h3 {
@@ -22,6 +20,8 @@
 
     .featured-movies {
       margin-top: 80px;
+      margin-left: 40px;
+      margin-right: 40px;
       .loading-container {
         display: flex;
         align-items: center;
