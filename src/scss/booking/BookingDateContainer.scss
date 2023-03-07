@@ -1,21 +1,21 @@
-.select-screeningdate-container {
+.date-container {
   display: flex;
   margin-bottom: -15px;
   p {
     font-weight: 600;
     padding-right: 20px;
   }
-  .select-screeningtime-auditorium-container {
-    .select-screeningauditorium {
+  .time-auditorium-container {
+    .auditorium {
       font-weight: 600;
       font-size: 14px;
     }
-    .select-screeningtime {
+    .time {
       @media only screen and (max-width: 1123px) {
-        padding-right: 175px;
+        padding-right: 85px;
       }
       margin-top: 5px;
-      margin-bottom: 0px;
+      margin-bottom: 5px;
       font-weight: 800;
     }
   }

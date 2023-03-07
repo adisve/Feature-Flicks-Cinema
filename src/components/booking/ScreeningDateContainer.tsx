@@ -18,10 +18,10 @@ export enum AuditoriumName {
 export const ScreeningDateContainer: React.FC<ScreeningDateContainerProps> = (props) => {
   return (
     <li>
-      <div className='select-screeningdate-container justify-content-between'>
-        <div className='select-screeningtime-auditorium-container'>
-          <p className='select-screeningtime'>{screeningTimeToString(props.screening.time)}</p>
-          <p className='select-screeningauditorium'>
+      <div className='date-container justify-content-between'>
+        <div className='time-auditorium-container'>
+          <p className='time'>{screeningTimeToString(props.screening.time)}</p>
+          <p className='auditorium'>
             {
               AuditoriumName[props.screening.auditoriumId - 1]
             }
