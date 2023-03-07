@@ -4,7 +4,7 @@ import React from 'react'
 import { formatMinutes } from '../../../../data/utils/format_utils'
 import { Movie } from '../../../../domain/models/Movie'
 import '../../../../scss/ScreeningsListView.scss'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 interface ScreeningListContainerProps {
   movie: Movie
