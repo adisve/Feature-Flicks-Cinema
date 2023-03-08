@@ -1,5 +1,5 @@
 import { createRequestURL, get } from '../axios/network_manager'
-import { moviesURL, screeningsURL } from '../configuration/config_url'
+import { moviesURL, screeningsURL, ticketTypesURL } from '../configuration/config_url'
 import { Movie } from '../../domain/models/Movie'
 import { checkStatus } from '../axios/middleware_functons';
 
@@ -19,8 +19,17 @@ export const fetchMovies = async (): Promise<any> => {
 
 export const fetchMovieById = async (movieId: string): Promise<any> => {
   try {
-    console.log(createRequestURL(moviesURL, { id: movieId }))
     const response = await get(createRequestURL(moviesURL, { id: movieId }), [checkStatus]);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Request timed out');
+  }
+}
+
+export const fetchTicketTypes = async () => {
+  try {
+    const response = await get(ticketTypesURL, [checkStatus]);
     return response.data;
   } catch (error) {
     console.error(error);

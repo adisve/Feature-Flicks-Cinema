@@ -50,6 +50,16 @@ export const mapToScreening = (screeningData: any): Screening => {
   )
 }
 
+export const mapToTicketTypes = (ticketTypeData: any): TicketType => {
+  return ticketTypeData.map((ticketType: any) => {
+    return new TicketType(
+      ticketTypeData.id,
+      ticketTypeData.name,
+      ticketTypeData.price
+    );
+  });
+}
+
 export const getAvailableCategories = (movies: Movie[], filteredMovies: Movie[]): {
   category: string;
   count: number;
