@@ -2,8 +2,13 @@ img {
   height: 135px;
   width: 90px;
   margin-right: 20px;
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
 }
 
 .movie-screening-meta {
-  
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
 }

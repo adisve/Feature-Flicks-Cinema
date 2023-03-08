@@ -1,6 +1,7 @@
 .ticket-selection {
   h4 {
     font-weight: 800;
+    margin-bottom: 40px;
   }
 
   .ticket-select-amount-container {
@@ -10,16 +11,32 @@
       font-weight: 800;
       font-size: 20px;
     }
-    .ticket-amount {
-      font-size: 24px;
-      font-weight: 800;
-    }
-    .btn {
-      border: none;
-      background-color: #333333;
-      .icon {
-        color: #FEFEFE;
+    .ticket-btn-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+      .ticket-amount {
+        margin: 0 10px;
+        font-size: 24px;
+        font-weight: 800;
+        text-align: center;
+      }
+    
+      button {
+        border: none;
+        border-radius: 100%;
+        padding-left: 18px;
+        padding-right: 18px;
+        padding-top: 13px;
+        padding-bottom: 13px;
+        background-color: #333333;
+    
+        .icon {
+          color: #FEFEFE;
+        }
       }
     }
+    
   }
 }

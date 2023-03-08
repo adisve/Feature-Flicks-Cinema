@@ -10,11 +10,15 @@ import { Loading } from '../../animations/Loading';
 import { ErrorMessage } from '../../errors/ErrorMessage';
 import { TicketSelection } from './TicketSelection';
 import { MovieScreeningInformation } from './MovieScreeningInformation';
+import { TicketType } from './TicketSelectionAmountContainer';
 
 interface BookScreeningState {
-  screening?: Screening
-  movie?: Movie
-  pageStatus: PageStatus
+  screening?: Screening;
+  movie?: Movie;
+  pageStatus: PageStatus;
+  [TicketType.SENIOR]: number;
+  [TicketType.CHILD]: number;
+  [TicketType.REGULAR]: number;
 }
 
 export const Booking = () => {
@@ -22,8 +26,18 @@ export const Booking = () => {
   const [state, setState] = useState<BookScreeningState>({
     screening: undefined,
     movie: undefined,
-    pageStatus: PageStatus.LOADING
+    pageStatus: PageStatus.LOADING,
+    [TicketType.SENIOR]: 0,
+    [TicketType.CHILD]: 0,
+    [TicketType.REGULAR]: 0,
   });
+
+  const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
+    setState((prevState) => ({
+      ...prevState,
+      [ticketType]: amount,
+    }));
+  };
 
   const setScreening = (screeningData: any) => {
     setState((prevState) => ({ ...prevState, screening: mapToScreening(screeningData) }));
@@ -73,14 +87,22 @@ export const Booking = () => {
   return (
     <div>
         {/* Ticket selection (amount), movie information/screening information */}
-        <div className='booking-header d-flex'>
+        <div className='booking-header d-flex justify-content-evenly'>
 
           { /* Choose number of tickets (regular, child, senior) */ }
-          <TicketSelection />
+          <TicketSelection 
+            handleTicketAmountChange={handleTicketAmountChange} 
+            Senior={state.Senior} 
+            Child={state.Child} 
+            Regular={state.Regular} 
+          />
 
           { /* Movie information (name, hall name, time/day/date) 
             and amount of tickets and total price */ }
-          <MovieScreeningInformation movie={state.movie!} screening={state.screening!}/>
+          <MovieScreeningInformation 
+            movie={state.movie!} 
+            screening={state.screening!}
+          />
         </div>
         {/* Choose seats (grid) */}
     </div>

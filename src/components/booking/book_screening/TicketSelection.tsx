@@ -2,7 +2,14 @@ import React from 'react'
 import { TicketSelectionAmountContainer, TicketType } from './TicketSelectionAmountContainer'
 import '../../../scss/booking/TicketSelection.scss'
 
-export const TicketSelection = () => {
+interface TicketSelectionProps {
+  [TicketType.SENIOR]: number;
+  [TicketType.CHILD]: number;
+  [TicketType.REGULAR]: number;
+  handleTicketAmountChange: (ticketType: TicketType, amount: number) => void;
+}
+
+export const TicketSelection: React.FC<TicketSelectionProps> = (props) => {
   const ticketTypes = Object.values(TicketType);
 
   return (
@@ -11,7 +18,12 @@ export const TicketSelection = () => {
       <h4>Choose number of tickets</h4>
       {/* Ticket selection */}
       {ticketTypes.map((ticketType) => (
-        <TicketSelectionAmountContainer key={ticketType} ticketType={ticketType} />
+        <TicketSelectionAmountContainer
+          key={ticketType}
+          ticketType={ticketType}
+          ticketAmount={props[ticketType]}
+          onTicketAmountChange={(amount) => props.handleTicketAmountChange(ticketType, amount)}
+        />
       ))}
     </div>
   );
