@@ -19,7 +19,7 @@ export const BootstrapNavbar = () => {
 
   return (
     <nav>
-      <Navbar collapseOnSelect variant='dark' bg='transparent' expand="lg">
+      <Navbar fixed='top' collapseOnSelect variant='dark' bg='transparent' expand="lg">
         <Navbar.Brand>
           <div className='d-flex'>
             <p>FEATURE FLICKS</p>
