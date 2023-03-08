@@ -11,8 +11,8 @@ interface ScreeningDateContainerProps {
 }
 
 export enum AuditoriumName {
-  'Lilla salen',
-  'Stora salen',
+  'Lilla salongen',
+  'Stora salongen',
 }
 
 export const ScreeningDateContainer: React.FC<ScreeningDateContainerProps> = (props) => {

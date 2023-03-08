@@ -30,7 +30,7 @@ const renderSubTotalWithPriceReduction = (subTotal: number, priceReduction: numb
       <p className='ticket-type'>Subtotal</p>
       <p className='ticket-price'>{subTotal} kr</p>
       <p className='ticket-type'>Total price deductions</p>
-      <p className='ticket-price'>{priceReduction}</p>
+      <p className='ticket-price'>{priceReduction} kr</p>
     </div>
   )
 }
