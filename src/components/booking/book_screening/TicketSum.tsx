@@ -10,18 +10,6 @@ interface TicketSumProps {
   senior: number;
 }
 
-const renderTicketType = (ticketType: TicketType, quantity: number) => {
-  if (quantity > 0) {
-    return (
-      <div className='ticket-type-price-container'>
-        <p className='ticket-type'>{quantity} {ticketType} ticket</p>
-        <p className='ticket-price'>{quantity * ticketPrice} kr</p>
-      </div>
-    );
-  }
-  return null;
-};
-
 const renderDiscountInformation = (ticketType: TicketType, quantity: number) => {
   if (quantity > 0) {
     const discountPercentage = getTicketDiscountPercentage(ticketType);
@@ -61,10 +49,7 @@ const renderTotalSum = (totalPrice: number) => {
 export const TicketSum: React.FC<TicketSumProps> = ({ regular, child, senior }) => {
   return (
     <div className='ticket-sum-container'>
-      {renderTicketType(TicketType.REGULAR, regular)}
-      {renderTicketType(TicketType.CHILD, child)}
-      {renderTicketType(TicketType.SENIOR, senior)}
-      {/* Discount information */}
+      
       <hr />
       {renderDiscountInformation(TicketType.CHILD, child)}
       {renderDiscountInformation(TicketType.SENIOR, senior)}
