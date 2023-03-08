@@ -55,14 +55,12 @@ export const TicketSum: React.FC<TicketSumProps> = ({ regular, child, senior }) 
       {renderDiscountInformation(TicketType.SENIOR, senior)}
       {renderSubTotalWithPriceReduction(
         (regular * 110) + (child * 110) + (senior * 110),
-        (getTicketDiscountPrice(TicketType.REGULAR, regular) + 
-        (getTicketDiscountPrice(TicketType.CHILD, child) + 
+        ((getTicketDiscountPrice(TicketType.CHILD, child) + 
         (getTicketDiscountPrice(TicketType.SENIOR, senior))))
       )}
       {renderTotalSum(
         (regular * 110) + (child * 110) + (senior * 110) - 
-        (getTicketDiscountPrice(TicketType.REGULAR, regular) + 
-        (getTicketDiscountPrice(TicketType.CHILD, child) + 
+        ((getTicketDiscountPrice(TicketType.CHILD, child) + 
         (getTicketDiscountPrice(TicketType.SENIOR, senior)))))
       }
     </div>
