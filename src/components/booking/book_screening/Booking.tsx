@@ -1,110 +1,57 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import '../../../scss/booking/BookScreening.scss'
-import { fetchMovieById, fetchScreeningById, fetchScreeningsByMovieId } from '../../../data/services/movie_service';
-import { Screening } from '../../../domain/models/Screening';
-import { Movie } from '../../../domain/models/Movie';
-import { mapToMovie, mapToScreening } from '../../../data/utils/mapping_utils';
+import React from 'react';
+import { TicketSelection } from './TicketSelection';
+import { MovieScreeningInformation } from './MovieScreeningInformation';
+import { TicketSum } from './TicketSum';
 import { PageStatus } from '../../App';
 import { Loading } from '../../animations/Loading';
 import { ErrorMessage } from '../../errors/ErrorMessage';
-import { TicketSelection } from './TicketSelection';
-import { MovieScreeningInformation } from './MovieScreeningInformation';
+import { useBooking } from '../../../data/hooks/useBooking';
+import '../../../scss/booking/Booking.scss'
 import { TicketType } from './TicketSelectionAmountContainer';
 
-interface BookScreeningState {
-  screening?: Screening;
-  movie?: Movie;
-  pageStatus: PageStatus;
-  [TicketType.SENIOR]: number;
-  [TicketType.CHILD]: number;
-  [TicketType.REGULAR]: number;
-}
+export const ticketPrice = 110;
 
 export const Booking = () => {
-  const { id } = useParams<{ id: string }>();
-  const [state, setState] = useState<BookScreeningState>({
-    screening: undefined,
-    movie: undefined,
-    pageStatus: PageStatus.LOADING,
-    [TicketType.SENIOR]: 0,
-    [TicketType.CHILD]: 0,
-    [TicketType.REGULAR]: 0,
-  });
+  const [state, dispatch] = useBooking();
 
   const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
-    setState((prevState) => ({
-      ...prevState,
-      [ticketType]: amount,
-    }));
+    dispatch({ type: 'setTicketAmount', ticketType, amount });
   };
-
-  const setScreening = (screeningData: any) => {
-    setState((prevState) => ({ ...prevState, screening: mapToScreening(screeningData) }));
-  };
-
-  // Call to movie service to retrieve screening
-  // Should return array with one item, so we take [0]
-  useEffect(() => {
-    if (id) {
-      fetchScreeningById(id)
-        .then(screeningData => {
-          setScreening(screeningData[0]);
-        })
-        .catch(err => {
-          console.log(err);
-          setState((prevState) => ({...prevState, pageStatus: PageStatus.ERROR }));
-        });
-    }
-  }, [id]);
-  
-  // Only called if state.screening has changed,
-  // then movieId should be available
-  useEffect(() => {
-    if (state.screening) {
-      fetchMovieById(state.screening.movieId.toString())
-        .then(movieData => {
-          console.log(movieData);
-          setState((prevState) => ({...prevState, movie: mapToMovie(movieData[0])}));
-          setState((prevState) => ({...prevState, pageStatus: PageStatus.SUCCESS }));
-        })
-        .catch(err => {
-          console.log(err);
-          setState((prevState) => ({...prevState, pageStatus: PageStatus.ERROR }));
-        });
-    }
-  }, [state.screening]);
-  
 
   if (state.pageStatus === PageStatus.LOADING) {
-    return <Loading />
+    return <Loading />;
   }
   
   if (state.pageStatus === PageStatus.ERROR) {
-    return <ErrorMessage />
+    return <ErrorMessage />;
   }
 
   return (
     <div>
-        {/* Ticket selection (amount), movie information/screening information */}
-        <div className='booking-header d-flex justify-content-evenly'>
-
-          { /* Choose number of tickets (regular, child, senior) */ }
-          <TicketSelection 
-            handleTicketAmountChange={handleTicketAmountChange} 
-            Senior={state.Senior} 
-            Child={state.Child} 
-            Regular={state.Regular} 
-          />
-
-          { /* Movie information (name, hall name, time/day/date) 
-            and amount of tickets and total price */ }
+      {/* Ticket selection (amount), movie information/screening information */}
+      <div className='booking-header justify-content-evenly'>
+        <div>
+          {/* Movie information (name, hall name, time/day/date) and ticket price information */}
           <MovieScreeningInformation 
             movie={state.movie!} 
-            screening={state.screening!}
+            screening={state.screening!} 
+          />
+          {/* Selected tickets, their prices, total sum */}
+          <TicketSum 
+            regular={state.Regular} 
+            child={state.Child} 
+            senior={state.Senior}            
           />
         </div>
-        {/* Choose seats (grid) */}
+        {/* Choose number of tickets (regular, child, senior) */}
+        <TicketSelection 
+          handleTicketAmountChange={handleTicketAmountChange} 
+          Senior={state.Senior} 
+          Child={state.Child} 
+          Regular={state.Regular} 
+        />
+      </div>
+      {/* Choose seats (grid) */}
     </div>
-  )
-}
+  );
+};

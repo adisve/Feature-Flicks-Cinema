@@ -1,0 +1,25 @@
+.booking-header {
+  margin-top: 50px;
+  justify-content: space-between;
+  display: flex;
+  @media only screen and (max-width: 767px) {
+    display: block;
+  }
+}
+
+.ticket-sum-container {
+  margin-left: 15px;
+  margin-top: 40px;
+  .ticket-type-price-container {
+    p {
+      color: lightgrey;
+      font-weight: 700;
+    }
+    .ticket-price {
+      color: #FEFEFE;
+      font-weight: 900;
+      margin-left: 20px;
+    }
+  }
+}
+

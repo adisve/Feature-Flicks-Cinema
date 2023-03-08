@@ -4,6 +4,7 @@ import { Screening } from '../../../domain/models/Screening'
 import { AuditoriumName } from '../ScreeningDateContainer'
 import { screeningTimeToString } from '../../../data/utils/mapping_utils'
 import '../../../scss/booking/MovieScreeningInformation.scss'
+import { TicketType } from './TicketSelectionAmountContainer'
 
 interface MovieScreeningInformationProps {
   movie: Movie
@@ -13,9 +14,9 @@ interface MovieScreeningInformationProps {
 export const MovieScreeningInformation: React.FC<MovieScreeningInformationProps> = (props) => {
 
   return (
-    <div>
+    <>
       {/* Movie information */}
-      <div className='d-flex'>
+      <div className='d-flex movie-screening-information'>
 
         {/* Poster */}
         <img src={`/assets${props.movie.posterImage}`} alt="" />
@@ -30,11 +31,6 @@ export const MovieScreeningInformation: React.FC<MovieScreeningInformationProps>
           <p>{screeningTimeToString(props.screening.time)}</p>
         </div>
       </div>
-
-      { /* Total amount to pay */}
-      <p></p>
-
-      <div></div>
-    </div>
+    </>
   )
 }

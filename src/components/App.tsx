@@ -14,7 +14,6 @@ interface AppProps {
 
 /**
  * Main app entry point
- * 
  * @param children: ReactNode containing the current page content
  * @returns: Main application
  */

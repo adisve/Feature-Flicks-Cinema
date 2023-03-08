@@ -10,8 +10,9 @@ interface TicketSelectionProps {
 }
 
 export const TicketSelection: React.FC<TicketSelectionProps> = (props) => {
+  
   const ticketTypes = Object.values(TicketType);
-
+  
   return (
     <div className='ticket-selection'>
       {/* Header */}
@@ -20,9 +21,10 @@ export const TicketSelection: React.FC<TicketSelectionProps> = (props) => {
       {ticketTypes.map((ticketType) => (
         <TicketSelectionAmountContainer
           key={ticketType}
+          totalTicketAmount={props.Child + props.Senior + props.Regular}
           ticketType={ticketType}
           ticketAmount={props[ticketType]}
-          onTicketAmountChange={(amount) => props.handleTicketAmountChange(ticketType, amount)}
+          handleTicketAmountChange={props.handleTicketAmountChange}
         />
       ))}
     </div>

@@ -14,6 +14,7 @@ import { ScreeningsHeader } from './ScreeningsHeader';
 import { FilteringOffcanvas } from './FilteringOffcanvas';
 import { ScreeningsList } from './ScreeningsList';
 import { filterMoviesByCategories, getAvailableCategories, mapToMovies, mapToScreenings } from '../../data/utils/mapping_utils';
+import { useScreenings } from '../../data/hooks/useScreenings';
 
 
 interface ScreeningsState {
@@ -30,53 +31,27 @@ interface ScreeningsState {
  * @returns: a list of screenings
  */
 export const Screenings = () => {
-  const [state, setState] = useState<ScreeningsState>({
-    pageStatus: PageStatus.LOADING,
-    viewType: 'list',
-    movies: [],
-    showOffcanvas: false,
-    selectedCategories: [],
-  });
+  const [state, dispatch] = useScreenings();
 
   const setViewType = (viewType: string) => {
-    setState((prevState) => ({ ...prevState, viewType }));
+    dispatch({ type: 'setViewType', viewType });
   };
 
-  const setSelectedCategories = (categories: string[]) => {
-    setState((prevState) => ({ ...prevState, selectedCategories: categories }));
+  const setSelectedCategories = (selectedCategories: string[]) => {
+    dispatch({ type: 'setSelectedCategories', selectedCategories });
   };
 
   const toggleOffcanvas = () =>
-    setState((prevState) => ({ ...prevState, showOffcanvas: !prevState.showOffcanvas }));
+    dispatch({ type: 'setShowOffcanvas', showOffcanvas: !state.showOffcanvas });
 
-  const handleCategoryClick = (category: string) => {
-    setState((prevState) => {
-      const { selectedCategories } = prevState;
+    const handleCategoryClick = (category: string) => {
+      const { selectedCategories } = state;
       if (selectedCategories.includes(category)) {
-        return { ...prevState, selectedCategories: selectedCategories.filter((c) => c !== category) };
+        dispatch({ type: "setSelectedCategories", selectedCategories: selectedCategories.filter((c) => c !== category) });
+      } else {
+        dispatch({ type: "setSelectedCategories", selectedCategories: [...selectedCategories, category] });
       }
-      return { ...prevState, selectedCategories: [...selectedCategories, category] };
-    });
-  };
-
-  useEffect(() => {
-    Promise.all([
-      fetchMovies(),
-      fetchScreenings(),
-    ])
-      .then((responses) => {
-        const movieDataArray = responses[0];
-        const screeningsData = responses[1];
-        const screenings = mapToScreenings(screeningsData);
-        const movies = mapToMovies(movieDataArray, screenings);
-        const sortedMovies: Movie[] = sortMoviesByScreeningDate(movies);
-        setState((prevState) => ({ ...prevState, movies: sortedMovies, pageStatus: PageStatus.SUCCESS }));
-      })
-      .catch((error) => {
-        console.error(error);
-        setState((prevState) => ({ ...prevState, pageStatus: PageStatus.ERROR }));
-      });
-  }, []);
+    };
   
   
   if (state.pageStatus === PageStatus.LOADING) {
