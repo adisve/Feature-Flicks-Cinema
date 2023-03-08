@@ -1,5 +1,5 @@
 nav {
-  margin: 10px;
+  margin-bottom: 100px;
   hr {
     width: 50%;
     margin: 0 auto;
@@ -10,6 +10,10 @@ nav {
   }
 
   .navbar {
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 25px;
+    background-color: var(--primary-color) !important;
     .navbar-toggler {
       margin-top: -12px;
       margin-right: -10px;
