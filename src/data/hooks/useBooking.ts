@@ -1,17 +1,19 @@
 import { useEffect, useReducer, Dispatch, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieById, fetchScreeningById, fetchTicketTypes } from '../services/movie_service';
+import { fetchAuditoriumById, fetchAuditoriums, fetchMovieById, fetchScreeningById, fetchTicketTypes } from '../services/movie_service';
 import { PageStatus } from '../../components/App';
 import { Screening } from '../../domain/interfaces/Screening';
 import { Movie } from '../../domain/interfaces/Movie';
 import { TicketSelection } from '../../domain/models/TicketSelection';
 import { TicketType } from '../../domain/interfaces/TicketType';
+import { Auditorium } from '../../domain/interfaces/Auditorium';
 
 type BookingState = {
   screening?: Screening;
   movie?: Movie;
   pageStatus: PageStatus;
   ticketSelection?: {[id: string]: TicketSelection};
+  auditorium?: Auditorium;
 };
 
 type BookingAction =
@@ -19,7 +21,8 @@ type BookingAction =
   | { type: "setMovie"; movie: Movie }
   | { type: "setPageStatus"; pageStatus: PageStatus }
   | { type: "setTicketSelection"; ticketSelection: {[id: string]: TicketSelection} }
-  | { type: "updateTicketQuantity"; ticketName: string; quantity: number };
+  | { type: "updateTicketQuantity"; ticketName: string; quantity: number }
+  | { type: "setAuditorium"; auditorium: Auditorium };
 
 
 type BookingDispatch = Dispatch<BookingAction>;
@@ -28,7 +31,8 @@ const initialState: BookingState = {
   screening: undefined,
   movie: undefined,
   pageStatus: PageStatus.Loading,
-  ticketSelection: undefined
+  ticketSelection: undefined,
+  auditorium: undefined
 };
 
 const bookingReducer = (state: BookingState, action: BookingAction): BookingState => {
@@ -41,6 +45,8 @@ const bookingReducer = (state: BookingState, action: BookingAction): BookingStat
       return { ...state, pageStatus: action.pageStatus };
     case "setTicketSelection":
       return { ...state, ticketSelection: action.ticketSelection };
+    case "setAuditorium":
+      return {...state, auditorium: action.auditorium };
     case "updateTicketQuantity":
       const { ticketName, quantity } = action;
       if (!state.ticketSelection) return state;
@@ -69,6 +75,9 @@ export function useBooking(): [BookingState, BookingDispatch] {
       fetchScreeningById(id)
         .then((screenings: Screening[]) => {
           dispatch({ type: "setScreening", screening: screenings[0] });
+          fetchAuditoriumById(screenings[0].auditoriumId).then((auditoriums: Auditorium[]) => {
+            dispatch({ type: "setAuditorium", auditorium: auditoriums[0] });
+          })
         })
         .catch((err: Error) => {
           console.log(err);
@@ -88,7 +97,7 @@ export function useBooking(): [BookingState, BookingDispatch] {
           dispatch({ type: "setPageStatus", pageStatus: PageStatus.Error });
         });
     }
-  }, [state.screening]);
+  }, [state.auditorium]);
 
   useEffect(() => {
     if (state.movie) {

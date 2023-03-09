@@ -34,7 +34,8 @@ export const Booking = () => {
           {/* Movie information (name, hall name, time/day/date) and ticket price information */}
           <MovieScreeningInformation 
             movie={state.movie!} 
-            screening={state.screening!} 
+            screening={state.screening!}
+            auditoriumName={state.auditorium!.name}
           />
           {/* Selected tickets, their prices, total sum */}
           <TicketSum 

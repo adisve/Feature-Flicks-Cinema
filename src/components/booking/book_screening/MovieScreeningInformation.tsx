@@ -1,5 +1,4 @@
 import React from 'react'
-import { AuditoriumName } from '../ScreeningDateContainer'
 import { screeningTimeToString } from '../../../data/utils/mapping_utils'
 import '../../../scss/booking/MovieScreeningInformation.scss'
 import { Movie } from '../../../domain/interfaces/Movie'
@@ -8,6 +7,7 @@ import { Screening } from '../../../domain/interfaces/Screening'
 interface MovieScreeningInformationProps {
   movie: Movie
   screening: Screening
+  auditoriumName: string;
 }
 
 export const MovieScreeningInformation: React.FC<MovieScreeningInformationProps> = (props) => {
@@ -25,7 +25,7 @@ export const MovieScreeningInformation: React.FC<MovieScreeningInformationProps>
           {/* Movie name */}
           <h4>{props.movie.title}</h4>
           {/* Location */}
-          <p>{AuditoriumName[props.screening.auditoriumId-1]}</p>
+          <p>{props.auditoriumName}</p>
           {/* Date/time */}
           <p>{screeningTimeToString(new Date(props.screening.time))}</p>
         </div>

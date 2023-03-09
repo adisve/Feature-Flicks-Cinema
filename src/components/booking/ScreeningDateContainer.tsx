@@ -11,11 +11,7 @@ interface ScreeningDateContainerProps {
   seatsPerAuditorium: SeatsPerAuditorium;
   occupiedSeats: number;
   movie: Movie;
-}
-
-export enum AuditoriumName {
-  'Lilla salongen',
-  'Stora salongen',
+  auditoriumName: string;
 }
 
 export const ScreeningDateContainer: React.FC<ScreeningDateContainerProps> = (props) => {
@@ -24,11 +20,7 @@ export const ScreeningDateContainer: React.FC<ScreeningDateContainerProps> = (pr
       <div className='date-container justify-content-between'>
         <div className='time-auditorium-container'>
           <p className='time'>{screeningTimeToString(new Date(props.screening.time))}</p>
-          <p className='auditorium'>
-            {
-              AuditoriumName[props.screening.auditoriumId - 1]
-            }
-          </p>
+          <p className='auditorium'>{props.auditoriumName}</p>
         </div>
         <div className="d-flex">
           <p style={{marginTop: '7px'}}>{props.occupiedSeats} / {props.seatsPerAuditorium.numberOfSeats} occupied</p>

@@ -4,7 +4,7 @@ import { PageStatus } from '../App';
 import { groupScreeningsByAuditorium } from '../../data/utils/list_utils';
 import { Loading } from '../animations/Loading';
 import { ErrorMessage } from '../errors/ErrorMessage';
-import { ScreeningDateContainer, AuditoriumName } from './ScreeningDateContainer';
+import { ScreeningDateContainer } from './ScreeningDateContainer';
 import { useSelectScreening } from '../../data/hooks/useSelectScreening';
 import '../../scss/booking/SelectScreening.scss'
 
@@ -53,12 +53,12 @@ export const SelectScreening = () => {
                     // For each screening in this auditorium
                     screeningsGroupedByAuditorium[auditorium.id].map((screening) => (
                       <ScreeningDateContainer 
-                          key={screening.id}
-                          movie={state.movie!}
-                          screening={screening}
-                          seatsPerAuditorium={state.seatsPerAuditorium![screening.auditoriumId]} 
-                          occupiedSeats={state.occupiedSeats![screening.id]} 
-                        />
+                        key={screening.id}
+                        movie={state.movie!}
+                        screening={screening}
+                        seatsPerAuditorium={state.seatsPerAuditorium![screening.auditoriumId]}
+                        occupiedSeats={state.occupiedSeats![screening.id]} 
+                        auditoriumName={auditorium.name}                        />
                     ))
                   }
                 </ul>
