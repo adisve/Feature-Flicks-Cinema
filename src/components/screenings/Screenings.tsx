@@ -31,32 +31,16 @@ export const Screenings = () => {
     dispatch({ type: 'setShowOffcanvas', showOffcanvas: !state.showOffcanvas });
 
   const handleCategoryClick = (category: string) => {
-    const { selectedCategories } = state;
-    // If the category is already selected, remove it
-    if (selectedCategories.includes(category)) {
-      dispatch({ 
-        type: "setSelectedCategories", 
-        selectedCategories: selectedCategories.filter((c) => c !== category) });
-        // Update the dictionary of counts for each category
-        const visibleCategoryCounts = getAvailableCategories(state.movies, filterMoviesByCategories(
-          state.movies, 
-          selectedCategories.filter((c) => c !== category)
-        ));
-        dispatch({ type: "setVisiblecategoryCounts", visibleCategoryCounts});
-    } else {
-      // Otherwise, add it
-      dispatch({ 
-        type: "setSelectedCategories", 
-        selectedCategories: [...selectedCategories, category] });
-      const visibleCategoryCounts = getAvailableCategories(state.movies, filterMoviesByCategories(
-        state.movies, 
-        [...selectedCategories, category]
-      ));
-      dispatch({ type: "setVisiblecategoryCounts", visibleCategoryCounts});
-    }
+    const { selectedCategories, movies } = state;
+    const updatedCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter((c) => c !== category)
+      : [...selectedCategories, category];
+    const visibleCategoryCounts = getAvailableCategories(
+      movies, 
+      filterMoviesByCategories(movies, updatedCategories));
+    dispatch({ type: "setSelectedCategories", selectedCategories: updatedCategories });
+    dispatch({ type: "setVisiblecategoryCounts", visibleCategoryCounts });
   };
-    
-  
   
   if (state.pageStatus === PageStatus.Loading) {
     return <Loading />;

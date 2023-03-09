@@ -45,24 +45,24 @@ export const SelectScreening = () => {
           state.auditoriums.map((auditorium, index) => {
             return screeningsAvailable(auditorium.id) &&
             <div className='header-list' key={index}>
-                <div className="auditorium-header">
-                  <h3>{auditorium.name}</h3>
-                </div>
-                <ul>
-                  {
-                    // For each screening in this auditorium
-                    screeningsGroupedByAuditorium[auditorium.id].map((screening) => (
-                      <ScreeningDateContainer 
-                        key={screening.id}
-                        movie={state.movie!}
-                        screening={screening}
-                        seatsPerAuditorium={state.seatsPerAuditorium![screening.auditoriumId]}
-                        occupiedSeats={state.occupiedSeats![screening.id]} 
-                        auditoriumName={auditorium.name}                        />
-                    ))
-                  }
-                </ul>
+              <div className="auditorium-header">
+                <h3>{auditorium.name}</h3>
               </div>
+              <ul>
+                {
+                  // For each screening in this auditorium
+                  screeningsGroupedByAuditorium[auditorium.id].map((screening) => (
+                    <ScreeningDateContainer 
+                      key={screening.id}
+                      movie={state.movie!}
+                      screening={screening}
+                      seatsPerAuditorium={state.seatsPerAuditorium![screening.auditoriumId]}
+                      occupiedSeats={state.occupiedSeats![screening.id]} 
+                      auditoriumName={auditorium.name}                        />
+                  ))
+                }
+              </ul>
+            </div>
           })
         }
       </div>

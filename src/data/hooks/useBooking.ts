@@ -1,6 +1,11 @@
 import { useEffect, useReducer, Dispatch, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchAuditoriumById, fetchAuditoriums, fetchMovieById, fetchScreeningById, fetchTicketTypes } from '../services/movie_service';
+import { 
+  fetchAuditoriumById, 
+  fetchMovieById, 
+  fetchScreeningById, 
+  fetchTicketTypes 
+} from '../services/movie_service';
 import { PageStatus } from '../../domain/enums/PageStatus';
 import { Screening } from '../../domain/interfaces/Screening';
 import { Movie } from '../../domain/interfaces/Movie';
@@ -117,4 +122,3 @@ export function useBooking(): [BookingState, BookingDispatch] {
 
   return [state, dispatch];
 }
-

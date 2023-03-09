@@ -43,7 +43,10 @@ export const ScreeningsHeader = ({
         ))}
       </div>
         <div>
-          <Button onClick={toggleOffcanvas} variant='custom' className="d-flex btn"><span><FontAwesomeIcon icon={faFilter} /></span><p>Filters</p></Button>
+          <Button onClick={toggleOffcanvas} variant='custom' className="d-flex btn">
+            <span><FontAwesomeIcon icon={faFilter} /></span>
+            <p>Filters</p>
+          </Button>
         </div>
       </div>
     </div>
