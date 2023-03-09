@@ -1,9 +1,10 @@
 import { Dispatch, useEffect, useReducer } from "react";
-import { PageStatus } from "../../components/App";
-import { fetchCategories, fetchMovies, fetchScreenings, sortMoviesByScreeningDate } from "../services/movie_service";
+import { PageStatus } from "../../domain/enums/PageStatus";
+import { fetchCategories, fetchMovies, fetchScreenings } from "../services/movie_service";
 import { Movie } from "../../domain/interfaces/Movie";
 import { Screening } from "../../domain/interfaces/Screening";
 import { Category } from "../../domain/interfaces/Category";
+import { sortScreeningsByDate } from "../utils/list_utils";
 
 interface ScreeningsState {
   pageStatus: PageStatus;
@@ -74,7 +75,7 @@ export const useScreenings = (): [ScreeningsState, ScreeningsDispatch] => {
     ])
       .then((responses) => {
         const movies: Movie[] = responses[0];
-        const screenings: Screening[] = sortMoviesByScreeningDate(responses[1]);
+        const screenings: Screening[] = responses[1];
         const categories: Category[] = responses[2].sort((a, b) => a.title.localeCompare(b.title));
         const initialCounts: {[key: string]: number} = {};
         categories.forEach((category) => {

@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { ScreeningListContainer } from './containers/ScreeningListContainer';
-import { Movie } from '../../../domain/interfaces/Movie';
 import { Screening } from '../../../domain/interfaces/Screening';
+import { Movie } from '../../../domain/interfaces/Movie';
 
 interface ScreeningsListViewProps {
   movies: Movie[];
@@ -10,18 +10,37 @@ interface ScreeningsListViewProps {
 
 export const ScreeningsListView: React.FC<ScreeningsListViewProps> = (props) => {
 
+  // Function to get the first screening date for a movie
+  const getFirstScreeningDate = (movie: Movie, screenings: Screening[]): Date | null => {
+    const movieScreenings = screenings.filter((screening) => screening.movieId === movie.id);
+    if (movieScreenings.length > 0) {
+      return new Date(movieScreenings[0].time);
+    }
+    return null;
+  }
+
+  // Sort the movies by the first screening date
+  const sortedMovies = [...props.movies].sort((a, b) => {
+    const aFirstScreening = getFirstScreeningDate(a, props.screenings);
+    const bFirstScreening = getFirstScreeningDate(b, props.screenings);
+    if (aFirstScreening && bFirstScreening) {
+      return aFirstScreening.getTime() - bFirstScreening.getTime();
+    } else if (aFirstScreening) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+
   return (
     <>
-      {
-        props.movies.map((movie) => {
-          return (
-            <ScreeningListContainer
-              key={movie.id} 
-              movie={movie}
-              screenings={props.screenings.filter((screening) => screening.movieId === movie.id)}
-            />)
-        })
-      }
+      {sortedMovies.map((movie) => (
+        <ScreeningListContainer
+          key={movie.id}
+          movie={movie}
+          screenings={props.screenings.filter((screening) => screening.movieId === movie.id)}
+        />
+      ))}
     </>
-  )
-}
+  );
+};

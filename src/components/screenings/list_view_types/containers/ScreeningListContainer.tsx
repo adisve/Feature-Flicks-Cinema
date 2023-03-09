@@ -23,7 +23,7 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
   return (
     <Link to={`/book/${props.movie.id}`} className='screening-container'>
       <div className='screening-item'>
-        <img draggable='false' src={`assets${props.movie.description.posterImage}`} alt='movie cover'></img>
+        <img draggable='false' src={`assets${props.movie.description.posterImage}`} alt={props.movie.title}></img>
         <div className='inner-screening-container'>
           <div className='screening-meta'>
             <h4>{props.movie.title}</h4>

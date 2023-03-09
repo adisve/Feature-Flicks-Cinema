@@ -1,5 +1,5 @@
 import { Dispatch, useEffect, useReducer } from "react";
-import { PageStatus } from "../../components/App";
+import { PageStatus } from "../../domain/enums/PageStatus";
 import { fetchHeroMovies } from "../services/movie_service";
 import { Movie } from "../../domain/interfaces/Movie";
 

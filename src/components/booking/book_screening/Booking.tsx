@@ -2,12 +2,12 @@ import React from 'react';
 import { TicketSelectionContainer } from './TicketSelectionContainer';
 import { MovieScreeningInformation } from './MovieScreeningInformation';
 import { TicketSum } from './TicketSum';
-import { PageStatus } from '../../App';
 import { Loading } from '../../animations/Loading';
 import { ErrorMessage } from '../../errors/ErrorMessage';
 import { useBooking } from '../../../data/hooks/useBooking';
 import '../../../scss/booking/Booking.scss'
 import { TicketType } from '../../../domain/interfaces/TicketType';
+import { PageStatus } from '../../../domain/enums/PageStatus';
 
 export const ticketPrice = 110;
 

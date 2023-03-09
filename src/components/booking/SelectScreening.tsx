@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { PageStatus } from '../App';
+import { PageStatus } from '../../domain/enums/PageStatus';
 import { groupScreeningsByAuditorium } from '../../data/utils/list_utils';
 import { Loading } from '../animations/Loading';
 import { ErrorMessage } from '../errors/ErrorMessage';

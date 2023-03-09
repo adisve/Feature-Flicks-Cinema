@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { MoviePosterContainer } from './MoviePosterContainer';
 import { Loading } from '../animations/Loading';
 import { ErrorMessage } from '../errors/ErrorMessage';
-import { PageStatus } from '../App';
+import { PageStatus } from '../../domain/enums/PageStatus';
 import { useHero } from '../../data/hooks/useHero';
 
 /**

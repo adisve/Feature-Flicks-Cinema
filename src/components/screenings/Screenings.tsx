@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../scss/screenings/Screenings.scss';
 import '../../scss/Offcanvas.scss'
 import { ErrorMessage } from '../errors/ErrorMessage';
-import { PageStatus } from '../App';
+import { PageStatus } from '../../domain/enums/PageStatus';
 import { ScreeningsHeader } from './ScreeningsHeader';
 import { FilteringOffcanvas } from './FilteringOffcanvas';
 import { ScreeningsList } from './ScreeningsList';

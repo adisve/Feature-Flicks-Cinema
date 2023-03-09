@@ -1,7 +1,7 @@
 import { useEffect, useReducer, Dispatch, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchAuditoriumById, fetchAuditoriums, fetchMovieById, fetchScreeningById, fetchTicketTypes } from '../services/movie_service';
-import { PageStatus } from '../../components/App';
+import { PageStatus } from '../../domain/enums/PageStatus';
 import { Screening } from '../../domain/interfaces/Screening';
 import { Movie } from '../../domain/interfaces/Movie';
 import { TicketSelection } from '../../domain/models/TicketSelection';

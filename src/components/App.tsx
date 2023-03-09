@@ -2,12 +2,6 @@ import React, { ReactNode } from 'react';
 import { BootstrapNavbar } from './nav/BootstrapNavbar';
 import '../scss/App.scss'
 
-export enum PageStatus {
-  Loading,
-  Success,
-  Error
-}
-
 interface AppProps {
   children: ReactNode;
 }

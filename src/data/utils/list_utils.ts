@@ -1,3 +1,4 @@
+import { Movie } from "../../domain/interfaces/Movie";
 import { Screening } from "../../domain/interfaces/Screening";
 
 /**
@@ -20,3 +21,12 @@ export const groupScreeningsByAuditorium = (screenings: Screening[]): { [auditor
   });
   return screeningsByAuditorium;
 }
+
+/**
+ * Sorts movies by their most recent screening date
+ * @param movies 
+ * @returns List of movies
+ */
+export const sortScreeningsByDate = (screenings: Screening[]): Screening[] => {
+  return screenings.sort((a, b) => new Date(screenings[0].time).getTime() - new Date(screenings[0].time).getTime());
+};

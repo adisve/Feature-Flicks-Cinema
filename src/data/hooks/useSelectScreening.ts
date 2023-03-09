@@ -1,5 +1,5 @@
 import { useReducer, useEffect, Dispatch } from 'react';
-import { PageStatus } from '../../components/App';
+import { PageStatus } from '../../domain/enums/PageStatus';
 import { fetchAuditoriums, fetchMovieById, fetchOccupiedSeatsByMovieName, fetchScreeningsByMovieId, fetchSeatsPerAuditorium } from '../services/movie_service';
 import { SeatsPerAuditorium } from '../../domain/interfaces/SeatsPerAuditorium';
 import { Screening } from '../../domain/interfaces/Screening';
