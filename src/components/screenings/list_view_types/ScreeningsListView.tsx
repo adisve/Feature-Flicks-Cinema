@@ -20,12 +20,12 @@ export const ScreeningsListView: React.FC<ScreeningsListViewProps> = (props) => 
   }
 
   // Sort the movies by the first screening date
-  const sortedMovies = [...props.movies].sort((a, b) => {
-    const aFirstScreening = getFirstScreeningDate(a, props.screenings);
-    const bFirstScreening = getFirstScreeningDate(b, props.screenings);
-    if (aFirstScreening && bFirstScreening) {
-      return aFirstScreening.getTime() - bFirstScreening.getTime();
-    } else if (aFirstScreening) {
+  const sortedMovies = [...props.movies].sort((leftMovie, rightMovie) => {
+    const leftMovieScreening = getFirstScreeningDate(leftMovie, props.screenings);
+    const rightMovieScreening = getFirstScreeningDate(rightMovie, props.screenings);
+    if (leftMovieScreening && rightMovieScreening) {
+      return leftMovieScreening.getTime() - rightMovieScreening.getTime();
+    } else if (leftMovieScreening) {
       return -1;
     } else {
       return 1;
