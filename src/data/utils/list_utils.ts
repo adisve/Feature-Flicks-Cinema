@@ -1,4 +1,4 @@
-import { Screening } from "../../domain/models/Screening";
+import { Screening } from "../../domain/interfaces/Screening";
 
 /**
  * Shuffles a given array of items in place.
@@ -9,7 +9,7 @@ export const shuffle = (arr: any[]) => {
   return arr.sort(() => Math.random() - 0.5).slice(0, 4);
 }
 
-export const groupScreeningsByAuditorium = (screenings: Screening[]): Screening[][] => {
+export const groupScreeningsByAuditorium = (screenings: Screening[]): { [auditoriumId: number]: Screening[] } => {
   const screeningsByAuditorium: { [auditoriumId: number]: Screening[] } = {};
 
   screenings.forEach(screening => {
@@ -18,8 +18,5 @@ export const groupScreeningsByAuditorium = (screenings: Screening[]): Screening[
     }
     screeningsByAuditorium[screening.auditoriumId].push(screening);
   });
-
-  const groupedScreenings: Screening[][] = Object.values(screeningsByAuditorium);
-
-  return groupedScreenings;
+  return screeningsByAuditorium;
 }

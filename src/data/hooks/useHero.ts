@@ -1,8 +1,7 @@
 import { Dispatch, useEffect, useReducer } from "react";
 import { PageStatus } from "../../components/App";
-import { Movie } from "../../domain/models/Movie";
 import { fetchHeroMovies } from "../services/movie_service";
-import { mapToMovies } from "../utils/mapping_utils";
+import { Movie } from "../../domain/interfaces/Movie";
 
 interface HeroState {
   heroMovies: Movie[],
@@ -36,8 +35,7 @@ export const useHero = (): [HeroState, HeroDispatch] => {
 
   useEffect(() => {
     fetchHeroMovies()
-      .then((moviesData) => {
-        const movies: Movie[] = mapToMovies(moviesData);
+      .then((movies: Movie[]) => {
         dispatch({ type: "setHeroMovies", payload: movies });
         dispatch({ type: "setPageStatus", payload: PageStatus.Success });
       })

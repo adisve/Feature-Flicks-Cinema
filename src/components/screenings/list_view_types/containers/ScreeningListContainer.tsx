@@ -2,12 +2,14 @@ import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { formatMinutes } from '../../../../data/utils/format_utils'
-import { Movie } from '../../../../domain/models/Movie'
 import '../../../../scss/screenings/ScreeningsListView.scss'
 import { Link } from 'react-router-dom'
+import { Movie } from '../../../../domain/interfaces/Movie'
+import { Screening } from '../../../../domain/interfaces/Screening'
 
 interface ScreeningListContainerProps {
   movie: Movie
+  screenings: Screening[]
 }
 
 /**
@@ -21,13 +23,13 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
   return (
     <Link to={`/book/${props.movie.id}`} className='screening-container'>
       <div className='screening-item'>
-        <img draggable='false' src={`assets${props.movie.posterImage}`} alt='movie cover'></img>
+        <img draggable='false' src={`assets${props.movie.description.posterImage}`} alt='movie cover'></img>
         <div className='inner-screening-container'>
           <div className='screening-meta'>
             <h4>{props.movie.title}</h4>
             <div className='screening-category-container'>
               <div className='screening-categories'>
-                {props.movie.categories.map((category, index) => {
+                {props.movie.description.categories.map((category, index) => {
                   return (<p key={index.toString()} className='screening-category'>#{category}</p>
                   );
                 })}
@@ -38,8 +40,8 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
             <div className='screening-date-time-container'>
               <div className="d-flex">
                 <h5>{
-                  props.movie.screenings && (
-                    props.movie.screenings[0].time.toLocaleString('en-EN', {
+                  props.screenings && (
+                    new Date(props.screenings[0].time).toLocaleString('en-EN', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
@@ -53,7 +55,7 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
               </div>
               <p className='screening-time'>
                 <span style={{paddingRight: '10px'}}><FontAwesomeIcon icon={faClock}/></span>
-                {formatMinutes(props.movie.length)}
+                {formatMinutes(props.movie.description.length)}
               </p>
             </div>
           </div>

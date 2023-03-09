@@ -7,7 +7,7 @@ import { Loading } from '../../animations/Loading';
 import { ErrorMessage } from '../../errors/ErrorMessage';
 import { useBooking } from '../../../data/hooks/useBooking';
 import '../../../scss/booking/Booking.scss'
-import { TicketType } from '../../../domain/models/TicketType';
+import { TicketType } from '../../../domain/interfaces/TicketType';
 
 export const ticketPrice = 110;
 

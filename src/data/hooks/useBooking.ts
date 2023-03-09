@@ -1,12 +1,11 @@
 import { useEffect, useReducer, Dispatch, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMovieById, fetchScreeningById, fetchTicketTypes } from '../services/movie_service';
-import { mapToMovie, mapToScreening, mapToTicketTypes } from '../utils/mapping_utils';
 import { PageStatus } from '../../components/App';
-import { Screening } from '../../domain/models/Screening';
-import { Movie } from '../../domain/models/Movie';
-import { TicketType } from '../../domain/models/TicketType';
+import { Screening } from '../../domain/interfaces/Screening';
+import { Movie } from '../../domain/interfaces/Movie';
 import { TicketSelection } from '../../domain/models/TicketSelection';
+import { TicketType } from '../../domain/interfaces/TicketType';
 
 type BookingState = {
   screening?: Screening;
@@ -68,8 +67,8 @@ export function useBooking(): [BookingState, BookingDispatch] {
   useEffect(() => {
     if (id) {
       fetchScreeningById(id)
-        .then((screeningData: any) => {
-          dispatch({ type: "setScreening", screening: mapToScreening(screeningData[0]) });
+        .then((screenings: Screening[]) => {
+          dispatch({ type: "setScreening", screening: screenings[0] });
         })
         .catch((err: Error) => {
           console.log(err);
@@ -81,8 +80,8 @@ export function useBooking(): [BookingState, BookingDispatch] {
   useEffect(() => {
     if (state.screening) {
       fetchMovieById(state.screening.movieId.toString())
-        .then((movieData: any) => {
-          dispatch({ type: "setMovie", movie: mapToMovie(movieData[0]) });
+        .then((movies: Movie[]) => {
+          dispatch({ type: "setMovie", movie: movies[0] });
         })
         .catch((err: Error) => {
           console.log(err);
@@ -93,10 +92,9 @@ export function useBooking(): [BookingState, BookingDispatch] {
 
   useEffect(() => {
     if (state.movie) {
-      fetchTicketTypes().then((ticketsData: any) => {
-        const tickets: TicketType[] = mapToTicketTypes(ticketsData);
+      fetchTicketTypes().then((ticketTypes: TicketType[]) => {
         const ticketSelections: {[id: string]: TicketSelection} = {};
-        tickets.forEach((ticketType: TicketType) => {
+        ticketTypes.forEach((ticketType: TicketType) => {
           ticketSelections[ticketType.name] = new TicketSelection(
             ticketType,
             0

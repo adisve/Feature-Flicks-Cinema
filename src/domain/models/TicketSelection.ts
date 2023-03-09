@@ -1,4 +1,4 @@
-import { TicketType } from "./TicketType";
+import { TicketType } from "../interfaces/TicketType";
 
 export class TicketSelection {
   ticketType: TicketType;

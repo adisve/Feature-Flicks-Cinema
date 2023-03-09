@@ -1,20 +1,27 @@
 import { useReducer, useEffect, Dispatch } from 'react';
-import { Movie } from '../../domain/models/Movie';
-import { Screening } from '../../domain/models/Screening';
 import { PageStatus } from '../../components/App';
-import { fetchMovieById, fetchScreeningsByMovieId } from '../services/movie_service';
-import { mapToMovie, mapToScreenings } from '../utils/mapping_utils';
+import { fetchAuditoriums, fetchMovieById, fetchOccupiedSeatsByMovieName, fetchScreeningsByMovieId, fetchSeatsPerAuditorium } from '../services/movie_service';
+import { SeatsPerAuditorium } from '../../domain/interfaces/SeatsPerAuditorium';
+import { Screening } from '../../domain/interfaces/Screening';
+import { Movie } from '../../domain/interfaces/Movie';
+import { Auditorium } from '../../domain/interfaces/Auditorium';
 
 interface SelectScreeningState {
   movie?: Movie;
   screenings?: Screening[];
   pageStatus: PageStatus;
+  auditoriums: Auditorium[];
+  seatsPerAuditorium?:  {[id: string] : SeatsPerAuditorium};
+  occupiedSeats?: {[id: string] : number}
 }
 
 type SelectScreeningAction =
   | { type: 'setMovie'; movie: Movie }
   | { type: 'setScreenings'; screenings: Screening[] }
-  | { type: 'setPageStatus'; pageStatus: PageStatus };
+  | { type: 'setPageStatus'; pageStatus: PageStatus }
+  | { type: 'setSeatsPerAuditorium'; seatsPerAuditorium: {[id: string] : SeatsPerAuditorium} }
+  | { type: 'setOccupiedSeats'; occupiedSeats: {[id: string] : number} }
+  | { type:'setAuditoriums'; auditoriums: Auditorium[] };
 
 type SelectScreeningDispatch = Dispatch<SelectScreeningAction>;
 
@@ -22,6 +29,9 @@ const initialState: SelectScreeningState = {
   movie: undefined,
   screenings: undefined,
   pageStatus: PageStatus.Loading,
+  auditoriums: [],
+  seatsPerAuditorium: undefined,
+  occupiedSeats: undefined
 };
 
 const selectScreeningReducer = (state: SelectScreeningState, action: SelectScreeningAction): SelectScreeningState => {
@@ -32,6 +42,21 @@ const selectScreeningReducer = (state: SelectScreeningState, action: SelectScree
       return { ...state, screenings: action.screenings };
     case 'setPageStatus':
       return { ...state, pageStatus: action.pageStatus };
+    case 'setOccupiedSeats':
+      return {
+      ...state,
+        occupiedSeats: action.occupiedSeats
+      };
+    case 'setSeatsPerAuditorium':
+      return {
+      ...state,
+        seatsPerAuditorium: action.seatsPerAuditorium
+      };
+    case "setAuditoriums":
+      return {
+      ...state,
+        auditoriums: action.auditoriums
+      };
     default:
       return state;
   }
@@ -41,26 +66,46 @@ export const useSelectScreening = (id?: string): [SelectScreeningState, SelectSc
   const [state, dispatch] = useReducer(selectScreeningReducer, initialState);
 
   useEffect(() => {
-    dispatch({ type: 'setPageStatus', pageStatus: PageStatus.Loading });
-
     if (id) {
-      Promise.all([fetchMovieById(id), fetchScreeningsByMovieId(id)])
-        .then((responses) => {
-          const movieDataArray: any = responses[0];
-          const screeningsData = responses[1];
-          const screenings = mapToScreenings(screeningsData);
-          const mappedMovie = mapToMovie(movieDataArray[0], screenings);
-
-          dispatch({ type: 'setMovie', movie: mappedMovie });
-          dispatch({ type: 'setScreenings', screenings });
-          dispatch({ type: 'setPageStatus', pageStatus: PageStatus.Success });
-        })
-        .catch((error) => {
-          console.error('Error fetching movie and screenings', error);
-          dispatch({ type: 'setPageStatus', pageStatus: PageStatus.Error });
-        });
+      Promise.all([
+        fetchScreeningsByMovieId(id),
+        fetchSeatsPerAuditorium(),
+        fetchAuditoriums(),
+        fetchMovieById(id),
+      ]).then(responses => {
+        const screeningsByMovieId: Screening[] = responses[0];
+        const seatsPerAuditorium: SeatsPerAuditorium[] = responses[1];
+        const auditoriums: Auditorium[] = responses[2];
+        const moviesMatching: Movie[] = responses[3];
+        
+        if (moviesMatching.length > 0) {
+          fetchOccupiedSeatsByMovieName(moviesMatching[0].title)
+          .then((occupiedSeats: OccupiedSeats[]) => {
+            // Create map of screening ids to amount of occupied seats
+            const screeningIdsToOccupiedSeatsMap: {[id: string] : number} = {};
+            occupiedSeats.forEach((occupiedSeat) => {
+              screeningIdsToOccupiedSeatsMap[occupiedSeat.screeningId] = occupiedSeat.occupied;
+            });
+            // Create map of auditorium ids to amount of seats per auditorium
+            const auditoriumIdsToSeatsPerAuditorium: {[id: string] : SeatsPerAuditorium} = {};
+            seatsPerAuditorium.forEach((seatsPerAuditorium) => {
+              auditoriumIdsToSeatsPerAuditorium[seatsPerAuditorium.id] = seatsPerAuditorium;
+            });
+            dispatch({ type: 'setAuditoriums', auditoriums });
+            dispatch({ type: 'setScreenings', screenings: screeningsByMovieId });
+            dispatch({ type: 'setSeatsPerAuditorium', seatsPerAuditorium: auditoriumIdsToSeatsPerAuditorium });
+            dispatch({ type: 'setOccupiedSeats', occupiedSeats: screeningIdsToOccupiedSeatsMap });
+            dispatch({ type: 'setMovie', movie: moviesMatching[0] });
+            dispatch({ type: 'setPageStatus', pageStatus: PageStatus.Success });
+          })
+        } else {
+          /// Movie does not exist
+          dispatch({ type:'setPageStatus', pageStatus: PageStatus.Error });
+        }
+      })
     }
-  }, [id]);
 
+  }, [])
+  
   return [state, dispatch];
 };

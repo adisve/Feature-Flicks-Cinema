@@ -1,8 +1,8 @@
 import React from 'react'
 import { TicketSelectionAmountContainer } from './TicketSelectionAmountContainer'
 import '../../../scss/booking/TicketSelection.scss'
-import { TicketType } from '../../../domain/models/TicketType';
 import { TicketSelection } from '../../../domain/models/TicketSelection';
+import { TicketType } from '../../../domain/interfaces/TicketType';
 
 interface TicketSelectionProps {
   ticketTypes: TicketType[];
@@ -11,7 +11,6 @@ interface TicketSelectionProps {
 }
 
 export const TicketSelectionContainer: React.FC<TicketSelectionProps> = (props) => {
-  console.log(props.ticketSelections)
   return (
     <div className='ticket-selection'>
       {/* Header */}

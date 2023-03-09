@@ -2,7 +2,6 @@ import React from 'react';
 import { ticketPrice } from './Booking';
 import '../../../scss/booking/Booking.scss'
 import { getTicketDiscountPercentage, getTicketDiscountPrice } from '../../../data/utils/format_utils';
-import { TicketType } from '../../../domain/models/TicketType';
 
 interface TicketSumProps {
   regular: number;

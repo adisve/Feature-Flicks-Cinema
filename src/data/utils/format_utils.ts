@@ -1,5 +1,3 @@
-import { TicketType } from "../../domain/models/TicketType";
-
 /**
  * Formats a string for display in the UI, specifically for use
  * in components that require the running time of the movie.

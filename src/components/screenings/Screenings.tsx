@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Movie } from '../../domain/models/Movie';
 import { Loading } from '../animations/Loading';
 import { useNavigate } from 'react-router-dom';
 import '../../scss/screenings/Screenings.scss';
 import '../../scss/Offcanvas.scss'
-import { 
-  fetchMovies, 
-  fetchScreenings, 
-  sortMoviesByScreeningDate } from '../../data/services/movie_service'
 import { ErrorMessage } from '../errors/ErrorMessage';
 import { PageStatus } from '../App';
 import { ScreeningsHeader } from './ScreeningsHeader';
 import { FilteringOffcanvas } from './FilteringOffcanvas';
 import { ScreeningsList } from './ScreeningsList';
-import { filterMoviesByCategories, getAvailableCategories, mapToMovies, mapToScreenings } from '../../data/utils/mapping_utils';
 import { useScreenings } from '../../data/hooks/useScreenings';
+import { Movie } from '../../domain/interfaces/Movie';
+import { filterMoviesByCategories, getAvailableCategories } from '../../data/utils/mapping_utils';
+import { Category } from '../../domain/interfaces/Category';
 
 
 interface ScreeningsState {
@@ -44,14 +41,32 @@ export const Screenings = () => {
   const toggleOffcanvas = () =>
     dispatch({ type: 'setShowOffcanvas', showOffcanvas: !state.showOffcanvas });
 
-    const handleCategoryClick = (category: string) => {
-      const { selectedCategories } = state;
-      if (selectedCategories.includes(category)) {
-        dispatch({ type: "setSelectedCategories", selectedCategories: selectedCategories.filter((c) => c !== category) });
-      } else {
-        dispatch({ type: "setSelectedCategories", selectedCategories: [...selectedCategories, category] });
-      }
-    };
+  const handleCategoryClick = (category: string) => {
+    const { selectedCategories } = state;
+    // If the category is already selected, remove it
+    if (selectedCategories.includes(category)) {
+      dispatch({ 
+        type: "setSelectedCategories", 
+        selectedCategories: selectedCategories.filter((c) => c !== category) });
+        // Update the dictionary of counts for each category
+        const visibleCategoryCounts = getAvailableCategories(state.movies, filterMoviesByCategories(
+          state.movies, 
+          selectedCategories.filter((c) => c !== category)
+        ));
+        dispatch({ type: "setVisiblecategoryCounts", visibleCategoryCounts});
+    } else {
+      // Otherwise, add it
+      dispatch({ 
+        type: "setSelectedCategories", 
+        selectedCategories: [...selectedCategories, category] });
+      const visibleCategoryCounts = getAvailableCategories(state.movies, filterMoviesByCategories(
+        state.movies, 
+        [...selectedCategories, category]
+      ));
+      dispatch({ type: "setVisiblecategoryCounts", visibleCategoryCounts});
+    }
+  };
+    
   
   
   if (state.pageStatus === PageStatus.Loading) {
@@ -76,20 +91,17 @@ export const Screenings = () => {
             state.selectedCategories
           )
         }
+        screenings={state.screenings}
         viewType={state.viewType}
       />
       <FilteringOffcanvas
         showOffcanvas={state.showOffcanvas}
         toggleOffcanvas={toggleOffcanvas}
         selectedCategories={state.selectedCategories}
-        categories={
-          getAvailableCategories(
-            state.movies, 
-            filterMoviesByCategories(state.movies, state.selectedCategories)
-          )
-        }
+        categories={state.categories}
         setSelectedCategories={setSelectedCategories}
-        handleCategoryClick={handleCategoryClick}
+        handleCategoryClick={handleCategoryClick} 
+        counts={state.visibleCategoryCounts}
       />
     </div>
   );

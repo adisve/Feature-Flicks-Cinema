@@ -13,6 +13,14 @@ export const moviesByCategoryURL = '/api/movies_by_category';
 /* returns a list of screenings */
 export const screeningsURL = '/api/screenings';
 
+export const occupiedSeatsURL = '/api/occupied_seats';
+
+export const seatsPerAuditoriumURL = '/api/seats_per_auditorium';
+
+export const auditoriumsURL = '/api/auditoriums';
+
+export const categoriesURL = '/api/categories';
+
 /* returns the logged in user if one exists. */
 export const loginURL = '/api/login';
 

@@ -1,8 +1,9 @@
 import { Dispatch, useEffect, useReducer } from "react";
 import { PageStatus } from "../../components/App";
-import { Movie } from "../../domain/models/Movie";
-import { fetchMovies, fetchScreenings, sortMoviesByScreeningDate } from "../services/movie_service";
-import { mapToScreenings, mapToMovies } from "../utils/mapping_utils";
+import { fetchCategories, fetchMovies, fetchScreenings, sortMoviesByScreeningDate } from "../services/movie_service";
+import { Movie } from "../../domain/interfaces/Movie";
+import { Screening } from "../../domain/interfaces/Screening";
+import { Category } from "../../domain/interfaces/Category";
 
 interface ScreeningsState {
   pageStatus: PageStatus;
@@ -10,6 +11,9 @@ interface ScreeningsState {
   movies: Movie[];
   showOffcanvas: boolean;
   selectedCategories: string[];
+  screenings: Screening[];
+  categories: Category[];
+  visibleCategoryCounts: { [key: string]: number };
 }
 
 type ScreeningsAction =
@@ -17,7 +21,10 @@ type ScreeningsAction =
   | { type: "setViewType", viewType: string }
   | { type: "setMovies", movies: Movie[] }
   | { type: "setShowOffcanvas", showOffcanvas: boolean }
-  | { type: "setSelectedCategories", selectedCategories: string[] };
+  | { type: "setSelectedCategories", selectedCategories: string[] }
+  | { type: "setCategories", categories: Category[] }
+  | { type: "setVisiblecategoryCounts", visibleCategoryCounts: { [key: string]: number } }
+  | { type: "setScreenings", screenings: Screening[] };
 
 type ScreeningsDispatch = Dispatch<ScreeningsAction>;
 
@@ -27,6 +34,9 @@ const initialState: ScreeningsState = {
   movies: [],
   showOffcanvas: false,
   selectedCategories: [],
+  screenings: [],
+  categories: [],
+  visibleCategoryCounts: {}
 }
 
 const screeningsReducer = (state: ScreeningsState, action: ScreeningsAction): ScreeningsState => {
@@ -41,6 +51,12 @@ const screeningsReducer = (state: ScreeningsState, action: ScreeningsAction): Sc
       return {...state, showOffcanvas: action.showOffcanvas };
     case "setSelectedCategories":
       return {...state, selectedCategories: action.selectedCategories };
+    case "setCategories":
+      return {...state, categories: action.categories };
+    case "setVisiblecategoryCounts":
+      return {...state, visibleCategoryCounts: action.visibleCategoryCounts };
+    case "setScreenings":
+      return {...state, screenings: action.screenings };
     default:
       return state;
   }
@@ -54,21 +70,35 @@ export const useScreenings = (): [ScreeningsState, ScreeningsDispatch] => {
     Promise.all([
       fetchMovies(),
       fetchScreenings(),
+      fetchCategories()
     ])
       .then((responses) => {
-        const movieDataArray = responses[0];
-        const screeningsData = responses[1];
-        const screenings = mapToScreenings(screeningsData);
-        var movies: Movie[] = mapToMovies(movieDataArray, screenings);
-        movies = sortMoviesByScreeningDate(movies);
-        dispatch({ type: "setMovies", movies });
+        const movies: Movie[] = responses[0];
+        const screenings: Screening[] = sortMoviesByScreeningDate(responses[1]);
+        const categories: Category[] = responses[2].sort((a, b) => a.title.localeCompare(b.title));
+        const initialCounts: {[key: string]: number} = {};
+        categories.forEach((category) => {
+          initialCounts[category.title] = 0;
+        });
+        movies.forEach((movie) => {
+          movie.description.categories.forEach((category) => {
+            initialCounts[category] += 1;
+          });
+        });
+        dispatch({ type: "setScreenings", screenings: screenings });
+        dispatch({ type: "setVisiblecategoryCounts", visibleCategoryCounts: initialCounts });
+        dispatch({ type: "setMovies", movies: movies });
         dispatch({ type: "setPageStatus", pageStatus: PageStatus.Success });
+        dispatch({ type: "setCategories", categories: categories });
+        dispatch({ type: "setVisiblecategoryCounts", visibleCategoryCounts: initialCounts });
       })
       .catch((error) => {
         console.error(error);
         dispatch({ type: "setPageStatus", pageStatus: PageStatus.Error });
       });
   }, []);
+  
+  
 
   return [state, dispatch];
 }

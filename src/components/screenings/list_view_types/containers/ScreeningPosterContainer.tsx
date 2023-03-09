@@ -1,26 +1,27 @@
 import React from 'react'
-import { Movie } from '../../../../domain/models/Movie'
-import { Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { formatMinutes } from '../../../../data/utils/format_utils'
 import '../../../../scss/screenings/ScreeningsPosterView.scss'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { Movie } from '../../../../domain/interfaces/Movie'
+import { Screening } from '../../../../domain/interfaces/Screening'
 
 interface ScreeningPosterContainerProps {
   movie: Movie
+  screenings: Screening[]
 }
 
 export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> = (props) => {
 
   return (
     <Link to={`/book/${props.movie.id}`} className='poster-screening'>
-      <img draggable="false" src={`assets${props.movie.posterImage}`} alt={props.movie.title} />
+      <img draggable="false" src={`assets${props.movie.description.posterImage}`} alt={props.movie.title} />
       <div className='poster-screening-metadata'>
         <p className='poster-screening-title'>{props.movie.title}</p>
         <p className='poster-screening-date'>{
-         props.movie.screenings && (
-          props.movie.screenings[0].time.toLocaleString('en-EN', {
+         props.screenings && (
+          new Date(props.screenings[0].time).toLocaleString('en-EN', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -33,10 +34,10 @@ export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> =
         }</p>
         <p className='poster-screening-runtime'>
           <span style={{paddingRight: '5px'}}><FontAwesomeIcon icon={faClock}/></span>
-          {formatMinutes(props.movie.length)}
+          {formatMinutes(props.movie.description.length)}
         </p>
         <div className="poster-screening-categories">
-          {props.movie.categories.map((category, index) => {
+          {props.movie.description.categories.map((category, index) => {
             return (<p key={index.toString()} className='poster-screening-category'>#{category}</p>
             );
           })}

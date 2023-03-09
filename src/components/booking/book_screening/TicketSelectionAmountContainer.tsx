@@ -1,8 +1,7 @@
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { TicketType } from '../../../domain/models/TicketType';
+import { TicketType } from '../../../domain/interfaces/TicketType';
 
 interface TicketSelectionAmountContainerProps {
   ticketType: TicketType;

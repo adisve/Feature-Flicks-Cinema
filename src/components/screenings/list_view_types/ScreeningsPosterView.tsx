@@ -1,10 +1,12 @@
 import React from 'react'
-import { Movie } from '../../../domain/models/Movie';
 import { Col, Container, Row } from 'react-bootstrap';
 import { ScreeningPosterContainer } from './containers/ScreeningPosterContainer';
+import { Movie } from '../../../domain/interfaces/Movie';
+import { Screening } from '../../../domain/interfaces/Screening';
 
 interface ScreeningsPosterViewProps {
   movies: Movie[];
+  screenings: Screening[];
 }
 
 export const ScreeningsPosterView: React.FC<ScreeningsPosterViewProps> = (props) => {
@@ -14,7 +16,10 @@ export const ScreeningsPosterView: React.FC<ScreeningsPosterViewProps> = (props)
       <Row className='m-auto'>
         {props.movies.map((movie) => (
           <Col key={movie.id} xxl={3} xl={6} lg={6} md={6} sm={12}>
-            <ScreeningPosterContainer movie={movie} />
+            <ScreeningPosterContainer 
+              movie={movie}
+              screenings={props.screenings}
+            />
           </Col>
         ))}
       </Row>

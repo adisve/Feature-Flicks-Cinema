@@ -1,12 +1,14 @@
 import React from 'react'
-import { Movie } from '../../../domain/models/Movie';
 import { ScreeningListContainer } from './containers/ScreeningListContainer';
+import { Movie } from '../../../domain/interfaces/Movie';
+import { Screening } from '../../../domain/interfaces/Screening';
 
-interface ScreeninsListViewProps {
+interface ScreeningsListViewProps {
   movies: Movie[];
+  screenings: Screening[];
 }
 
-export const ScreeningsListView: React.FC<ScreeninsListViewProps> = (props) => {
+export const ScreeningsListView: React.FC<ScreeningsListViewProps> = (props) => {
 
   return (
     <>
@@ -15,7 +17,8 @@ export const ScreeningsListView: React.FC<ScreeninsListViewProps> = (props) => {
           return (
             <ScreeningListContainer
               key={movie.id} 
-              movie={movie} 
+              movie={movie}
+              screenings={props.screenings.filter((screening) => screening.movieId === movie.id)}
             />)
         })
       }
