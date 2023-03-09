@@ -1,8 +1,8 @@
 import React from 'react';
-import { TicketType } from './TicketSelectionAmountContainer';
 import { ticketPrice } from './Booking';
 import '../../../scss/booking/Booking.scss'
 import { getTicketDiscountPercentage, getTicketDiscountPrice } from '../../../data/utils/format_utils';
+import { TicketType } from '../../../domain/models/TicketType';
 
 interface TicketSumProps {
   regular: number;
@@ -10,7 +10,7 @@ interface TicketSumProps {
   senior: number;
 }
 
-const renderDiscountInformation = (ticketType: TicketType, quantity: number) => {
+const renderDiscountInformation = (ticketType: string, quantity: number) => {
   if (quantity > 0) {
     const discountPercentage = getTicketDiscountPercentage(ticketType);
     const discountPrice = getTicketDiscountPrice(ticketType, quantity);
@@ -51,17 +51,17 @@ export const TicketSum: React.FC<TicketSumProps> = ({ regular, child, senior }) 
     <div className='ticket-sum-container'>
       
       <hr />
-      {renderDiscountInformation(TicketType.CHILD, child)}
-      {renderDiscountInformation(TicketType.SENIOR, senior)}
+      {renderDiscountInformation('Child', child)}
+      {renderDiscountInformation('Senior', senior)}
       {renderSubTotalWithPriceReduction(
         (regular * 110) + (child * 110) + (senior * 110),
-        ((getTicketDiscountPrice(TicketType.CHILD, child) + 
-        (getTicketDiscountPrice(TicketType.SENIOR, senior))))
+        ((getTicketDiscountPrice('Child', child) + 
+        (getTicketDiscountPrice('Senior', senior))))
       )}
       {renderTotalSum(
         (regular * 110) + (child * 110) + (senior * 110) - 
-        ((getTicketDiscountPrice(TicketType.CHILD, child) + 
-        (getTicketDiscountPrice(TicketType.SENIOR, senior)))))
+        ((getTicketDiscountPrice('Child', child) + 
+        (getTicketDiscountPrice('Senior', senior)))))
       }
     </div>
   );

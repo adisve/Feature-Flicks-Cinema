@@ -1,4 +1,4 @@
-import { TicketType } from "../../components/booking/book_screening/TicketSelectionAmountContainer";
+import { TicketType } from "../../domain/models/TicketType";
 
 /**
  * Formats a string for display in the UI, specifically for use
@@ -18,24 +18,24 @@ export const dateHasPassed = (date: Date): boolean => {
 }
 
 
-export const getTicketDiscountPercentage = (ticketType: TicketType): number => {
+export const getTicketDiscountPercentage = (ticketType: string): number => {
   switch (ticketType) {
-    case TicketType.SENIOR:
+    case 'Senior':
       return Math.ceil((110 - 85) / 110 * 100);
-    case TicketType.CHILD:
+    case 'Child':
       return Math.ceil((110 - 75) / 110 * 100);
     default:
       return 0;
   }
 }
 
-export const getTicketDiscountPrice = (ticketType: TicketType, quantity: number): number => {
+export const getTicketDiscountPrice = (ticketType: string, quantity: number): number => {
   let price: number;
   switch (ticketType) {
-    case TicketType.SENIOR:
+    case 'Senior':
       price = 110 - 85;
       break;
-    case TicketType.CHILD:
+    case 'Child':
       price = 110 - 75;
       break;
     default:

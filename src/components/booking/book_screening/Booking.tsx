@@ -1,5 +1,5 @@
 import React from 'react';
-import { TicketSelection } from './TicketSelection';
+import { TicketSelectionContainer } from './TicketSelectionContainer';
 import { MovieScreeningInformation } from './MovieScreeningInformation';
 import { TicketSum } from './TicketSum';
 import { PageStatus } from '../../App';
@@ -7,7 +7,7 @@ import { Loading } from '../../animations/Loading';
 import { ErrorMessage } from '../../errors/ErrorMessage';
 import { useBooking } from '../../../data/hooks/useBooking';
 import '../../../scss/booking/Booking.scss'
-import { TicketType } from './TicketSelectionAmountContainer';
+import { TicketType } from '../../../domain/models/TicketType';
 
 export const ticketPrice = 110;
 
@@ -15,14 +15,14 @@ export const Booking = () => {
   const [state, dispatch] = useBooking();
 
   const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
-    dispatch({ type: 'setTicketAmount', ticketType, amount });
+    dispatch({ type: "updateTicketQuantity", ticketName: ticketType.name, quantity: amount });
   };
 
-  if (state.pageStatus === PageStatus.LOADING) {
+  if (state.pageStatus === PageStatus.Loading) {
     return <Loading />;
   }
   
-  if (state.pageStatus === PageStatus.ERROR) {
+  if (state.pageStatus === PageStatus.Error) {
     return <ErrorMessage />;
   }
 
@@ -38,18 +38,21 @@ export const Booking = () => {
           />
           {/* Selected tickets, their prices, total sum */}
           <TicketSum 
-            regular={state.Regular} 
-            child={state.Child} 
-            senior={state.Senior}            
+            regular={state.ticketSelection!['Adult'].quantity} 
+            child={state.ticketSelection!['Child'].quantity} 
+            senior={state.ticketSelection!['Senior'].quantity}
           />
         </div>
         {/* Choose number of tickets (regular, child, senior) */}
-        <TicketSelection 
+        <TicketSelectionContainer 
           handleTicketAmountChange={handleTicketAmountChange} 
-          Senior={state.Senior} 
-          Child={state.Child} 
-          Regular={state.Regular} 
-        />
+          ticketTypes={[
+            state.ticketSelection!['Child'].ticketType,
+            state.ticketSelection!['Adult'].ticketType,
+            state.ticketSelection!['Senior'].ticketType,
+          ]} 
+          ticketSelections={state.ticketSelection!}
+          />
       </div>
       {/* Choose seats (grid) */}
     </div>

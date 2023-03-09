@@ -17,7 +17,7 @@ type HeroDispatch = Dispatch<HeroAction>;
 
 const initialState: HeroState = {
   heroMovies: [],
-  pageStatus: PageStatus.LOADING,
+  pageStatus: PageStatus.Loading,
 }
 
 const heroReducer = (state: HeroState, action: HeroAction): HeroState => {
@@ -39,10 +39,10 @@ export const useHero = (): [HeroState, HeroDispatch] => {
       .then((moviesData) => {
         const movies: Movie[] = mapToMovies(moviesData);
         dispatch({ type: "setHeroMovies", payload: movies });
-        dispatch({ type: "setPageStatus", payload: PageStatus.SUCCESS });
+        dispatch({ type: "setPageStatus", payload: PageStatus.Success });
       })
       .catch((error) => {
-        dispatch({ type: "setPageStatus", payload: PageStatus.ERROR });
+        dispatch({ type: "setPageStatus", payload: PageStatus.Error });
       });
   }, []);
   return [state, dispatch];

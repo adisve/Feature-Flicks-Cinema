@@ -3,9 +3,9 @@ import { BootstrapNavbar } from './nav/BootstrapNavbar';
 import '../scss/App.scss'
 
 export enum PageStatus {
-  LOADING,
-  SUCCESS,
-  ERROR
+  Loading,
+  Success,
+  Error
 }
 
 interface AppProps {

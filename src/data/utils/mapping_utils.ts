@@ -1,5 +1,6 @@
 import { Movie } from "../../domain/models/Movie";
 import { Screening } from "../../domain/models/Screening";
+import { TicketType } from "../../domain/models/TicketType";
 
 /**
  * Converts a raw movie object into its corresponding DTO
@@ -50,12 +51,12 @@ export const mapToScreening = (screeningData: any): Screening => {
   )
 }
 
-export const mapToTicketTypes = (ticketTypeData: any): TicketType => {
+export const mapToTicketTypes = (ticketTypeData: any): TicketType[] => {
   return ticketTypeData.map((ticketType: any) => {
     return new TicketType(
-      ticketTypeData.id,
-      ticketTypeData.name,
-      ticketTypeData.price
+      ticketType.id,
+      ticketType.name,
+      ticketType.price
     );
   });
 }

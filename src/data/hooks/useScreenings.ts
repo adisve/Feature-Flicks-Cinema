@@ -22,7 +22,7 @@ type ScreeningsAction =
 type ScreeningsDispatch = Dispatch<ScreeningsAction>;
 
 const initialState: ScreeningsState = {
-  pageStatus: PageStatus.LOADING,
+  pageStatus: PageStatus.Loading,
   viewType: 'list',
   movies: [],
   showOffcanvas: false,
@@ -62,11 +62,11 @@ export const useScreenings = (): [ScreeningsState, ScreeningsDispatch] => {
         var movies: Movie[] = mapToMovies(movieDataArray, screenings);
         movies = sortMoviesByScreeningDate(movies);
         dispatch({ type: "setMovies", movies });
-        dispatch({ type: "setPageStatus", pageStatus: PageStatus.SUCCESS });
+        dispatch({ type: "setPageStatus", pageStatus: PageStatus.Success });
       })
       .catch((error) => {
         console.error(error);
-        dispatch({ type: "setPageStatus", pageStatus: PageStatus.ERROR });
+        dispatch({ type: "setPageStatus", pageStatus: PageStatus.Error });
       });
   }, []);
 

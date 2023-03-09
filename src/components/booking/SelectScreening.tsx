@@ -1,55 +1,23 @@
-import React, { useEffect } from 'react';
-import { Movie } from '../../domain/models/Movie';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieById, fetchScreeningsByMovieId } from '../../data/services/movie_service';
-import { mapToMovie, mapToScreenings } from '../../data/utils/mapping_utils';
-import '../../scss/booking/SelectScreening.scss';
-import { AuditoriumName, ScreeningDateContainer } from './ScreeningDateContainer';
 import { PageStatus } from '../App';
 import { groupScreeningsByAuditorium } from '../../data/utils/list_utils';
 import { Loading } from '../animations/Loading';
 import { ErrorMessage } from '../errors/ErrorMessage';
-
-interface SelectScreeningState {
-  movie?: Movie;
-  pageStatus: PageStatus;
-}
+import { ScreeningDateContainer, AuditoriumName } from './ScreeningDateContainer';
+import { useSelectScreening } from '../../data/hooks/useSelectScreening';
+import '../../scss/booking/SelectScreening.scss'
 
 export const SelectScreening = () => {
   const { id } = useParams<{ id: string }>();
-  const [state, setState] = React.useState<SelectScreeningState>({
-    movie: undefined,
-    pageStatus: PageStatus.LOADING,
-  });
+  const [state, dispatch] = useSelectScreening(id);
 
-  useEffect(() => {
-    setState(prevState => ({...prevState, pageStatus: PageStatus.LOADING }));
-    if (id) {
-      Promise.all([
-        fetchMovieById(id), 
-        fetchScreeningsByMovieId(id)
-      ])
-        .then((responses) => {
-          const movieDataArray: any = responses[0];
-          const screeningsData = responses[1];
-          const screenings = mapToScreenings(screeningsData);
-          const movie = mapToMovie(movieDataArray[0], screenings);
-          setState(prevState => ({ ...prevState, movie: movie }));
-          setState(prevState => ({...prevState, pageStatus: PageStatus.SUCCESS }));
-        })
-        .catch(error => {
-          console.error('Error fetching movie and screenings', error);
-          setState(prevState => ({...prevState, pageStatus: PageStatus.ERROR }));
-        });
-    }
-  }, [id]);
-
-  if (state.pageStatus === PageStatus.LOADING) {
-    return <Loading />
+  if (state.pageStatus === PageStatus.Loading) {
+    return <Loading />;
   }
 
-  if (state.pageStatus === PageStatus.ERROR) {
-    return <ErrorMessage />
+  if (state.pageStatus === PageStatus.Error) {
+    return <ErrorMessage />;
   }
 
   return (
@@ -60,21 +28,23 @@ export const SelectScreening = () => {
           <div>
             <h2>{state.movie?.title}</h2>
             <div className='movie-categories'>
-              {state.movie?.categories.map((category, index) => {
-                return (<p key={index.toString()} className='movie-category'>#{category}</p>
-                );
-              })}
+              {state.movie?.categories.map((category, index) => (
+                <p key={index.toString()} className='movie-category'>#{category}</p>
+              ))}
             </div>
           </div>
         </div>
-        {state.movie && state.movie.screenings && groupScreeningsByAuditorium(state.movie.screenings).map((screenings, index) => (
+        {state.movie && state.screenings && groupScreeningsByAuditorium(state.screenings).map((screenings, index) => (
           <div className='header-list' key={index}>
             <div className='auditorium-header'>
               <h3>{AuditoriumName[index]}</h3>
             </div>
             <ul>
               {screenings.map(screening => (
-                <ScreeningDateContainer key={screening.id} movie={state.movie!} screening={screening} />
+                <ScreeningDateContainer 
+                  key={screening.id} 
+                  movie={state.movie!} 
+                  screening={screening} />
               ))}
             </ul>
           </div>

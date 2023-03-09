@@ -1,4 +1,4 @@
-class TicketType {
+export class TicketType {
   id: number;
   name: string;
   price: number;

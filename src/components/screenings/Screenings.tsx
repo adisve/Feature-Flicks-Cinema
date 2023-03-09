@@ -54,11 +54,11 @@ export const Screenings = () => {
     };
   
   
-  if (state.pageStatus === PageStatus.LOADING) {
+  if (state.pageStatus === PageStatus.Loading) {
     return <Loading />;
   }
 
-  if (state.pageStatus === PageStatus.ERROR) {
+  if (state.pageStatus === PageStatus.Error) {
     return <ErrorMessage />;
   }
 

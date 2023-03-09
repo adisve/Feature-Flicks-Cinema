@@ -1,36 +1,35 @@
-import { useState, useEffect, useReducer, Dispatch } from 'react';
+import { useEffect, useReducer, Dispatch, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieById, fetchScreeningById } from '../services/movie_service';
-import { mapToMovie, mapToScreening } from '../utils/mapping_utils';
+import { fetchMovieById, fetchScreeningById, fetchTicketTypes } from '../services/movie_service';
+import { mapToMovie, mapToScreening, mapToTicketTypes } from '../utils/mapping_utils';
 import { PageStatus } from '../../components/App';
-import { TicketType } from '../../components/booking/book_screening/TicketSelectionAmountContainer';
 import { Screening } from '../../domain/models/Screening';
 import { Movie } from '../../domain/models/Movie';
+import { TicketType } from '../../domain/models/TicketType';
+import { TicketSelection } from '../../domain/models/TicketSelection';
 
 type BookingState = {
   screening?: Screening;
   movie?: Movie;
   pageStatus: PageStatus;
-  [TicketType.SENIOR]: number;
-  [TicketType.CHILD]: number;
-  [TicketType.REGULAR]: number;
+  ticketSelection?: {[id: string]: TicketSelection};
 };
 
 type BookingAction =
   | { type: "setScreening"; screening: Screening }
   | { type: "setMovie"; movie: Movie }
   | { type: "setPageStatus"; pageStatus: PageStatus }
-  | { type: "setTicketAmount"; ticketType: TicketType; amount: number };
+  | { type: "setTicketSelection"; ticketSelection: {[id: string]: TicketSelection} }
+  | { type: "updateTicketQuantity"; ticketName: string; quantity: number };
+
 
 type BookingDispatch = Dispatch<BookingAction>;
 
 const initialState: BookingState = {
   screening: undefined,
   movie: undefined,
-  pageStatus: PageStatus.LOADING,
-  [TicketType.SENIOR]: 0,
-  [TicketType.CHILD]: 0,
-  [TicketType.REGULAR]: 0,
+  pageStatus: PageStatus.Loading,
+  ticketSelection: undefined
 };
 
 const bookingReducer = (state: BookingState, action: BookingAction): BookingState => {
@@ -41,12 +40,26 @@ const bookingReducer = (state: BookingState, action: BookingAction): BookingStat
       return { ...state, movie: action.movie };
     case "setPageStatus":
       return { ...state, pageStatus: action.pageStatus };
-    case "setTicketAmount":
-      return { ...state, [action.ticketType]: action.amount };
+    case "setTicketSelection":
+      return { ...state, ticketSelection: action.ticketSelection };
+    case "updateTicketQuantity":
+      const { ticketName, quantity } = action;
+      if (!state.ticketSelection) return state;
+      return {
+        ...state,
+        ticketSelection: {
+          ...state.ticketSelection,
+          [ticketName]: {
+            ...state.ticketSelection[ticketName],
+            quantity
+          }
+        }
+      };
     default:
       return state;
   }
-}
+};
+
 
 export function useBooking(): [BookingState, BookingDispatch] {
   const { id } = useParams<{ id: string }>();
@@ -60,7 +73,7 @@ export function useBooking(): [BookingState, BookingDispatch] {
         })
         .catch((err: Error) => {
           console.log(err);
-          dispatch({ type: "setPageStatus", pageStatus: PageStatus.ERROR });
+          dispatch({ type: "setPageStatus", pageStatus: PageStatus.Error });
         });
     }
   }, [id]);
@@ -69,16 +82,32 @@ export function useBooking(): [BookingState, BookingDispatch] {
     if (state.screening) {
       fetchMovieById(state.screening.movieId.toString())
         .then((movieData: any) => {
-          console.log(movieData);
           dispatch({ type: "setMovie", movie: mapToMovie(movieData[0]) });
-          dispatch({ type: "setPageStatus", pageStatus: PageStatus.SUCCESS });
         })
         .catch((err: Error) => {
           console.log(err);
-          dispatch({ type: "setPageStatus", pageStatus: PageStatus.ERROR });
+          dispatch({ type: "setPageStatus", pageStatus: PageStatus.Error });
         });
     }
   }, [state.screening]);
 
+  useEffect(() => {
+    if (state.movie) {
+      fetchTicketTypes().then((ticketsData: any) => {
+        const tickets: TicketType[] = mapToTicketTypes(ticketsData);
+        const ticketSelections: {[id: string]: TicketSelection} = {};
+        tickets.forEach((ticketType: TicketType) => {
+          ticketSelections[ticketType.name] = new TicketSelection(
+            ticketType,
+            0
+          );
+        });
+        dispatch({ type: "setTicketSelection", ticketSelection: ticketSelections });
+        dispatch({ type: "setPageStatus", pageStatus: PageStatus.Success });
+      });
+    }
+  }, [state.movie]);
+
   return [state, dispatch];
 }
+

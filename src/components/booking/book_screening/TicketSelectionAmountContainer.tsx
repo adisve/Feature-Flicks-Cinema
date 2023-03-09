@@ -2,12 +2,7 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-
-export enum TicketType {
-  REGULAR = 'Regular',
-  CHILD = 'Child',
-  SENIOR = 'Senior'
-}
+import { TicketType } from '../../../domain/models/TicketType';
 
 interface TicketSelectionAmountContainerProps {
   ticketType: TicketType;
@@ -29,10 +24,10 @@ export const TicketSelectionAmountContainer: React.FC<TicketSelectionAmountConta
   return (
     <div className='d-flex ticket-select-amount-container'>
       <div>
-      <p className='ticket-type'>{props.ticketType}</p>
+      <p className='ticket-type'>{props.ticketType.name}</p>
         {/* Special message in case senior/child ticket */}
-        {props.ticketType === TicketType.CHILD && (<p>- 32% off</p>)}
-        {props.ticketType === TicketType.SENIOR && (<p>- 23% off</p>)}
+        {props.ticketType.name === 'Child' && (<p>- 32% off</p>)}
+        {props.ticketType.name === 'Senior' && (<p>- 23% off</p>)}
       </div>
       {/* Ticket amount selection container */}
       <div className='d-flex ticket-btn-container'>
