@@ -8,7 +8,7 @@ interface ScreeningsListViewProps {
   screenings: Screening[];
 }
 
-export const ScreeningsListView: React.FC<ScreeningsListViewProps> = (props) => {
+export const ScreeningsListView = ({ movies, screenings }: ScreeningsListViewProps) => {
 
   // Function to get the first screening date for a movie
   const getFirstScreeningDate = (movie: Movie, screenings: Screening[]): Date | null => {
@@ -20,9 +20,9 @@ export const ScreeningsListView: React.FC<ScreeningsListViewProps> = (props) => 
   }
 
   // Sort the movies by the first screening date
-  const sortedMovies = [...props.movies].sort((leftMovie, rightMovie) => {
-    const leftMovieScreening = getFirstScreeningDate(leftMovie, props.screenings);
-    const rightMovieScreening = getFirstScreeningDate(rightMovie, props.screenings);
+  const sortedMovies = [...movies].sort((leftMovie, rightMovie) => {
+    const leftMovieScreening = getFirstScreeningDate(leftMovie, screenings);
+    const rightMovieScreening = getFirstScreeningDate(rightMovie, screenings);
     if (leftMovieScreening && rightMovieScreening) {
       return leftMovieScreening.getTime() - rightMovieScreening.getTime();
     } else if (leftMovieScreening) {
@@ -38,7 +38,7 @@ export const ScreeningsListView: React.FC<ScreeningsListViewProps> = (props) => 
         <ScreeningListContainer
           key={movie.id}
           movie={movie}
-          screenings={props.screenings.filter((screening) => screening.movieId === movie.id)}
+          screenings={screenings.filter((screening) => screening.movieId === movie.id)}
         />
       ))}
     </>

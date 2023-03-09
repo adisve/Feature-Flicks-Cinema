@@ -12,16 +12,16 @@ interface ScreeningPosterContainerProps {
   screenings: Screening[]
 }
 
-export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> = (props) => {
+export const ScreeningPosterContainer = ({ movie, screenings }: ScreeningPosterContainerProps) => {
 
   return (
-    <Link to={`/book/${props.movie.id}`} className='poster-screening'>
-      <img draggable="false" src={`assets${props.movie.description.posterImage}`} alt={props.movie.title} />
+    <Link to={`/book/${movie.id}`} className='poster-screening'>
+      <img draggable="false" src={`assets${movie.description.posterImage}`} alt={movie.title} />
       <div className='poster-screening-metadata'>
-        <p className='poster-screening-title'>{props.movie.title}</p>
+        <p className='poster-screening-title'>{movie.title}</p>
         <p className='poster-screening-date'>{
-         props.screenings && (
-          new Date(props.screenings[0].time).toLocaleString('en-EN', {
+         screenings && (
+          new Date(screenings[0].time).toLocaleString('en-EN', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -34,10 +34,10 @@ export const ScreeningPosterContainer: React.FC<ScreeningPosterContainerProps> =
         }</p>
         <p className='poster-screening-runtime'>
           <span style={{paddingRight: '5px'}}><FontAwesomeIcon icon={faClock}/></span>
-          {formatMinutes(props.movie.description.length)}
+          {formatMinutes(movie.description.length)}
         </p>
         <div className="poster-screening-categories">
-          {props.movie.description.categories.map((category, index) => {
+          {movie.description.categories.map((category, index) => {
             return (<p key={index.toString()} className='poster-screening-category'>#{category}</p>
             );
           })}

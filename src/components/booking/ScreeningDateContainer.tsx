@@ -14,17 +14,22 @@ interface ScreeningDateContainerProps {
   auditoriumName: string;
 }
 
-export const ScreeningDateContainer: React.FC<ScreeningDateContainerProps> = (props) => {
+export const ScreeningDateContainer = ({
+  screening, 
+  seatsPerAuditorium, 
+  occupiedSeats, 
+  movie, 
+  auditoriumName }: ScreeningDateContainerProps) => {
   return (
     <li>
       <div className='date-container justify-content-between'>
         <div className='time-auditorium-container'>
-          <p className='time'>{screeningTimeToString(new Date(props.screening.time))}</p>
-          <p className='auditorium'>{props.auditoriumName}</p>
+          <p className='time'>{screeningTimeToString(new Date(screening.time))}</p>
+          <p className='auditorium'>{auditoriumName}</p>
         </div>
         <div className="d-flex">
-          <p style={{marginTop: '7px'}}>{props.occupiedSeats} / {props.seatsPerAuditorium.numberOfSeats} occupied</p>
-          <Link to={`/book/screening/${props.screening.id}`}><button className='btn'>Choose seats</button></Link>
+          <p style={{marginTop: '7px'}}>{occupiedSeats} / {seatsPerAuditorium.numberOfSeats} occupied</p>
+          <Link to={`/book/screening/${screening.id}`}><button className='btn'>Choose seats</button></Link>
         </div>
       </div>
       <hr />

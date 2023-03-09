@@ -15,21 +15,21 @@ interface ScreeningListContainerProps {
 /**
  * This component renders a single screening item, which can
  * be viewed on the screening page in a list of available screenings.
- * @param props: The specific movie contained in the screening item.
+ * @param  The specific movie contained in the screening item.
  * @returns: A screening item.
  */
-export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (props) => {
+export const ScreeningListContainer = ({ movie, screenings }: ScreeningListContainerProps) => {
 
   return (
-    <Link to={`/book/${props.movie.id}`} className='screening-container'>
+    <Link to={`/book/${movie.id}`} className='screening-container'>
       <div className='screening-item'>
-        <img draggable='false' src={`assets${props.movie.description.posterImage}`} alt={props.movie.title}></img>
+        <img draggable='false' src={`assets${movie.description.posterImage}`} alt={movie.title}></img>
         <div className='inner-screening-container'>
           <div className='screening-meta'>
-            <h4>{props.movie.title}</h4>
+            <h4>{movie.title}</h4>
             <div className='screening-category-container'>
               <div className='screening-categories'>
-                {props.movie.description.categories.map((category, index) => {
+                {movie.description.categories.map((category, index) => {
                   return (<p key={index.toString()} className='screening-category'>#{category}</p>
                   );
                 })}
@@ -40,8 +40,8 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
             <div className='screening-date-time-container'>
               <div className="d-flex">
                 <h5>{
-                  props.screenings && (
-                    new Date(props.screenings[0].time).toLocaleString('en-EN', {
+                  screenings && (
+                    new Date(screenings[0].time).toLocaleString('en-EN', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
@@ -55,7 +55,7 @@ export const ScreeningListContainer: React.FC<ScreeningListContainerProps> = (pr
               </div>
               <p className='screening-time'>
                 <span style={{paddingRight: '10px'}}><FontAwesomeIcon icon={faClock}/></span>
-                {formatMinutes(props.movie.description.length)}
+                {formatMinutes(movie.description.length)}
               </p>
             </div>
           </div>

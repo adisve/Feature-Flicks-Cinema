@@ -32,7 +32,6 @@ export const calculatePriceDeductions = (ticketTypes: TicketType[], ticketSelect
       priceDeductionDict[id] = 0;
     }
   }
-  console.log(priceDeductionDict);
   return priceDeductionDict;
 }
 
@@ -45,7 +44,6 @@ export const calculateTotalPriceDeductions = (
     const ticketSelection = ticketSelectionDict[id];
     totalPriceDeduction += ticketSelection.quantity * priceDeductionDict[id];
   }
-  console.log(totalPriceDeduction);
   return totalPriceDeduction;
 }
 

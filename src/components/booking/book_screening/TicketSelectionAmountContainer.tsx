@@ -42,9 +42,13 @@ export const TicketSelectionAmountContainer = ({
       </div>
       {/* Ticket amount selection container */}
       <div className='d-flex ticket-btn-container'>
-        <Button onClick={decreaseAmount} disabled={ticketAmount < 1}><span><FontAwesomeIcon className='icon' icon={faMinus}/></span></Button>
+        <Button onClick={decreaseAmount} disabled={ticketAmount < 1}>
+          <span><FontAwesomeIcon className='icon' icon={faMinus}/></span>
+        </Button>
         <p className='ticket-amount'>{ticketAmount}</p>
-        <Button disabled={totalTicketAmount >= 10} onClick={increaseAmount}><span><FontAwesomeIcon className='icon' icon={faPlus}/></span></Button>
+        <Button disabled={totalTicketAmount >= 10} onClick={increaseAmount}>
+          <span><FontAwesomeIcon className='icon' icon={faPlus}/></span>
+        </Button>
       </div>
     </div>
   )

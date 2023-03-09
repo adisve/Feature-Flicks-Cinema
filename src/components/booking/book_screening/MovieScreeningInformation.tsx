@@ -10,7 +10,10 @@ interface MovieScreeningInformationProps {
   auditoriumName: string;
 }
 
-export const MovieScreeningInformation: React.FC<MovieScreeningInformationProps> = (props) => {
+export const MovieScreeningInformation = ({
+  movie, 
+  screening, 
+  auditoriumName}: MovieScreeningInformationProps) => {
 
   return (
     <>
@@ -18,16 +21,16 @@ export const MovieScreeningInformation: React.FC<MovieScreeningInformationProps>
       <div className='d-flex movie-screening-information'>
 
         {/* Poster */}
-        <img src={`/assets${props.movie.description.posterImage}`} alt="" />
+        <img src={`/assets${movie.description.posterImage}`} alt="" />
 
         {/* Movie name, hall name, date/location/time */}
         <div className='movie-screening-meta'>
           {/* Movie name */}
-          <h4>{props.movie.title}</h4>
+          <h4>{movie.title}</h4>
           {/* Location */}
-          <p>{props.auditoriumName}</p>
+          <p>{auditoriumName}</p>
           {/* Date/time */}
-          <p>{screeningTimeToString(new Date(props.screening.time))}</p>
+          <p>{screeningTimeToString(new Date(screening.time))}</p>
         </div>
       </div>
     </>

@@ -13,20 +13,28 @@ interface FilteringOffcanvasProps {
   handleCategoryClick: (category: string) => void;
 }
 
-export const FilteringOffcanvas: React.FC<FilteringOffcanvasProps> = (props) => {
+export const FilteringOffcanvas = ({ 
+  showOffcanvas,
+  toggleOffcanvas,
+  selectedCategories,
+  categories,
+  counts,
+  setSelectedCategories,
+  handleCategoryClick,
+ }: FilteringOffcanvasProps) => {
   return (
-    <Offcanvas placement='end' show={props.showOffcanvas} onHide={props.toggleOffcanvas}>
+    <Offcanvas placement='end' show={showOffcanvas} onHide={toggleOffcanvas}>
       <Offcanvas.Header>
-        <Button variant='custom' onClick={props.toggleOffcanvas}>Done</Button>
+        <Button variant='custom' onClick={toggleOffcanvas}>Done</Button>
         <Offcanvas.Title>Filters</Offcanvas.Title>
-        <Button variant='custom' onClick={() => props.setSelectedCategories([])}>Clear filters</Button>
+        <Button variant='custom' onClick={() => setSelectedCategories([])}>Clear filters</Button>
       </Offcanvas.Header>
       <Offcanvas.Body>
         <Categories
-          counts={props.counts}
-          selectedCategories={props.selectedCategories} 
-          categories={props.categories} 
-          handleCategoryClick={props.handleCategoryClick} 
+          counts={counts}
+          selectedCategories={selectedCategories} 
+          categories={categories} 
+          handleCategoryClick={handleCategoryClick} 
         />
       </Offcanvas.Body>
     </Offcanvas>

@@ -9,19 +9,24 @@ interface CategoriesProps {
   handleCategoryClick: (category: string) => void;
 }
 
-export const Categories: React.FC<CategoriesProps> = (props) => {
+export const Categories = ({ 
+  selectedCategories,
+  categories,
+  counts,
+  handleCategoryClick
+ }: CategoriesProps) => {
   return (
     <>
       <h5>Categories</h5>
-        { props.categories.map((category) => (
+        { categories.map((category) => (
           <Badge
-            bg={props.selectedCategories.includes(category.title) ? 'dark' : 'light'}
+            bg={selectedCategories.includes(category.title) ? 'dark' : 'light'}
             key={category.id}
             className='m-1'
-            onClick={() => props.handleCategoryClick(category.title)}
+            onClick={() => handleCategoryClick(category.title)}
           >
-          <p className={props.selectedCategories.includes(category.title) ? 'light-badge-font' : 'dark-badge-font'}>
-            {`${category.title} `}<span>{`(${props.counts[category.title]})`}</span>
+          <p className={selectedCategories.includes(category.title) ? 'light-badge-font' : 'dark-badge-font'}>
+            {`${category.title} `}<span>{`(${counts[category.title]})`}</span>
           </p>
           </Badge>
         ))}

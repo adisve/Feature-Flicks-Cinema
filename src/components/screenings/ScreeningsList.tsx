@@ -10,20 +10,24 @@ interface ScreeningsListProps {
   viewType: string;
 }
 
-export const ScreeningsList: React.FC<ScreeningsListProps> = (props) => {
+export const ScreeningsList = ({ 
+  filteredMovies,
+  screenings,
+  viewType
+ }: ScreeningsListProps) => {
   return (
     <div className='screenings-list-parent'>
       <ul>
         {
-          props.filteredMovies.length > 0 ?(
-            props.viewType === 'list' ? (
+          filteredMovies.length > 0 ?(
+            viewType === 'list' ? (
             <ScreeningsListView 
-              movies={props.filteredMovies}
-              screenings={props.screenings}
+              movies={filteredMovies}
+              screenings={screenings}
             />) 
             : <ScreeningsPosterView 
-                movies={props.filteredMovies}
-                screenings={props.screenings}
+                movies={filteredMovies}
+                screenings={screenings}
               />)
         : <h3>No movies matching your criteria</h3>
         }

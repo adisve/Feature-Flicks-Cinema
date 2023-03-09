@@ -10,7 +10,11 @@ interface ScreeningsHeaderProps {
   toggleOffcanvas: () => void;
 }
 
-export const ScreeningsHeader: React.FC<ScreeningsHeaderProps> = (props) => {
+export const ScreeningsHeader = ({ 
+  setViewType,
+  viewType,
+  toggleOffcanvas,
+ }: ScreeningsHeaderProps) => {
 
   const viewTypes = [
     { label: 'List', icon: faList, value: 'list' },
@@ -26,9 +30,9 @@ export const ScreeningsHeader: React.FC<ScreeningsHeaderProps> = (props) => {
           <Button
             key={viewtype.value}
             variant='custom'
-            onClick={() => props.setViewType(viewtype.value)}
+            onClick={() => setViewType(viewtype.value)}
             className={`d-flex btn ${
-              viewtype.value === props.viewType ? 'selected-view-type' : ''
+              viewtype.value === viewType ? 'selected-view-type' : ''
             }`}
           >
             <span>
@@ -39,7 +43,7 @@ export const ScreeningsHeader: React.FC<ScreeningsHeaderProps> = (props) => {
         ))}
       </div>
         <div>
-          <Button onClick={props.toggleOffcanvas} variant='custom' className="d-flex btn"><span><FontAwesomeIcon icon={faFilter} /></span><p>Filters</p></Button>
+          <Button onClick={toggleOffcanvas} variant='custom' className="d-flex btn"><span><FontAwesomeIcon icon={faFilter} /></span><p>Filters</p></Button>
         </div>
       </div>
     </div>

@@ -9,18 +9,7 @@ import { ScreeningsHeader } from './ScreeningsHeader';
 import { FilteringOffcanvas } from './FilteringOffcanvas';
 import { ScreeningsList } from './ScreeningsList';
 import { useScreenings } from '../../data/hooks/useScreenings';
-import { Movie } from '../../domain/interfaces/Movie';
 import { filterMoviesByCategories, getAvailableCategories } from '../../data/utils/mapping_utils';
-import { Category } from '../../domain/interfaces/Category';
-
-
-interface ScreeningsState {
-  pageStatus: PageStatus;
-  viewType: string;
-  movies: Movie[];
-  showOffcanvas: boolean;
-  selectedCategories: string[];
-}
 
 /**
  * Component that renders the screenings list.

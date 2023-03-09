@@ -5,7 +5,7 @@ interface SeatsGridProps {
   occupiedSeats: number;
 }
 
-export const SeatsGrid: React.FC<SeatsGridProps> = (props) => {
+export const SeatsGrid= ({totalSeats, occupiedSeats}: SeatsGridProps) => {
   return (
     <div className='seats-grid'>
       

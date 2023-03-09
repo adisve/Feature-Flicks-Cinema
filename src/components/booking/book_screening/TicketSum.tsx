@@ -56,7 +56,11 @@ export const TicketSum = ({
  }: TicketSumProps) => {
 
   const subtotal: number = calcualteSubTotal(ticketSelections);
-  const totalPriceDeductions: number = calculateTotalPriceDeductions(ticketSelections, priceDeductions);
+  const totalPriceDeductions: number = 
+    calculateTotalPriceDeductions(
+      ticketSelections, 
+      priceDeductions
+    );
 
   return (
     <div className='ticket-sum-container'>
