@@ -1,7 +1,14 @@
 import React from 'react'
 
-export const SeatsGrid = () => {
+interface SeatsGridProps {
+  totalSeats: number;
+  occupiedSeats: number;
+}
+
+export const SeatsGrid: React.FC<SeatsGridProps> = (props) => {
   return (
-    <div>SeatsGrid</div>
+    <div className='seats-grid'>
+      
+    </div>
   )
 }

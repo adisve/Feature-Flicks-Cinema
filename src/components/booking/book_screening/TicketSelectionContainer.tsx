@@ -3,30 +3,36 @@ import { TicketSelectionAmountContainer } from './TicketSelectionAmountContainer
 import '../../../scss/booking/TicketSelection.scss'
 import { TicketSelection } from '../../../domain/models/TicketSelection';
 import { TicketType } from '../../../domain/interfaces/TicketType';
+import { maxTicketPrice, totalTicketQuantity } from '../../../data/utils/ticket_utils';
 
 interface TicketSelectionProps {
   ticketTypes: TicketType[];
-  ticketSelections: {[id: string]: TicketSelection}
+  ticketSelections: {[id: string]: TicketSelection};
+  priceDeductions: {[id: string]: number};
   handleTicketAmountChange: (ticketType: TicketType, amount: number) => void;
 }
 
-export const TicketSelectionContainer: React.FC<TicketSelectionProps> = (props) => {
+export const TicketSelectionContainer = ({ 
+  ticketTypes,
+  ticketSelections,
+  priceDeductions, 
+  handleTicketAmountChange 
+  }: TicketSelectionProps) => {
+  
   return (
     <div className='ticket-selection'>
       {/* Header */}
       <h4>Choose number of tickets</h4>
       {/* Ticket selection */}
-      {props.ticketTypes.map((ticketType) => (
+      {ticketTypes.map((ticketType) => (
         <TicketSelectionAmountContainer
           key={ticketType.id}
-          totalTicketAmount={
-            props.ticketSelections['Child'].quantity + 
-            props.ticketSelections['Senior'].quantity + 
-            props.ticketSelections['Adult'].quantity
-          }
+          totalTicketAmount={totalTicketQuantity(ticketSelections)}
           ticketType={ticketType}
-          ticketAmount={props.ticketSelections[ticketType.name].quantity}
-          handleTicketAmountChange={props.handleTicketAmountChange}
+          maxTicketPrice={maxTicketPrice(ticketTypes)}
+          ticketAmount={ticketSelections[ticketType.name].quantity}
+          handleTicketAmountChange={handleTicketAmountChange} 
+          ticketTypePriceDeduction={priceDeductions[ticketType.name]}
         />
       ))}
     </div>

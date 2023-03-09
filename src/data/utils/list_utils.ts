@@ -1,5 +1,7 @@
 import { Movie } from "../../domain/interfaces/Movie";
 import { Screening } from "../../domain/interfaces/Screening";
+import { TicketType } from "../../domain/interfaces/TicketType";
+import { TicketSelection } from "../../domain/models/TicketSelection";
 
 /**
  * Shuffles a given array of items in place.
@@ -30,3 +32,12 @@ export const groupScreeningsByAuditorium = (screenings: Screening[]): { [auditor
 export const sortScreeningsByDate = (screenings: Screening[]): Screening[] => {
   return screenings.sort((a, b) => new Date(screenings[0].time).getTime() - new Date(screenings[0].time).getTime());
 };
+
+export const getAllTicketTypes = (ticketSelectionDict: {[id: string]: TicketSelection}): TicketType[] => {
+  const ticketTypes: TicketType[] = [];
+  for (const id in ticketSelectionDict) {
+    const ticketSelection = ticketSelectionDict[id];
+    ticketTypes.push(ticketSelection.ticketType);
+  }
+  return ticketTypes;
+}

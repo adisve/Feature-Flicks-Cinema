@@ -8,8 +8,9 @@ import { useBooking } from '../../../data/hooks/useBooking';
 import '../../../scss/booking/Booking.scss'
 import { TicketType } from '../../../domain/interfaces/TicketType';
 import { PageStatus } from '../../../domain/enums/PageStatus';
-
-export const ticketPrice = 110;
+import { SeatsGrid } from './SeatsGrid';
+import { getAllTicketTypes } from '../../../data/utils/list_utils';
+import { calculatePriceDeductions } from '../../../data/utils/ticket_utils';
 
 export const Booking = () => {
   const [state, dispatch] = useBooking();
@@ -26,6 +27,10 @@ export const Booking = () => {
     return <ErrorMessage />;
   }
 
+  const priceDeductions = calculatePriceDeductions(
+    getAllTicketTypes(state.ticketSelection!), 
+    state.ticketSelection!);
+
   return (
     <div>
       {/* Ticket selection (amount), movie information/screening information */}
@@ -39,23 +44,23 @@ export const Booking = () => {
           />
           {/* Selected tickets, their prices, total sum */}
           <TicketSum 
-            regular={state.ticketSelection!['Adult'].quantity} 
-            child={state.ticketSelection!['Child'].quantity} 
-            senior={state.ticketSelection!['Senior'].quantity}
+            ticketTypes={getAllTicketTypes(state.ticketSelection!)} 
+            ticketSelections={state.ticketSelection!}
+            priceDeductions={priceDeductions}
           />
         </div>
         {/* Choose number of tickets (regular, child, senior) */}
         <TicketSelectionContainer 
-          handleTicketAmountChange={handleTicketAmountChange} 
-          ticketTypes={[
-            state.ticketSelection!['Child'].ticketType,
-            state.ticketSelection!['Adult'].ticketType,
-            state.ticketSelection!['Senior'].ticketType,
-          ]} 
-          ticketSelections={state.ticketSelection!}
-          />
+          handleTicketAmountChange={handleTicketAmountChange}
+          ticketTypes={getAllTicketTypes(state.ticketSelection!)}
+          ticketSelections={state.ticketSelection!} 
+          priceDeductions={priceDeductions}
+        />
       </div>
       {/* Choose seats (grid) */}
+      <SeatsGrid 
+        totalSeats={0} 
+        occupiedSeats={0} />
     </div>
   );
 };

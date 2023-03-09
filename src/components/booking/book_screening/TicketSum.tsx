@@ -1,35 +1,39 @@
 import React from 'react';
-import { ticketPrice } from './Booking';
 import '../../../scss/booking/Booking.scss'
-import { getTicketDiscountPercentage, getTicketDiscountPrice } from '../../../data/utils/format_utils';
+import { TicketType } from '../../../domain/interfaces/TicketType';
+import { TicketSelection } from '../../../domain/models/TicketSelection';
+import { calcualteSubTotal, calculateDiscountPercentage, calculatePriceDeductions, calculateTotalPriceDeductions, maxTicketPrice } from '../../../data/utils/ticket_utils';
 
 interface TicketSumProps {
-  regular: number;
-  child: number;
-  senior: number;
+  ticketTypes: TicketType[];
+  ticketSelections: {[id: string]: TicketSelection};
+  priceDeductions: {[id: string]: number};
 }
 
-const renderDiscountInformation = (ticketType: string, quantity: number) => {
-  if (quantity > 0) {
-    const discountPercentage = getTicketDiscountPercentage(ticketType);
-    const discountPrice = getTicketDiscountPrice(ticketType, quantity);
-    const totalPrice = quantity * ticketPrice - discountPrice;
+const renderDiscountInformation = (
+  priceDeductions: {[id: string]: number}, 
+  ticketType: TicketType,
+  maxTicketPrice: number,
+  quantity: number) => {
+  if (quantity > 0 && priceDeductions[ticketType.name] > 0) {
+    const discountPrice = priceDeductions[ticketType.name] * quantity;
+    const discountPercentage = calculateDiscountPercentage(priceDeductions[ticketType.name], maxTicketPrice);
     return (
-      <div className='ticket-type-price-container'>
-        <p className='ticket-type'>{quantity} {ticketType} discount {discountPercentage}%</p>
+      <div key={ticketType.id} className='ticket-type-price-container'>
+        <p className='ticket-type'>{quantity} {ticketType.name} discount {discountPercentage}%</p>
         <p className='ticket-price'>-{discountPrice} kr</p>
       </div>
     )
   }
 }
 
-const renderSubTotalWithPriceReduction = (subTotal: number, priceReduction: number) => {
+const renderSubTotalWithPriceReduction = (subTotal: number, totalPriceDeductions: number) => {
   return (
     <div className='ticket-type-price-container'>
       <p className='ticket-type'>Subtotal</p>
       <p className='ticket-price'>{subTotal} kr</p>
       <p className='ticket-type'>Total price deductions</p>
-      <p className='ticket-price'>{priceReduction} kr</p>
+      <p className='ticket-price'>{totalPriceDeductions} kr</p>
     </div>
   )
 }
@@ -45,23 +49,33 @@ const renderTotalSum = (totalPrice: number) => {
   )
 }
 
-export const TicketSum: React.FC<TicketSumProps> = ({ regular, child, senior }) => {
+export const TicketSum = ({ 
+  ticketTypes, 
+  ticketSelections,
+  priceDeductions
+ }: TicketSumProps) => {
+
+  const subtotal: number = calcualteSubTotal(ticketSelections);
+  const totalPriceDeductions: number = calculateTotalPriceDeductions(ticketSelections, priceDeductions);
+
   return (
     <div className='ticket-sum-container'>
-      
       <hr />
-      {renderDiscountInformation('Child', child)}
-      {renderDiscountInformation('Senior', senior)}
-      {renderSubTotalWithPriceReduction(
-        (regular * 110) + (child * 110) + (senior * 110),
-        ((getTicketDiscountPrice('Child', child) + 
-        (getTicketDiscountPrice('Senior', senior))))
-      )}
-      {renderTotalSum(
-        (regular * 110) + (child * 110) + (senior * 110) - 
-        ((getTicketDiscountPrice('Child', child) + 
-        (getTicketDiscountPrice('Senior', senior)))))
+      {
+        ticketTypes.map((ticketType) => {
+          return renderDiscountInformation(
+            priceDeductions,
+            ticketType,
+            maxTicketPrice(ticketTypes),
+            ticketSelections[ticketType.name].quantity
+          );
+        })
       }
+      { renderSubTotalWithPriceReduction(
+          subtotal, 
+          totalPriceDeductions
+        )}
+      { renderTotalSum(subtotal - totalPriceDeductions) }
     </div>
   );
 };
