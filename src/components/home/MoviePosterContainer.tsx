@@ -4,6 +4,7 @@ import { formatMinutes } from '../../data/utils/format_utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { Movie } from '../../domain/interfaces/Movie'
+import { Link } from 'react-router-dom'
 
 interface MoviePosterContainerProps {
   movie: Movie
@@ -16,7 +17,8 @@ interface MoviePosterContainerProps {
  */
 export const MoviePosterContainer = ({ movie }: MoviePosterContainerProps) => {
   return (
-    <Container className='text-center mb-5 featured-movie'>
+    <Link to={`/book/${movie.id}`}>
+      <Container className='text-center mb-5 featured-movie'>
       <img draggable="false" src={`assets${movie.description.posterImage}`} alt={movie.title} />
       <Container className='featured-movie-info-container'>
         <p className='featured-movie-title'>{movie.title}</p>
@@ -28,5 +30,6 @@ export const MoviePosterContainer = ({ movie }: MoviePosterContainerProps) => {
         }</div>
       </Container>
     </Container>
+    </Link>
   )
 }

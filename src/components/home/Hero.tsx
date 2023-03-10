@@ -14,7 +14,7 @@ import { useHero } from '../../data/hooks/useHero';
  */
 export const Hero = () => {
   
-  const [state, dispatch] = useHero();
+  const [state, _] = useHero();
 
   if (state.pageStatus === PageStatus.Loading) {
     return <Loading />;
