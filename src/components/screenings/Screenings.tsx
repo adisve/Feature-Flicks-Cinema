@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Loading } from '../animations/Loading';
-import { useNavigate } from 'react-router-dom';
 import '../../scss/screenings/Screenings.scss';
 import '../../scss/Offcanvas.scss'
 import { ErrorMessage } from '../errors/ErrorMessage';
@@ -9,7 +8,10 @@ import { ScreeningsHeader } from './ScreeningsHeader';
 import { FilteringOffcanvas } from './FilteringOffcanvas';
 import { ScreeningsList } from './ScreeningsList';
 import { useScreenings } from '../../data/hooks/useScreenings';
-import { filterMoviesByCategories, getAvailableCategories } from '../../data/utils/mapping_utils';
+import { 
+  filterMoviesByCategories, 
+  getAvailableCategories 
+} from '../../data/utils/mapping_utils';
 import { sortedMovies } from '../../data/utils/list_utils';
 
 /**

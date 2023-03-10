@@ -2,7 +2,6 @@ import React from 'react';
 import { ScreeningListContainer } from './containers/ScreeningListContainer';
 import { Screening } from '../../../domain/interfaces/Screening';
 import { Movie } from '../../../domain/interfaces/Movie';
-import { sortedMovies } from '../../../data/utils/list_utils';
 
 interface ScreeningsListViewProps {
   movies: Movie[];
