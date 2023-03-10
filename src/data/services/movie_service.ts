@@ -8,6 +8,7 @@ import { Movie } from '../../domain/interfaces/Movie';
 import { TicketType } from '../../domain/interfaces/TicketType';
 import { Category } from '../../domain/interfaces/Category';
 import { AxiosResponse } from 'axios';
+import { OccupiedSeats } from '../../domain/interfaces/OccupiedSeats';
 
 const fetchData = async <T>(url: string, middleware: ((response: AxiosResponse<T>) => AxiosResponse<T>)[]): Promise<T> => {
   try {
