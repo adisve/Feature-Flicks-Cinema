@@ -10,7 +10,6 @@ interface ScreeningDateContainerProps {
   screening: Screening;
   seatsPerAuditorium: SeatsPerAuditorium;
   occupiedSeats: number;
-  movie: Movie;
   auditoriumName: string;
 }
 
@@ -18,7 +17,6 @@ export const ScreeningDateContainer = ({
   screening, 
   seatsPerAuditorium, 
   occupiedSeats, 
-  movie, 
   auditoriumName }: ScreeningDateContainerProps) => {
   return (
     <li>

@@ -25,11 +25,18 @@ export const BootstrapNavbar = () => {
             <p>FEATURE FLICKS</p>
           </div>
         </Navbar.Brand>
-        <Navbar.Toggle onClick={toggleNav}><FontAwesomeIcon style={{color: '#FEFEFE'}} icon={navOpened ? faXmark : faBars} size='lg'/></Navbar.Toggle>
+        <Navbar.Toggle 
+          onClick={toggleNav}>
+            <FontAwesomeIcon style={{color: '#FEFEFE'}} icon={navOpened ? faXmark : faBars} size='lg'/>
+        </Navbar.Toggle>
         <Navbar.Collapse>
           <Nav>
-            <NavLink eventKey={1} as={Link} to='/' onClick={handleNavLinkClick}><p className='hover-underline-animation'>Home</p></NavLink>
-            <NavLink eventKey={2} as={Link} to='/screenings' onClick={handleNavLinkClick}><p className='hover-underline-animation'>Screenings</p></NavLink>
+            <NavLink eventKey={1} as={Link} to='/' onClick={handleNavLinkClick}>
+              <p className='hover-underline-animation'>Home</p>
+            </NavLink>
+            <NavLink eventKey={2} as={Link} to='/screenings' onClick={handleNavLinkClick}>
+              <p className='hover-underline-animation'>Screenings</p>
+            </NavLink>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

@@ -10,7 +10,7 @@ import '../../scss/booking/SelectScreening.scss'
 
 export const SelectScreening = () => {
   const { id } = useParams<{ id: string }>();
-  const [state, dispatch] = useSelectScreening(id);
+  const [state, _] = useSelectScreening(id);
 
   if (state.pageStatus === PageStatus.Loading) {
     return <Loading />;
@@ -54,11 +54,11 @@ export const SelectScreening = () => {
                   screeningsGroupedByAuditorium[auditorium.id].map((screening) => (
                     <ScreeningDateContainer 
                       key={screening.id}
-                      movie={state.movie!}
                       screening={screening}
                       seatsPerAuditorium={state.seatsPerAuditorium![screening.auditoriumId]}
                       occupiedSeats={state.occupiedSeats![screening.id]} 
-                      auditoriumName={auditorium.name}                        />
+                      auditoriumName={auditorium.name}
+                    />
                   ))
                 }
               </ul>
