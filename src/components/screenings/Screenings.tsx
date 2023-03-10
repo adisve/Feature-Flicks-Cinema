@@ -10,6 +10,7 @@ import { FilteringOffcanvas } from './FilteringOffcanvas';
 import { ScreeningsList } from './ScreeningsList';
 import { useScreenings } from '../../data/hooks/useScreenings';
 import { filterMoviesByCategories, getAvailableCategories } from '../../data/utils/mapping_utils';
+import { sortedMovies } from '../../data/utils/list_utils';
 
 /**
  * Component that renders the screenings list.
@@ -59,10 +60,10 @@ export const Screenings = () => {
       />
       <ScreeningsList
         filteredMovies={
-          filterMoviesByCategories(
+          sortedMovies(filterMoviesByCategories(
             state.movies, 
             state.selectedCategories
-          )
+          ), state.screenings)
         }
         screenings={state.screenings}
         viewType={state.viewType}

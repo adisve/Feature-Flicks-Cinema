@@ -41,3 +41,27 @@ export const getAllTicketTypes = (ticketSelectionDict: {[id: string]: TicketSele
   }
   return ticketTypes;
 }
+
+// Function to get the first screening date for a movie
+const getFirstScreeningDate = (movie: Movie, screenings: Screening[]): Date | null => {
+  const movieScreenings = screenings.filter((screening) => screening.movieId === movie.id);
+  if (movieScreenings.length > 0) {
+    return new Date(movieScreenings[0].time);
+  }
+  return null;
+}
+
+// Sort the movies by the first screening date
+export const sortedMovies = (movies: Movie[], screenings: Screening[]): Movie[] => {
+  return movies.sort((leftMovie, rightMovie) => {
+    const leftMovieScreening = getFirstScreeningDate(leftMovie, screenings);
+    const rightMovieScreening = getFirstScreeningDate(rightMovie, screenings);
+    if (leftMovieScreening && rightMovieScreening) {
+      return leftMovieScreening.getTime() - rightMovieScreening.getTime();
+    } else if (leftMovieScreening) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+}

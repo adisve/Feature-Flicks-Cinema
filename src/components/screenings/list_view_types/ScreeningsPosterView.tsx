@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { ScreeningPosterContainer } from './containers/ScreeningPosterContainer';
 import { Movie } from '../../../domain/interfaces/Movie';
 import { Screening } from '../../../domain/interfaces/Screening';
+import { sortedMovies } from '../../../data/utils/list_utils';
 
 interface ScreeningsPosterViewProps {
   movies: Movie[];
@@ -18,7 +19,7 @@ export const ScreeningsPosterView = ({ movies, screenings }: ScreeningsPosterVie
           <Col key={movie.id} xxl={3} xl={6} lg={6} md={6} sm={12}>
             <ScreeningPosterContainer 
               movie={movie}
-              screenings={screenings}
+              screenings={screenings.filter((screening) => screening.movieId === movie.id)}
             />
           </Col>
         ))}

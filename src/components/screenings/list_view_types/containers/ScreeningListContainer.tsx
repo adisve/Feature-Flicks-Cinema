@@ -23,14 +23,19 @@ export const ScreeningListContainer = ({ movie, screenings }: ScreeningListConta
   return (
     <Link to={`/book/${movie.id}`} className='screening-container'>
       <div className='screening-item'>
-        <img draggable='false' src={`assets${movie.description.posterImage}`} alt={movie.title}></img>
+        <img 
+          draggable='false' 
+          src={`assets${movie.description.posterImage}`} 
+          alt={movie.title}>
+        </img>
         <div className='inner-screening-container'>
           <div className='screening-meta'>
             <h4>{movie.title}</h4>
             <div className='screening-category-container'>
               <div className='screening-categories'>
                 {movie.description.categories.map((category, index) => {
-                  return (<p key={index.toString()} className='screening-category'>#{category}</p>
+                  return (
+                    <p key={index.toString()} className='screening-category'>#{category}</p>
                   );
                 })}
               </div>
@@ -54,7 +59,9 @@ export const ScreeningListContainer = ({ movie, screenings }: ScreeningListConta
                 }</h5>
               </div>
               <p className='screening-time'>
-                <span style={{paddingRight: '10px'}}><FontAwesomeIcon icon={faClock}/></span>
+                <span style={{paddingRight: '10px'}}>
+                  <FontAwesomeIcon icon={faClock}/>
+                </span>
                 {formatMinutes(movie.description.length)}
               </p>
             </div>

@@ -30,7 +30,7 @@ export const MovieScreeningInformation = ({
           {/* Location */}
           <p>{auditoriumName}</p>
           {/* Date/time */}
-          <p>{screeningTimeToString(new Date(screening.time))}</p>
+          <p className='screening-time'>{screeningTimeToString(new Date(screening.time))}</p>
         </div>
       </div>
     </>
