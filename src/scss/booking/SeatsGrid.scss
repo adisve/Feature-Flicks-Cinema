@@ -1,0 +1,45 @@
+.seats-grid-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  padding-bottom: 80px;
+
+
+  .seats-grid {
+    max-width: 380px;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(30px, 1fr));
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .seat-button {
+    width: 40px;
+    height: 40px;
+    margin-right: 4px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: var(--background-color);
+  
+    &:hover:not(:disabled) {
+      background-color: var(--primary-color);
+      color: #FEFEFE;
+    }
+  
+    &:disabled {
+      color: #333333;
+      background-color: #333333;
+      cursor: default;
+    }
+  }
+  
+  .selected-seat {
+    background-color: var(--primary-color);
+    color: #FEFEFE;
+  }
+}

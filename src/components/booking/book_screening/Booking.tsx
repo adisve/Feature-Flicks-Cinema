@@ -15,10 +15,6 @@ import { calculatePriceDeductions } from '../../../data/utils/ticket_utils';
 export const Booking = () => {
   const [state, dispatch] = useBooking();
 
-  const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
-    dispatch({ type: "updateTicketQuantity", ticketName: ticketType.name, quantity: amount });
-  };
-
   if (state.pageStatus === PageStatus.Loading) {
     return <Loading />;
   }
@@ -31,6 +27,11 @@ export const Booking = () => {
     getAllTicketTypes(state.ticketSelection!), 
     state.ticketSelection!);
 
+  const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
+    
+    dispatch({ type: "updateTicketQuantity", ticketName: ticketType.name, quantity: amount });
+  };
+
   return (
     <div>
       {/* Ticket selection (amount), movie information/screening information */}
@@ -40,7 +41,7 @@ export const Booking = () => {
           <MovieScreeningInformation 
             movie={state.movie!} 
             screening={state.screening!}
-            auditoriumName={state.auditorium!.name}
+            auditoriumName={state.seatsPerAuditorium!.name}
           />
           {/* Selected tickets, their prices, total sum */}
           <TicketSum 
@@ -50,7 +51,7 @@ export const Booking = () => {
           />
         </div>
         {/* Choose number of tickets (regular, child, senior) */}
-        <TicketSelectionContainer 
+        <TicketSelectionContainer
           handleTicketAmountChange={handleTicketAmountChange}
           ticketTypes={getAllTicketTypes(state.ticketSelection!)}
           ticketSelections={state.ticketSelection!} 
@@ -58,9 +59,12 @@ export const Booking = () => {
         />
       </div>
       {/* Choose seats (grid) */}
-      <SeatsGrid 
-        totalSeats={0} 
-        occupiedSeats={0} />
+      <SeatsGrid
+        selectedSeats={Object.keys(state.selectedSeats!).map(Number)}
+        totalSeats={state.seatsPerAuditorium!.numberOfSeats}
+        availableSeats={state.availableSeats}
+        handleSeatClicked={() => console.log('handleSeatClicked')}
+      />
     </div>
   );
 };

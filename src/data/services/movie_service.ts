@@ -39,6 +39,11 @@ export const fetchAuditoriumById = async (screeningId: number): Promise<Auditori
   return await fetchData<Auditorium[]>(url, [checkStatus]);
 };
 
+export const fetchSeatsPerAuditoriumById = async (auditoriumId: number): Promise<SeatsPerAuditorium[]> => {
+  const url = createRequestURL(seatsPerAuditoriumURL, { id: auditoriumId });
+  return await fetchData<SeatsPerAuditorium[]>(url, [checkStatus]);
+}
+
 export const fetchOccupiedSeatsByMovieName = async (movieName: string): Promise<OccupiedSeats[]> => {
   const url = `${occupiedSeatsURL}?movie=${movieName}`;
   return await fetchData<OccupiedSeats[]>(url, [checkStatus]);
