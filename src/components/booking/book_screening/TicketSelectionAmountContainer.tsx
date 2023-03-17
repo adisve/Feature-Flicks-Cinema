@@ -22,11 +22,15 @@ export const TicketSelectionAmountContainer = ({
   handleTicketAmountChange}: TicketSelectionAmountContainerProps) => {
 
   const decreaseAmount = () => {
-    handleTicketAmountChange(ticketType, ticketAmount - 1);
+    if (totalTicketAmount > 1) {
+      handleTicketAmountChange(ticketType, ticketAmount - 1);
+    }
   }
 
   const increaseAmount = () => {
-    handleTicketAmountChange(ticketType, ticketAmount + 1);
+    if (totalTicketAmount < 10) {
+      handleTicketAmountChange(ticketType, ticketAmount + 1);
+    }
   }
 
   return (
