@@ -140,6 +140,7 @@ export function useBooking(): [BookingState, BookingDispatch] {
         const availableSeats = Array.from(Array(state.seatsPerAuditorium!.numberOfSeats), (_, index) => index + 1)
           .filter((seatNumber) => !occupiedSeatsArray.includes(seatNumber));
         // Update state
+        dispatch({ type: "setSelectedSeats", selectedSeats: {} })
         dispatch({ type: "setAvailableSeats", availableSeats: availableSeats });
         dispatch({ type: "setTicketSelection", ticketSelection: ticketSelections });
         dispatch({ type: "setOccupiedSeats", occupiedSeats: occupiedSeatsForMovieScreening });

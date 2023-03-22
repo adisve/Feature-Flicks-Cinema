@@ -26,8 +26,18 @@ export const Screenings = () => {
     dispatch({ type: 'setViewType', viewType });
   };
 
-  const setSelectedCategories = (selectedCategories: string[]) => {
-    dispatch({ type: 'setSelectedCategories', selectedCategories });
+  const clearSelectedCategories = () => {
+    dispatch({ type: 'setSelectedCategories', selectedCategories: [] });
+    let clearedCounts:{ [key: string]: number } = {}
+    state.categories.forEach((category) => {
+      clearedCounts[category.title] = 0;
+    });
+    state.movies.forEach((movie) => {
+      movie.description.categories.forEach((category) => {
+        clearedCounts[category] += 1;
+      });
+    });
+    dispatch({ type: "setVisiblecategoryCounts", visibleCategoryCounts: clearedCounts });
   };
 
   const toggleOffcanvas = () =>
@@ -75,7 +85,7 @@ export const Screenings = () => {
         toggleOffcanvas={toggleOffcanvas}
         selectedCategories={state.selectedCategories}
         categories={state.categories}
-        setSelectedCategories={setSelectedCategories}
+        clearSelectedCategories={clearSelectedCategories}
         handleCategoryClick={handleCategoryClick} 
         counts={state.visibleCategoryCounts}
       />

@@ -10,6 +10,7 @@
     display: grid;
     grid-template-columns: repeat(8, minmax(30px, 1fr));
     gap: 20px;
+    direction: rtl;
     align-items: center;
   }
   

@@ -3,7 +3,12 @@ import { TicketSelectionAmountContainer } from './TicketSelectionAmountContainer
 import '../../../scss/booking/TicketSelection.scss'
 import { TicketSelection } from '../../../domain/models/TicketSelection';
 import { TicketType } from '../../../domain/interfaces/TicketType';
-import { maxTicketPrice, totalTicketQuantity } from '../../../data/utils/ticket_utils';
+import { 
+  hasTicketsSelected, 
+  maxTicketPrice, 
+  totalTicketQuantity } 
+  from '../../../data/utils/ticket_utils';
+import { Button } from 'react-bootstrap';
 
 interface TicketSelectionProps {
   ticketTypes: TicketType[];
@@ -18,7 +23,7 @@ export const TicketSelectionContainer = ({
   priceDeductions, 
   handleTicketAmountChange 
   }: TicketSelectionProps) => {
-  
+
   return (
     <div className='ticket-selection'>
       {/* Header */}
@@ -35,6 +40,10 @@ export const TicketSelectionContainer = ({
           ticketTypePriceDeduction={priceDeductions[ticketType.name]}
         />
       ))}
+      <Button 
+        disabled={!hasTicketsSelected(ticketSelections)} 
+        className='confirm-booking-btn'>Confirm booking
+      </Button>
     </div>
   );
 };

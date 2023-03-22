@@ -28,7 +28,32 @@ export const Booking = () => {
     state.ticketSelection!);
 
   const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
-    
+    const availableSeats = state.availableSeats;
+    const occupiedSeats = state.occupiedSeats?.occupiedSeats.split(',').map(Number);
+    let selectedSeats = state.selectedSeats!;
+    let gap: number = -1;
+
+    // If new ticket amount is added to a certain ticket type
+    if (state.ticketSelection![ticketType.name].quantity < amount) {
+      for (let i = 1; i < availableSeats.length + 1; i++) {
+        if (selectedSeats![i] === undefined && !occupiedSeats?.includes(i)) {
+        selectedSeats[i] = ticketType;
+        break;
+      }
+    }
+    } else {
+      // Otherwise, remove nearest matching seat ticket type from dictionary
+      const seatNumbers = Object.keys(selectedSeats).map(Number);
+      for (let i = seatNumbers.length - 1; i >= 0; i--) {
+        const seatNumber = seatNumbers[i];
+        if (selectedSeats[seatNumber] === ticketType) {
+          delete selectedSeats[seatNumber];
+          gap = seatNumber;
+          break;
+        }
+      }
+    }
+    dispatch({ type: "setSelectedSeats", selectedSeats: selectedSeats });
     dispatch({ type: "updateTicketQuantity", ticketName: ticketType.name, quantity: amount });
   };
 

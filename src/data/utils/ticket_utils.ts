@@ -57,3 +57,15 @@ export const calculateDiscountPercentage = (
 export const maxTicketPrice = (ticketTypes: TicketType[]): number => {
   return ticketTypes.reduce((max, ticketType) => Math.max(max, ticketType.price), 0);
 }
+
+export const hasTicketsSelected = (dictionary: {[id: string]: TicketSelection}): boolean => {
+  for (const id in dictionary) {
+    if (dictionary.hasOwnProperty(id)) {
+      const selection = dictionary[id];
+      if (selection.quantity > 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
