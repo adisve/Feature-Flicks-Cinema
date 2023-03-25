@@ -24,13 +24,13 @@ export const TicketSelectionAmountContainer = ({
   const decreaseAmount = () => {
     if (totalTicketAmount >= 1) {
       console.log('decrease amount')
-      handleTicketAmountChange(ticketType, ticketAmount - 1);
+      handleTicketAmountChange(ticketType, - 1);
     }
   }
 
   const increaseAmount = () => {
     if (totalTicketAmount < 10) {
-      handleTicketAmountChange(ticketType, ticketAmount + 1);
+      handleTicketAmountChange(ticketType, 1);
     }
   }
 

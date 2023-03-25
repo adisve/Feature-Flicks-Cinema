@@ -49,7 +49,7 @@ export const TicketSelectionContainer = ({
     }
     return amount;
   }
-
+  console.log(priceDeductions)
   return (
     <div className="ticket-selection">
       {/* Header */}

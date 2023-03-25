@@ -53,7 +53,6 @@ export const TicketSum = ({
   selectedSeats,
   priceDeductions
  }: TicketSumProps) => {
-
   const subtotal: number = calcualteSubTotal(selectedSeats);
   const totalPriceDeductions: number = 
     calculateTotalPriceDeductions(
@@ -61,7 +60,7 @@ export const TicketSum = ({
       priceDeductions
     );
 
-  const ticketQuantity = (ticketName: String): number => {
+  const quantityForTicket = (ticketName: String): number => {
     var quantity = 0;
     for (const id in selectedSeats) {
       const ticket = selectedSeats[id];
@@ -81,7 +80,7 @@ export const TicketSum = ({
             priceDeductions,
             ticketType,
             maxTicketPrice(ticketTypes),
-            ticketQuantity(ticketType.name)
+            quantityForTicket(ticketType.name)
           );
         })
       }
