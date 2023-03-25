@@ -34,50 +34,51 @@ export const Booking = () => {
     const availableSeats = Array.from(Array(state.seatsPerAuditorium!.numberOfSeats), (_, index) => index + 1)
       .filter((seatNumber) => !occupiedSeatsArray.includes(seatNumber));
       
-      const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
-        const selectedSeats = state.selectedSeats!;
-        if (amount > 0) {
-          const selectedSeatNumbers = Object.keys(selectedSeats).map(Number);
-          const availableSeatRanges = getAvailableSeatRanges(
-            occupiedSeatsArray, 
-            state.seatsPerAuditorium!.numberOfSeats
-          );
-          // At least two adjacent seats
-          const firstAvailableRange = availableSeatRanges.find(range => range.length >= selectedSeatNumbers.length + 1);
-          if (firstAvailableRange) {
-            const newSelectedSeats: {[id: number]: TicketType} = {};
-            let index = 0;
-            for (let i = 0; i < firstAvailableRange.length; i++) {
-              const seatNumber = firstAvailableRange[i];
-              if (index < selectedSeatNumbers.length) {
-                const selectedSeatNumber = selectedSeatNumbers[index];
-                if (selectedSeats[selectedSeatNumber]) {
-                  console.log(`Moving ${selectedSeatNumber} to ${seatNumber}`);
-                  newSelectedSeats[seatNumber] = selectedSeats[selectedSeatNumber];
-                  delete selectedSeats[selectedSeatNumber];
-                  index++;
-                }
-              } else {
-                console.log(`Adding ${ticketType} to ${seatNumber}`);
-                newSelectedSeats[seatNumber] = ticketType;
-                break;
+    const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
+      const selectedSeats = state.selectedSeats!;
+      const selectedSeatNumbers = Object.keys(selectedSeats).map(Number);
+      if (amount > 0) {
+        const availableSeatRanges = getAvailableSeatRanges(
+          occupiedSeatsArray,
+          state.seatsPerAuditorium!.numberOfSeats
+        );
+        // At least two adjacent seats
+        const firstAvailableRange = availableSeatRanges.find(
+          (range) => range.length >= selectedSeatNumbers.length + 1
+        );
+        if (firstAvailableRange) {
+          const newSelectedSeats: { [id: number]: TicketType } = {};
+          let index = 0;
+          for (let i = 0; i < firstAvailableRange.length; i++) {
+            const seatNumber = firstAvailableRange[i];
+            if (index < selectedSeatNumbers.length) {
+              const selectedSeatNumber = selectedSeatNumbers[index];
+              if (selectedSeats[selectedSeatNumber]) {
+                newSelectedSeats[seatNumber] = selectedSeats[selectedSeatNumber];
+                delete selectedSeats[selectedSeatNumber];
+                index++;
               }
+            } else {
+              newSelectedSeats[seatNumber] = ticketType;
+              break;
             }
-            // Update selectedSeats
-            for (const seatNumber in selectedSeats) {
-              newSelectedSeats[Number(seatNumber)] = selectedSeats[seatNumber];
-            }
-            dispatch({ type: 'setSelectedSeats', selectedSeats: newSelectedSeats });
           }
-        } else if (amount < 0) {
-          const matchingSeat = findMatchingSeat(selectedSeats, state.seatsPerAuditorium!.numberOfSeats, ticketType);
-          if (matchingSeat) {
-            console.log(`Removing seat ${matchingSeat}`);
-            delete selectedSeats[matchingSeat];
-            dispatch({ type: 'setSelectedSeats', selectedSeats });
-          }
+          Object.assign(newSelectedSeats, selectedSeats);
+          dispatch({ type: 'setSelectedSeats', selectedSeats: newSelectedSeats });
         }
-      };
+      } else if (amount < 0) {
+        const matchingSeat = findMatchingSeat(
+          selectedSeats,
+          state.seatsPerAuditorium!.numberOfSeats,
+          ticketType
+        );
+        if (matchingSeat) {
+          delete selectedSeats[matchingSeat];
+          dispatch({ type: 'setSelectedSeats', selectedSeats });
+        }
+      }
+    };
+      
 
   return (
     <div>
