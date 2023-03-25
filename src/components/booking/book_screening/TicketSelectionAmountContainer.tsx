@@ -46,7 +46,7 @@ export const TicketSelectionAmountContainer = ({
           <span><FontAwesomeIcon className='icon' icon={faMinus}/></span>
         </Button>
         <p className='ticket-amount'>{ticketAmount}</p>
-        <Button disabled={totalTicketAmount >= 10} onClick={increaseAmount}>
+        <Button disabled={totalTicketAmount >= 2} onClick={increaseAmount}>
           <span><FontAwesomeIcon className='icon' icon={faPlus}/></span>
         </Button>
       </div>

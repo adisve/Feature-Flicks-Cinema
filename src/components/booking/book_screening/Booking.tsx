@@ -79,7 +79,8 @@ export const Booking = () => {
         <TicketSelectionContainer
           handleTicketAmountChange={handleTicketAmountChange}
           ticketTypes={getAllTicketTypes(state.ticketSelection!)}
-          ticketSelections={state.ticketSelection!} 
+          ticketSelections={state.ticketSelection!}
+          selectedSeats={state.selectedSeats!}
           priceDeductions={priceDeductions}
         />
       </div>
