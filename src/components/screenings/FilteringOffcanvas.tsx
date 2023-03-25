@@ -9,7 +9,7 @@ interface FilteringOffcanvasProps {
   selectedCategories: string[];
   categories: Category[];
   counts: { [key: string]: number };
-  setSelectedCategories: (selectedCategories: string[]) => void;
+  clearSelectedCategories: () => void;
   handleCategoryClick: (category: string) => void;
 }
 
@@ -19,7 +19,7 @@ export const FilteringOffcanvas = ({
   selectedCategories,
   categories,
   counts,
-  setSelectedCategories,
+  clearSelectedCategories,
   handleCategoryClick,
  }: FilteringOffcanvasProps) => {
   return (
@@ -27,7 +27,7 @@ export const FilteringOffcanvas = ({
       <Offcanvas.Header>
         <Button variant='custom' onClick={toggleOffcanvas}>Done</Button>
         <Offcanvas.Title>Filters</Offcanvas.Title>
-        <Button variant='custom' onClick={() => setSelectedCategories([])}>Clear filters</Button>
+        <Button variant='custom' onClick={() => clearSelectedCategories()}>Clear filters</Button>
       </Offcanvas.Header>
       <Offcanvas.Body>
         <Categories

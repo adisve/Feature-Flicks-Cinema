@@ -9,15 +9,15 @@ import '../../../scss/booking/Booking.scss'
 import { TicketType } from '../../../domain/interfaces/TicketType';
 import { PageStatus } from '../../../domain/enums/PageStatus';
 import { SeatsGrid } from './SeatsGrid';
-import { getAllTicketTypes } from '../../../data/utils/list_utils';
-import { calculatePriceDeductions } from '../../../data/utils/ticket_utils';
+import { 
+  calculatePriceDeductions, 
+  findMatchingSeat, 
+  findNextAvailableSeat, 
+  getAvailableSeatRanges} 
+from '../../../data/utils/ticket_utils';
 
 export const Booking = () => {
   const [state, dispatch] = useBooking();
-
-  const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
-    dispatch({ type: "updateTicketQuantity", ticketName: ticketType.name, quantity: amount });
-  };
 
   if (state.pageStatus === PageStatus.Loading) {
     return <Loading />;
@@ -28,8 +28,57 @@ export const Booking = () => {
   }
 
   const priceDeductions = calculatePriceDeductions(
-    getAllTicketTypes(state.ticketSelection!), 
-    state.ticketSelection!);
+    state.ticketTypes!);
+  
+    const occupiedSeatsArray = state.occupiedSeats!.occupiedSeats.split(',').map((seats) => parseInt(seats, 10));
+    const availableSeats = Array.from(Array(state.seatsPerAuditorium!.numberOfSeats), (_, index) => index + 1)
+      .filter((seatNumber) => !occupiedSeatsArray.includes(seatNumber));
+      
+    const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
+      const selectedSeats = state.selectedSeats!;
+      const selectedSeatNumbers = Object.keys(selectedSeats).map(Number);
+      if (amount > 0) {
+        const availableSeatRanges = getAvailableSeatRanges(
+          occupiedSeatsArray,
+          state.seatsPerAuditorium!.numberOfSeats
+        );
+        // At least two adjacent seats
+        const firstAvailableRange = availableSeatRanges.find(
+          (range) => range.length >= selectedSeatNumbers.length + 1
+        );
+        if (firstAvailableRange) {
+          const newSelectedSeats: { [id: number]: TicketType } = {};
+          let index = 0;
+          for (let i = 0; i < firstAvailableRange.length; i++) {
+            const seatNumber = firstAvailableRange[i];
+            if (index < selectedSeatNumbers.length) {
+              const selectedSeatNumber = selectedSeatNumbers[index];
+              if (selectedSeats[selectedSeatNumber]) {
+                newSelectedSeats[seatNumber] = selectedSeats[selectedSeatNumber];
+                delete selectedSeats[selectedSeatNumber];
+                index++;
+              }
+            } else {
+              newSelectedSeats[seatNumber] = ticketType;
+              break;
+            }
+          }
+          Object.assign(newSelectedSeats, selectedSeats);
+          dispatch({ type: 'setSelectedSeats', selectedSeats: newSelectedSeats });
+        }
+      } else if (amount < 0) {
+        const matchingSeat = findMatchingSeat(
+          selectedSeats,
+          state.seatsPerAuditorium!.numberOfSeats,
+          ticketType
+        );
+        if (matchingSeat) {
+          delete selectedSeats[matchingSeat];
+          dispatch({ type: 'setSelectedSeats', selectedSeats });
+        }
+      }
+    };
+      
 
   return (
     <div>
@@ -40,27 +89,30 @@ export const Booking = () => {
           <MovieScreeningInformation 
             movie={state.movie!} 
             screening={state.screening!}
-            auditoriumName={state.auditorium!.name}
+            auditoriumName={state.seatsPerAuditorium!.name}
           />
           {/* Selected tickets, their prices, total sum */}
           <TicketSum 
-            ticketTypes={getAllTicketTypes(state.ticketSelection!)} 
-            ticketSelections={state.ticketSelection!}
-            priceDeductions={priceDeductions}
+            ticketTypes={state.ticketTypes!}
+            priceDeductions={priceDeductions} 
+            selectedSeats={state.selectedSeats!}          
           />
         </div>
         {/* Choose number of tickets (regular, child, senior) */}
-        <TicketSelectionContainer 
+        <TicketSelectionContainer
           handleTicketAmountChange={handleTicketAmountChange}
-          ticketTypes={getAllTicketTypes(state.ticketSelection!)}
-          ticketSelections={state.ticketSelection!} 
+          ticketTypes={state.ticketTypes!}
+          selectedSeats={state.selectedSeats!}
           priceDeductions={priceDeductions}
         />
       </div>
       {/* Choose seats (grid) */}
-      <SeatsGrid 
-        totalSeats={0} 
-        occupiedSeats={0} />
+      <SeatsGrid
+        selectedSeats={Object.keys(state.selectedSeats!).map(Number)}
+        totalSeats={state.seatsPerAuditorium!.numberOfSeats}
+        availableSeats={availableSeats}
+        handleSeatClicked={() => console.log('handleSeatClicked')}
+      />
     </div>
   );
 };

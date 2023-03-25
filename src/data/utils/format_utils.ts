@@ -14,3 +14,15 @@ export const dateHasPassed = (date: Date): boolean => {
   const currentDate = new Date();
   return date < currentDate;
 }
+
+export const generateUniqueString = (): string => {
+  const randomLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const randomThreeLetters = () => {
+    let result = '';
+    for (let i = 0; i < 3; i++) {
+      result += randomLetters.charAt(Math.floor(Math.random() * randomLetters.length));
+    }
+    return result;
+  };
+  return `${randomThreeLetters()}${randomThreeLetters()}`;
+}

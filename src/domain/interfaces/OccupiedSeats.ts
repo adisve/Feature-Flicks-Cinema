@@ -1,4 +1,4 @@
-interface OccupiedSeats {
+export interface OccupiedSeats {
   screeningId: string;
   screeningTime: Date;
   movie: string;

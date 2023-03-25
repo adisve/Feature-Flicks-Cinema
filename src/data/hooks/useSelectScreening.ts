@@ -5,6 +5,7 @@ import { SeatsPerAuditorium } from '../../domain/interfaces/SeatsPerAuditorium';
 import { Screening } from '../../domain/interfaces/Screening';
 import { Movie } from '../../domain/interfaces/Movie';
 import { Auditorium } from '../../domain/interfaces/Auditorium';
+import { OccupiedSeats } from '../../domain/interfaces/OccupiedSeats';
 
 interface SelectScreeningState {
   movie?: Movie;

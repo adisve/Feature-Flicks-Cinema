@@ -8,6 +8,7 @@ import { Movie } from '../../domain/interfaces/Movie';
 import { TicketType } from '../../domain/interfaces/TicketType';
 import { Category } from '../../domain/interfaces/Category';
 import { AxiosResponse } from 'axios';
+import { OccupiedSeats } from '../../domain/interfaces/OccupiedSeats';
 
 const fetchData = async <T>(url: string, middleware: ((response: AxiosResponse<T>) => AxiosResponse<T>)[]): Promise<T> => {
   try {
@@ -37,6 +38,11 @@ export const fetchAuditoriumById = async (screeningId: number): Promise<Auditori
   const url = createRequestURL(auditoriumsURL, { id: screeningId });
   return await fetchData<Auditorium[]>(url, [checkStatus]);
 };
+
+export const fetchSeatsPerAuditoriumById = async (auditoriumId: number): Promise<SeatsPerAuditorium[]> => {
+  const url = createRequestURL(seatsPerAuditoriumURL, { id: auditoriumId });
+  return await fetchData<SeatsPerAuditorium[]>(url, [checkStatus]);
+}
 
 export const fetchOccupiedSeatsByMovieName = async (movieName: string): Promise<OccupiedSeats[]> => {
   const url = `${occupiedSeatsURL}?movie=${movieName}`;
