@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { TicketSelection } from '../../../domain/models/TicketSelection';
 import '../../../scss/booking/ConfirmationModal.scss';
 import { TicketType } from '../../../domain/interfaces/TicketType';
 import { generateUniqueString } from '../../../data/utils/format_utils';
@@ -9,25 +8,25 @@ import { calcualteSubTotal, calculateTotalPriceDeductions } from '../../../data/
 interface ConfirmationModalProps {
   modalOpen: boolean;
   toggleModalOpen: () => void;
-  ticketSelection: { [id: string]: TicketSelection };
   selectedSeats: { [id: number]: TicketType };
+  priceDeductions: { [id: string]: number };
   onConfirm: () => void;
 }
 
 export const ConfirmationModal = ({
   modalOpen,
   toggleModalOpen,
-  ticketSelection,
   selectedSeats,
   onConfirm,
+  priceDeductions
 }: ConfirmationModalProps) => {
   const seats = Object.keys(selectedSeats);
   const bookingId = generateUniqueString();
   const row = seats.map((seatNumber) => Math.floor((parseInt(seatNumber) - 1) / 8) + 1)[0];
-  const subtotal: number = calcualteSubTotal(ticketSelection);
+  const subtotal: number = calcualteSubTotal(selectedSeats);
   const totalPriceDeductions: number = 
     calculateTotalPriceDeductions(
-      ticketSelection, 
+      selectedSeats, 
       priceDeductions
     );
   return (
@@ -40,7 +39,7 @@ export const ConfirmationModal = ({
         <h4>Seats: {seats.join(', ')}</h4>
         <h4>Row: {row}</h4>
         <hr />
-        <h4>Total price: {}</h4>
+        <h4>Total price: {subtotal - totalPriceDeductions} kr</h4>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={toggleModalOpen}>

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { TicketSelectionAmountContainer } from './TicketSelectionAmountContainer';
 import '../../../scss/booking/TicketSelection.scss';
-import { TicketSelection } from '../../../domain/models/TicketSelection';
 import { TicketType } from '../../../domain/interfaces/TicketType';
 import {
-  hasTicketsSelected,
   maxTicketPrice,
   totalTicketQuantity,
 } from '../../../data/utils/ticket_utils';
@@ -14,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 
 interface TicketSelectionProps {
   ticketTypes: TicketType[];
-  ticketSelections: { [id: string]: TicketSelection };
   selectedSeats: {[id: number]: TicketType};
   priceDeductions: { [id: string]: number };
   handleTicketAmountChange: (ticketType: TicketType, amount: number) => void;
@@ -22,7 +19,6 @@ interface TicketSelectionProps {
 
 export const TicketSelectionContainer = ({
   ticketTypes,
-  ticketSelections,
   selectedSeats,
   priceDeductions,
   handleTicketAmountChange,
@@ -44,6 +40,16 @@ export const TicketSelectionContainer = ({
     navigate('/screenings');
   };
 
+  const amount = (ticketName: String) => {
+    var amount = 0;
+    for (const ticketTypeId in selectedSeats) {
+      if (selectedSeats[ticketTypeId].name === ticketName) {
+        amount++;
+      }
+    }
+    return amount;
+  }
+
   return (
     <div className="ticket-selection">
       {/* Header */}
@@ -52,16 +58,16 @@ export const TicketSelectionContainer = ({
       {ticketTypes.map((ticketType) => (
         <TicketSelectionAmountContainer
           key={ticketType.id}
-          totalTicketAmount={totalTicketQuantity(ticketSelections)}
+          totalTicketAmount={totalTicketQuantity(selectedSeats)}
           ticketType={ticketType}
           maxTicketPrice={maxTicketPrice(ticketTypes)}
-          ticketAmount={ticketSelections[ticketType.name].quantity}
+          ticketAmount={amount(ticketType.name)}
           handleTicketAmountChange={handleTicketAmountChange}
           ticketTypePriceDeduction={priceDeductions[ticketType.name]}
         />
       ))}
       <Button
-        disabled={!hasTicketsSelected(ticketSelections)}
+        disabled={Object.keys(selectedSeats).length === 0}
         className="confirm-booking-btn"
         onClick={handleConfirmBooking}
       >
@@ -70,9 +76,9 @@ export const TicketSelectionContainer = ({
       <ConfirmationModal
         modalOpen={modalOpen}
         toggleModalOpen={handleCloseModal}
-        ticketSelection={ticketSelections}
         selectedSeats={selectedSeats}
         onConfirm={handleModalConfirm}
+        priceDeductions={priceDeductions}
       />
     </div>
   );

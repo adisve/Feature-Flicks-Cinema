@@ -10,7 +10,6 @@ import {
 import { PageStatus } from '../../domain/enums/PageStatus';
 import { Screening } from '../../domain/interfaces/Screening';
 import { Movie } from '../../domain/interfaces/Movie';
-import { TicketSelection } from '../../domain/models/TicketSelection';
 import { TicketType } from '../../domain/interfaces/TicketType';
 import { SeatsPerAuditorium } from '../../domain/interfaces/SeatsPerAuditorium';
 import { OccupiedSeats } from '../../domain/interfaces/OccupiedSeats';
@@ -19,23 +18,20 @@ type BookingState = {
   screening?: Screening;
   movie?: Movie;
   pageStatus: PageStatus;
-  ticketSelection?: {[id: string]: TicketSelection};
   seatsPerAuditorium?: SeatsPerAuditorium;
   occupiedSeats?: OccupiedSeats;
+  ticketTypes?: TicketType[];
   selectedSeats?: {[id: number]: TicketType};
-  availableSeats: number[];
 };
 
 type BookingAction =
   | { type: "setScreening"; screening: Screening }
   | { type: "setMovie"; movie: Movie }
   | { type: "setPageStatus"; pageStatus: PageStatus }
-  | { type: "setTicketSelection"; ticketSelection: {[id: string]: TicketSelection} }
-  | { type: "updateTicketQuantity"; ticketName: string; quantity: number }
   | { type: "setAuditorium"; seatsPerAuditorium: SeatsPerAuditorium }
   | { type: "setOccupiedSeats"; occupiedSeats: OccupiedSeats; }
-  | { type: "setSelectedSeats"; selectedSeats: {[id: number]: TicketType} }
-  | { type: "setAvailableSeats"; availableSeats: number[]; };
+  | { type: "setTicketTypes"; ticketTypes: TicketType[]; }
+  | { type: "setSelectedSeats"; selectedSeats: {[id: number]: TicketType} };
 
 
 type BookingDispatch = Dispatch<BookingAction>;
@@ -44,11 +40,10 @@ const initialState: BookingState = {
   screening: undefined,
   movie: undefined,
   pageStatus: PageStatus.Loading,
-  ticketSelection: undefined,
   seatsPerAuditorium: undefined,
   occupiedSeats: undefined,
+  ticketTypes: undefined,
   selectedSeats: {},
-  availableSeats: []
 };
 
 const bookingReducer = (state: BookingState, action: BookingAction): BookingState => {
@@ -59,29 +54,14 @@ const bookingReducer = (state: BookingState, action: BookingAction): BookingStat
       return { ...state, movie: action.movie };
     case "setPageStatus":
       return { ...state, pageStatus: action.pageStatus };
-    case "setTicketSelection":
-      return { ...state, ticketSelection: action.ticketSelection };
     case "setAuditorium":
       return {...state, seatsPerAuditorium: action.seatsPerAuditorium };
     case "setOccupiedSeats":
       return {...state, occupiedSeats: action.occupiedSeats };
+    case "setTicketTypes":
+      return {...state, ticketTypes: action.ticketTypes };
     case "setSelectedSeats":
       return {...state, selectedSeats: action.selectedSeats };
-    case "setAvailableSeats":
-      return {...state, availableSeats: action.availableSeats };
-    case "updateTicketQuantity":
-      const { ticketName, quantity } = action;
-      if (!state.ticketSelection) return state;
-      return {
-        ...state,
-        ticketSelection: {
-          ...state.ticketSelection,
-          [ticketName]: {
-            ...state.ticketSelection[ticketName],
-            quantity
-          }
-        }
-      };
     default:
       return state;
   }
@@ -129,22 +109,15 @@ export function useBooking(): [BookingState, BookingDispatch] {
         fetchTicketTypes()
       ]).then(([occupiedSeatsData, ticketTypesData]) => {
         const occupiedSeatsForMovieScreening = occupiedSeatsData[0];
-        const ticketSelections: {[id: string]: TicketSelection} = {};
+        const ticketTypes: TicketType[] = [];
         ticketTypesData.forEach((ticketType: TicketType) => {
-          ticketSelections[ticketType.name] = new TicketSelection(
-            ticketType,
-            0
-          );
+          ticketTypes.push(ticketType);
         });
-        const occupiedSeatsArray = occupiedSeatsForMovieScreening.occupiedSeats.split(',').map((seats) => parseInt(seats, 10));
-        const availableSeats = Array.from(Array(state.seatsPerAuditorium!.numberOfSeats), (_, index) => index + 1)
-          .filter((seatNumber) => !occupiedSeatsArray.includes(seatNumber));
         // Update state
         dispatch({ type: "setSelectedSeats", selectedSeats: {} })
-        dispatch({ type: "setAvailableSeats", availableSeats: availableSeats });
-        dispatch({ type: "setTicketSelection", ticketSelection: ticketSelections });
         dispatch({ type: "setOccupiedSeats", occupiedSeats: occupiedSeatsForMovieScreening });
         dispatch({ type: "setPageStatus", pageStatus: PageStatus.Success });
+        dispatch({ type: "setTicketTypes", ticketTypes });
       });
     }
   }, [state.movie]);

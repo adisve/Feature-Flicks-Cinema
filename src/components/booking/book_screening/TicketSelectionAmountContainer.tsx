@@ -22,7 +22,8 @@ export const TicketSelectionAmountContainer = ({
   handleTicketAmountChange}: TicketSelectionAmountContainerProps) => {
 
   const decreaseAmount = () => {
-    if (totalTicketAmount > 1) {
+    if (totalTicketAmount >= 1) {
+      console.log('decrease amount')
       handleTicketAmountChange(ticketType, ticketAmount - 1);
     }
   }

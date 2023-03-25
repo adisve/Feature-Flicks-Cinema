@@ -1,12 +1,11 @@
 import React from 'react';
 import '../../../scss/booking/Booking.scss'
 import { TicketType } from '../../../domain/interfaces/TicketType';
-import { TicketSelection } from '../../../domain/models/TicketSelection';
 import { calcualteSubTotal, calculateDiscountPercentage, calculatePriceDeductions, calculateTotalPriceDeductions, maxTicketPrice } from '../../../data/utils/ticket_utils';
 
 interface TicketSumProps {
   ticketTypes: TicketType[];
-  ticketSelections: {[id: string]: TicketSelection};
+  selectedSeats: {[id : string]: TicketType};
   priceDeductions: {[id: string]: number};
 }
 
@@ -49,18 +48,29 @@ const renderTotalSum = (totalPrice: number) => {
   )
 }
 
-export const TicketSum = ({ 
-  ticketTypes, 
-  ticketSelections,
+export const TicketSum = ({
+  ticketTypes,
+  selectedSeats,
   priceDeductions
  }: TicketSumProps) => {
 
-  const subtotal: number = calcualteSubTotal(ticketSelections);
+  const subtotal: number = calcualteSubTotal(selectedSeats);
   const totalPriceDeductions: number = 
     calculateTotalPriceDeductions(
-      ticketSelections, 
+      selectedSeats, 
       priceDeductions
     );
+
+  const ticketQuantity = (ticketName: String): number => {
+    var quantity = 0;
+    for (const id in selectedSeats) {
+      const ticket = selectedSeats[id];
+      if (ticket.name === ticketName) {
+        quantity += 1
+      }
+    }
+    return quantity;
+  }
 
   return (
     <div className='ticket-sum-container'>
@@ -71,7 +81,7 @@ export const TicketSum = ({
             priceDeductions,
             ticketType,
             maxTicketPrice(ticketTypes),
-            ticketSelections[ticketType.name].quantity
+            ticketQuantity(ticketType.name)
           );
         })
       }

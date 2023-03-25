@@ -9,7 +9,6 @@ import '../../../scss/booking/Booking.scss'
 import { TicketType } from '../../../domain/interfaces/TicketType';
 import { PageStatus } from '../../../domain/enums/PageStatus';
 import { SeatsGrid } from './SeatsGrid';
-import { getAllTicketTypes } from '../../../data/utils/list_utils';
 import { calculatePriceDeductions } from '../../../data/utils/ticket_utils';
 
 export const Booking = () => {
@@ -24,37 +23,34 @@ export const Booking = () => {
   }
 
   const priceDeductions = calculatePriceDeductions(
-    getAllTicketTypes(state.ticketSelection!), 
-    state.ticketSelection!);
+    state.ticketTypes!, 
+    state.selectedSeats!);
+  
+  const occupiedSeatsArray = state.occupiedSeats!.occupiedSeats.split(',').map((seats) => parseInt(seats, 10));
+  const availableSeats = Array.from(Array(state.seatsPerAuditorium!.numberOfSeats), (_, index) => index + 1)
+    .filter((seatNumber) => !occupiedSeatsArray.includes(seatNumber));
 
   const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
-    const availableSeats = state.availableSeats;
-    const occupiedSeats = state.occupiedSeats?.occupiedSeats.split(',').map(Number);
     let selectedSeats = state.selectedSeats!;
-    let gap: number = -1;
-
-    // If new ticket amount is added to a certain ticket type
-    if (state.ticketSelection![ticketType.name].quantity < amount) {
-      for (let i = 1; i < availableSeats.length + 1; i++) {
-        if (selectedSeats![i] === undefined && !occupiedSeats?.includes(i)) {
-        selectedSeats[i] = ticketType;
-        break;
+    if (amount > 0) {
+      for (let i = 1; i < state.seatsPerAuditorium!.numberOfSeats + 1; i++) {
+        if (selectedSeats[i] === undefined && !occupiedSeatsArray.includes(i)) {
+          console.log(`Adding seat ${i}`);
+          selectedSeats[i] = ticketType;
+          break;
+        }
       }
-    }
-    } else {
-      // Otherwise, remove nearest matching seat ticket type from dictionary
-      const seatNumbers = Object.keys(selectedSeats).map(Number);
-      for (let i = seatNumbers.length - 1; i >= 0; i--) {
-        const seatNumber = seatNumbers[i];
-        if (selectedSeats[seatNumber] === ticketType) {
-          delete selectedSeats[seatNumber];
-          gap = seatNumber;
+    } else if (amount < 0) {
+      // Find nearest matching seat to remove based on ticket type
+      for (let i = state.seatsPerAuditorium!.numberOfSeats + 1; i > 0; i--) {
+        if (selectedSeats[i] !== undefined && selectedSeats[i] === ticketType) {
+          console.log(`Removing seat ${i}`);
+          delete selectedSeats[i];
           break;
         }
       }
     }
-    dispatch({ type: "setSelectedSeats", selectedSeats: selectedSeats });
-    dispatch({ type: "updateTicketQuantity", ticketName: ticketType.name, quantity: amount });
+    dispatch({ type: 'setSelectedSeats', selectedSeats })
   };
 
   return (
@@ -70,16 +66,15 @@ export const Booking = () => {
           />
           {/* Selected tickets, their prices, total sum */}
           <TicketSum 
-            ticketTypes={getAllTicketTypes(state.ticketSelection!)} 
-            ticketSelections={state.ticketSelection!}
-            priceDeductions={priceDeductions}
+            ticketTypes={state.ticketTypes!}
+            priceDeductions={priceDeductions} 
+            selectedSeats={state.selectedSeats!}          
           />
         </div>
         {/* Choose number of tickets (regular, child, senior) */}
         <TicketSelectionContainer
           handleTicketAmountChange={handleTicketAmountChange}
-          ticketTypes={getAllTicketTypes(state.ticketSelection!)}
-          ticketSelections={state.ticketSelection!}
+          ticketTypes={state.ticketTypes!}
           selectedSeats={state.selectedSeats!}
           priceDeductions={priceDeductions}
         />
@@ -88,7 +83,7 @@ export const Booking = () => {
       <SeatsGrid
         selectedSeats={Object.keys(state.selectedSeats!).map(Number)}
         totalSeats={state.seatsPerAuditorium!.numberOfSeats}
-        availableSeats={state.availableSeats}
+        availableSeats={availableSeats}
         handleSeatClicked={() => console.log('handleSeatClicked')}
       />
     </div>

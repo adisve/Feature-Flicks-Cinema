@@ -1,33 +1,31 @@
 import { TicketType } from "../../domain/interfaces/TicketType";
-import { TicketSelection } from "../../domain/models/TicketSelection";
 
-export const totalTicketQuantity = (ticketSelectionDict: {[id: string]: TicketSelection}): number => {
+export const totalTicketQuantity = (selectedSeats: {[id: string]: TicketType}): number => {
   let totalQuantity = 0;
-  for (const id in ticketSelectionDict) {
-    const ticketSelection = ticketSelectionDict[id];
-    totalQuantity += ticketSelection.quantity;
+  for (const id in selectedSeats) {
+    totalQuantity++;
   }
   return totalQuantity;
 }
 
-export const calcualteSubTotal = (ticketSelectionDict: {[id: string]: TicketSelection}): number => {
+export const calcualteSubTotal = (selectedSeats: {[id: string]: TicketType}): number => {
   let subtotal = 0;
-  for (const id in ticketSelectionDict) {
-    const ticketSelection = ticketSelectionDict[id];
-    subtotal += ticketSelection.quantity * ticketSelection.ticketType.price;
+  for (const id in selectedSeats) {
+    const ticket = selectedSeats[id];
+    subtotal += ticket.price
   }
   return subtotal;
 }
 
-export const calculatePriceDeductions = (ticketTypes: TicketType[], ticketSelectionDict: {[id: string]: TicketSelection}): {[id: string]: number} => {
+export const calculatePriceDeductions = (ticketTypes: TicketType[], selectedSeats: {[id: string]: TicketType}): {[id: string]: number} => {
   // find maximum price in the ticket selection
   const maxPrice = maxTicketPrice(ticketTypes);
   // calculate price deduction on each ticket type
   const priceDeductionDict: {[id: string]: number} = {};
-  for (const id in ticketSelectionDict) {
-    const ticketSelection = ticketSelectionDict[id];
-    if (ticketSelection.ticketType.price < maxPrice) {
-      priceDeductionDict[id] = maxPrice - ticketSelection.ticketType.price;
+  for (const id in selectedSeats) {
+    const ticket = selectedSeats[id];
+    if (ticket.price > maxPrice) {
+      priceDeductionDict[id] = maxPrice - ticket.price;
     } else {
       priceDeductionDict[id] = 0;
     }
@@ -36,13 +34,13 @@ export const calculatePriceDeductions = (ticketTypes: TicketType[], ticketSelect
 }
 
 export const calculateTotalPriceDeductions = (
-  ticketSelectionDict: {[id: string]: TicketSelection}, 
+  selectedSeats: {[id: string]: TicketType}, 
   priceDeductionDict: {[id: string]: number}): number => {
   let totalPriceDeduction = 0;
   // Find price deduction on each ticket type and add it to total price deduction
-  for (const id in ticketSelectionDict) {
-    const ticketSelection = ticketSelectionDict[id];
-    totalPriceDeduction += ticketSelection.quantity * priceDeductionDict[id];
+  for (const id in selectedSeats) {
+    const ticket = selectedSeats[id];
+    totalPriceDeduction += ticket.price * priceDeductionDict[id];
   }
   return totalPriceDeduction;
 }
@@ -56,16 +54,4 @@ export const calculateDiscountPercentage = (
 
 export const maxTicketPrice = (ticketTypes: TicketType[]): number => {
   return ticketTypes.reduce((max, ticketType) => Math.max(max, ticketType.price), 0);
-}
-
-export const hasTicketsSelected = (dictionary: {[id: string]: TicketSelection}): boolean => {
-  for (const id in dictionary) {
-    if (dictionary.hasOwnProperty(id)) {
-      const selection = dictionary[id];
-      if (selection.quantity > 0) {
-        return true;
-      }
-    }
-  }
-  return false;
 }
