@@ -22,7 +22,7 @@ export const ConfirmationModal = ({
 }: ConfirmationModalProps) => {
   const seats = Object.keys(selectedSeats);
   const bookingId = generateUniqueString();
-  const row = seats.map((seatNumber) => Math.floor((parseInt(seatNumber) - 1) / 8) + 1)[0];
+  const row = seats.map((seatNumber) => Math.floor((parseInt(seatNumber) - 1) / 12) + 1)[0];
   const subtotal: number = calcualteSubTotal(selectedSeats);
   const totalPriceDeductions: number = 
     calculateTotalPriceDeductions(
