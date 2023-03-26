@@ -47,7 +47,7 @@ The state of this component is determined by the useHero hook, which uses the us
 
 <hr>
 
-### SelectScreening.tsx
+### Screenings.tsx
 
 The **Screenings.tsx** component displays a list of movies, in two different formats. The movies are either represented as list items that are more compact, or movie posters. The two housing components for these two views, respectively, are **ScreeningsListView.tsx** and **ScreeningsPosterView.tsx**. Each list type contains a list of either **ScreeningsListViewContainer.tsx** or **ScreeningsPosterContainer.tsx**, respectively.
 
