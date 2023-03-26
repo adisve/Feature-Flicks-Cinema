@@ -11,9 +11,8 @@ import { PageStatus } from '../../../domain/enums/PageStatus';
 import { SeatsGrid } from './SeatsGrid';
 import { 
   calculatePriceDeductions, 
-  findMatchingSeat, 
-  findNextAvailableSeat, 
-  getAvailableSeatRanges} 
+  handleAddTickets,
+  handleRemoveTickets} 
 from '../../../data/utils/ticket_utils';
 
 export const Booking = () => {
@@ -30,54 +29,29 @@ export const Booking = () => {
   const priceDeductions = calculatePriceDeductions(
     state.ticketTypes!);
   
-    const occupiedSeatsArray = state.occupiedSeats!.occupiedSeats.split(',').map((seats) => parseInt(seats, 10));
-    const availableSeats = Array.from(Array(state.seatsPerAuditorium!.numberOfSeats), (_, index) => index + 1)
-      .filter((seatNumber) => !occupiedSeatsArray.includes(seatNumber));
-      
-    const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
-      const selectedSeats = state.selectedSeats!;
-      const selectedSeatNumbers = Object.keys(selectedSeats).map(Number);
-      if (amount > 0) {
-        const availableSeatRanges = getAvailableSeatRanges(
-          occupiedSeatsArray,
-          state.seatsPerAuditorium!.numberOfSeats
-        );
-        // At least two adjacent seats
-        const firstAvailableRange = availableSeatRanges.find(
-          (range) => range.length >= selectedSeatNumbers.length + 1
-        );
-        if (firstAvailableRange) {
-          const newSelectedSeats: { [id: number]: TicketType } = {};
-          let index = 0;
-          for (let i = 0; i < firstAvailableRange.length; i++) {
-            const seatNumber = firstAvailableRange[i];
-            if (index < selectedSeatNumbers.length) {
-              const selectedSeatNumber = selectedSeatNumbers[index];
-              if (selectedSeats[selectedSeatNumber]) {
-                newSelectedSeats[seatNumber] = selectedSeats[selectedSeatNumber];
-                delete selectedSeats[selectedSeatNumber];
-                index++;
-              }
-            } else {
-              newSelectedSeats[seatNumber] = ticketType;
-              break;
-            }
-          }
-          Object.assign(newSelectedSeats, selectedSeats);
-          dispatch({ type: 'setSelectedSeats', selectedSeats: newSelectedSeats });
-        }
-      } else if (amount < 0) {
-        const matchingSeat = findMatchingSeat(
-          selectedSeats,
-          state.seatsPerAuditorium!.numberOfSeats,
-          ticketType
-        );
-        if (matchingSeat) {
-          delete selectedSeats[matchingSeat];
-          dispatch({ type: 'setSelectedSeats', selectedSeats });
-        }
-      }
-    };
+  const occupiedSeatsArray = state.occupiedSeats!.occupiedSeats.split(',').map((seats) => parseInt(seats, 10));
+  const availableSeats = Array.from(Array(state.seatsPerAuditorium!.numberOfSeats), (_, index) => index + 1)
+    .filter((seatNumber) => !occupiedSeatsArray.includes(seatNumber));
+
+  // Function that handles changes to the number of tickets.
+  const handleTicketAmountChange = (ticketType: TicketType, amount: number) => {
+    const selectedSeats = state.selectedSeats!;
+    const selectedSeatNumbers = Object.keys(selectedSeats).map(Number);
+    if (amount > 0) {
+      const newSelectedSeats = handleAddTickets(
+        selectedSeatNumbers,
+        selectedSeats,
+        occupiedSeatsArray,
+        ticketType,
+        state.seatsPerAuditorium!.numberOfSeats
+      );
+      dispatch({ type: 'setSelectedSeats', selectedSeats: newSelectedSeats });
+    } else if (amount < 0) {
+      const newSelectedSeats = handleRemoveTickets(
+        selectedSeats, ticketType, state.seatsPerAuditorium!.numberOfSeats);
+      dispatch({ type: 'setSelectedSeats', selectedSeats: newSelectedSeats });
+    }
+  };
       
 
   return (

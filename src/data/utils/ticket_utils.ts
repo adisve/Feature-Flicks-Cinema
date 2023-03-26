@@ -65,6 +65,7 @@ export const getAvailableSeatRanges = (
   return availableSeatRanges;
 };
 
+
 export const calculateDiscountPercentage = (
   ticketTypePriceDeduction: number,
   maxTicketPrice: number,
@@ -72,17 +73,88 @@ export const calculateDiscountPercentage = (
   return Math.ceil((ticketTypePriceDeduction / maxTicketPrice) * 100);
 }
 
+
 export const maxTicketPrice = (ticketTypes: TicketType[]): number => {
   return ticketTypes.reduce((max, ticketType) => Math.max(max, ticketType.price), 0);
 }
 
-export const findNextAvailableSeat = (selectedSeats: {[id: string]: TicketType}, numberOfSeats: number, occupiedSeatsArray: number[], ticketType: TicketType) => {
-  return Array.from({ length: numberOfSeats }, (_, i) => i + 1)
-    .find((seatNumber) => selectedSeats[seatNumber] === undefined && !occupiedSeatsArray.includes(seatNumber));
-}
 
 export const findMatchingSeat = (selectedSeats: {[id: string]: TicketType}, numberOfSeats: number, ticketType: TicketType) => {
   return Array.from({ length: numberOfSeats }, (_, i) => i + 1)
     .reverse()
     .find((seatNumber) => selectedSeats[seatNumber] === ticketType);
 }
+
+
+// This function updates the selected seats object with a new selection.
+export const updateSelectedSeats = (
+  availableSeatRange: number[],
+  selectedSeatNumbers: number[],
+  selectedSeats: { [id: number]: TicketType },
+  ticketType: TicketType,
+): {[id : string]: TicketType} => {
+  const newSelectedSeats: { [id: number]: TicketType } = {};
+  let index = 0;
+  for (let i = 0; i < availableSeatRange.length; i++) {
+    const seatNumber = availableSeatRange[i];
+    if (index < selectedSeatNumbers.length) {
+      const selectedSeatNumber = selectedSeatNumbers[index];
+      if (selectedSeats[selectedSeatNumber]) {
+        newSelectedSeats[seatNumber] = selectedSeats[selectedSeatNumber];
+        delete selectedSeats[selectedSeatNumber];
+        index++;
+      }
+    } else {
+      newSelectedSeats[seatNumber] = ticketType;
+      break;
+    }
+  }
+  Object.assign(newSelectedSeats, selectedSeats);
+  return newSelectedSeats;
+};
+
+
+// This function handles adding tickets.
+export const handleAddTickets = (
+  selectedSeatNumbers: number[],
+  selectedSeats: { [id: number]: TicketType },
+  occupiedSeatsArray: number[],
+  ticketType: TicketType,
+  numberOfSeats: number
+): {[id : string]: TicketType} => {
+  const availableSeatRanges = getAvailableSeatRanges(
+    occupiedSeatsArray,
+    numberOfSeats
+  );
+  const firstAvailableRange = availableSeatRanges.find(
+    (range) => range.length >= selectedSeatNumbers.length + 1
+  );
+  let newSelectedSeats: {[id : string]: TicketType} = selectedSeats;
+  if (firstAvailableRange) {
+    newSelectedSeats = updateSelectedSeats(
+      firstAvailableRange,
+      selectedSeatNumbers,
+      selectedSeats,
+      ticketType,
+    );
+  }
+  return newSelectedSeats;
+};
+
+
+// This function handles removing tickets.
+export const handleRemoveTickets = (
+  selectedSeats: { [id: number]: TicketType },
+  ticketType: TicketType,
+  numberOfSeats: number
+): {[id : string]: TicketType} => {
+  const matchingSeat = findMatchingSeat(
+    selectedSeats,
+    numberOfSeats,
+    ticketType
+  );
+  if (matchingSeat) {
+    delete selectedSeats[matchingSeat];
+  }
+  return selectedSeats;
+};
