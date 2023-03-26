@@ -14,7 +14,7 @@ export const SeatsGrid = ({
   handleSeatClicked, 
   selectedSeats}: SeatsGridProps) => {
 
-  const seats = Array.from({ length: totalSeats }, (_, index) => index + 1);
+  const seats = Array.from({ length: totalSeats + 1 }, (_, index) => index + 1);
 
   return (
     <div className="seats-grid-container">

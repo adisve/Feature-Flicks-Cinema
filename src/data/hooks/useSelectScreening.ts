@@ -87,11 +87,13 @@ export const useSelectScreening = (id?: string): [SelectScreeningState, SelectSc
             occupiedSeats.forEach((occupiedSeat) => {
               screeningIdsToOccupiedSeatsMap[occupiedSeat.screeningId] = occupiedSeat.occupied;
             });
+            console.log(`Occupied seats: ${occupiedSeats}`)
             // Create map of auditorium ids to amount of seats per auditorium
             const auditoriumIdsToSeatsPerAuditorium: {[id: string] : SeatsPerAuditorium} = {};
             seatsPerAuditorium.forEach((seatsPerAuditorium) => {
               auditoriumIdsToSeatsPerAuditorium[seatsPerAuditorium.id] = seatsPerAuditorium;
             });
+            console.log(auditoriumIdsToSeatsPerAuditorium);
             dispatch({ type: 'setAuditoriums', auditoriums });
             dispatch({ type: 'setScreenings', screenings: screeningsByMovieId });
             dispatch({ type: 'setSeatsPerAuditorium', seatsPerAuditorium: auditoriumIdsToSeatsPerAuditorium });

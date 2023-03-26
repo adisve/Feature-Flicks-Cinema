@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { screeningTimeToString } from '../../data/utils/mapping_utils'
 import { SeatsPerAuditorium } from '../../domain/interfaces/SeatsPerAuditorium'
 import { Screening } from '../../domain/interfaces/Screening'
-import { Movie } from '../../domain/interfaces/Movie'
 
 interface ScreeningDateContainerProps {
   screening: Screening;

@@ -2,7 +2,7 @@ import { useEffect, useReducer, Dispatch, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { 
   fetchMovieById, 
-  fetchOccupiedSeatsByMovieName, 
+  fetchOccupiedSeatsByScreeningId, 
   fetchScreeningById, 
   fetchSeatsPerAuditoriumById, 
   fetchTicketTypes 
@@ -11,14 +11,12 @@ import { PageStatus } from '../../domain/enums/PageStatus';
 import { Screening } from '../../domain/interfaces/Screening';
 import { Movie } from '../../domain/interfaces/Movie';
 import { TicketType } from '../../domain/interfaces/TicketType';
-import { SeatsPerAuditorium } from '../../domain/interfaces/SeatsPerAuditorium';
 import { OccupiedSeats } from '../../domain/interfaces/OccupiedSeats';
 
 type BookingState = {
   screening?: Screening;
   movie?: Movie;
   pageStatus: PageStatus;
-  seatsPerAuditorium?: SeatsPerAuditorium;
   occupiedSeats?: OccupiedSeats;
   ticketTypes?: TicketType[];
   selectedSeats?: {[id: number]: TicketType};
@@ -28,7 +26,6 @@ type BookingAction =
   | { type: "setScreening"; screening: Screening }
   | { type: "setMovie"; movie: Movie }
   | { type: "setPageStatus"; pageStatus: PageStatus }
-  | { type: "setAuditorium"; seatsPerAuditorium: SeatsPerAuditorium }
   | { type: "setOccupiedSeats"; occupiedSeats: OccupiedSeats; }
   | { type: "setTicketTypes"; ticketTypes: TicketType[]; }
   | { type: "setSelectedSeats"; selectedSeats: {[id: number]: TicketType} };
@@ -40,7 +37,6 @@ const initialState: BookingState = {
   screening: undefined,
   movie: undefined,
   pageStatus: PageStatus.Loading,
-  seatsPerAuditorium: undefined,
   occupiedSeats: undefined,
   ticketTypes: undefined,
   selectedSeats: {},
@@ -54,8 +50,6 @@ const bookingReducer = (state: BookingState, action: BookingAction): BookingStat
       return { ...state, movie: action.movie };
     case "setPageStatus":
       return { ...state, pageStatus: action.pageStatus };
-    case "setAuditorium":
-      return {...state, seatsPerAuditorium: action.seatsPerAuditorium };
     case "setOccupiedSeats":
       return {...state, occupiedSeats: action.occupiedSeats };
     case "setTicketTypes":
@@ -77,10 +71,6 @@ export function useBooking(): [BookingState, BookingDispatch] {
       fetchScreeningById(id)
         .then((screenings: Screening[]) => {
           dispatch({ type: "setScreening", screening: screenings[0] });
-          fetchSeatsPerAuditoriumById(screenings[0].auditoriumId)
-            .then((seatsPerAuditorium: SeatsPerAuditorium[]) => {
-            dispatch({ type: "setAuditorium", seatsPerAuditorium: seatsPerAuditorium[0] });
-          })
         })
         .catch((err: Error) => {
           console.log(err);
@@ -100,15 +90,16 @@ export function useBooking(): [BookingState, BookingDispatch] {
           dispatch({ type: "setPageStatus", pageStatus: PageStatus.Error });
         });
     }
-  }, [state.seatsPerAuditorium]);
+  }, [state.screening]);
 
   useEffect(() => {
-    if (state.movie && state.seatsPerAuditorium) {
+    if (id && state.movie) {
       Promise.all([
-        fetchOccupiedSeatsByMovieName(state.movie.title),
+        fetchOccupiedSeatsByScreeningId(id),
         fetchTicketTypes()
       ]).then(([occupiedSeatsData, ticketTypesData]) => {
         const occupiedSeatsForMovieScreening = occupiedSeatsData[0];
+        console.log(occupiedSeatsForMovieScreening)
         const ticketTypes: TicketType[] = [];
         ticketTypesData.forEach((ticketType: TicketType) => {
           ticketTypes.push(ticketType);

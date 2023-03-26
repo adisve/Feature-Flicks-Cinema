@@ -20,6 +20,7 @@ export const groupScreeningsByAuditorium = (screenings: Screening[]): { [auditor
     }
     screeningsByAuditorium[screening.auditoriumId].push(screening);
   });
+  console.log(screeningsByAuditorium);
   return screeningsByAuditorium;
 }
 

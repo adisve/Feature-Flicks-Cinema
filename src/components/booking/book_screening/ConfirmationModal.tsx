@@ -32,14 +32,14 @@ export const ConfirmationModal = ({
   return (
     <Modal size='lg' show={modalOpen} onHide={toggleModalOpen}>
       <Modal.Header closeButton>
-        <Modal.Title>Confirm your booking</Modal.Title>
+        <Modal.Title>Your booking</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Booking number: {bookingId}</h4>
-        <h4>Seats: {seats.join(', ')}</h4>
-        <h4>Row: {row}</h4>
+        <h5>Booking number: {bookingId}</h5>
+        <h5>Seats: {seats.join(', ')}</h5>
+        <h5>Row: {row}</h5>
         <hr />
-        <h4>Total price: {subtotal - totalPriceDeductions} kr</h4>
+        <h5>Total price: {subtotal - totalPriceDeductions} kr</h5>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={toggleModalOpen}>

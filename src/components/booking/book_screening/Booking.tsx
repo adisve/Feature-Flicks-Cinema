@@ -30,7 +30,7 @@ export const Booking = () => {
     state.ticketTypes!);
   
   const occupiedSeatsArray = state.occupiedSeats!.occupiedSeats.split(',').map((seats) => parseInt(seats, 10));
-  const availableSeats = Array.from(Array(state.seatsPerAuditorium!.numberOfSeats), (_, index) => index + 1)
+  const availableSeats = Array.from(Array(state.occupiedSeats!.total + 1), (_, index) => index + 1)
     .filter((seatNumber) => !occupiedSeatsArray.includes(seatNumber));
 
   // Function that handles changes to the number of tickets.
@@ -43,12 +43,12 @@ export const Booking = () => {
         selectedSeats,
         occupiedSeatsArray,
         ticketType,
-        state.seatsPerAuditorium!.numberOfSeats
+        state.occupiedSeats!.total
       );
       dispatch({ type: 'setSelectedSeats', selectedSeats: newSelectedSeats });
     } else if (amount < 0) {
       const newSelectedSeats = handleRemoveTickets(
-        selectedSeats, ticketType, state.seatsPerAuditorium!.numberOfSeats);
+        selectedSeats, ticketType, state.occupiedSeats!.total);
       dispatch({ type: 'setSelectedSeats', selectedSeats: newSelectedSeats });
     }
   };
@@ -63,7 +63,7 @@ export const Booking = () => {
           <MovieScreeningInformation 
             movie={state.movie!} 
             screening={state.screening!}
-            auditoriumName={state.seatsPerAuditorium!.name}
+            auditoriumName={state.occupiedSeats!.auditorium}
           />
           {/* Selected tickets, their prices, total sum */}
           <TicketSum 
@@ -83,7 +83,7 @@ export const Booking = () => {
       {/* Choose seats (grid) */}
       <SeatsGrid
         selectedSeats={Object.keys(state.selectedSeats!).map(Number)}
-        totalSeats={state.seatsPerAuditorium!.numberOfSeats}
+        totalSeats={state.occupiedSeats!.total}
         availableSeats={availableSeats}
         handleSeatClicked={() => console.log('handleSeatClicked')}
       />
