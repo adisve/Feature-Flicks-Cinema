@@ -51,8 +51,8 @@ The state of this component is determined by the useHero hook, which uses the us
 
 The **Screenings.tsx** component displays a list of movies, in two different formats. The movies are either represented as list items that are more compact, or movie posters. The two housing components for these two views, respectively, are **ScreeningsListView.tsx** and **ScreeningsPosterView.tsx**. Each list type contains a list of either **ScreeningsListViewContainer.tsx** or **ScreeningsPosterContainer.tsx**, respectively.
 
-**Screenings.tsx** also contains a static header, **ScreeningsHeader.tsx**, at the top, which allows for toggling between the two views and also toggling the visibility of the **OffCanvas.tsx**. 
-The **OffCanvas.tsx** component displays a list of badges, generated in the **Categories.tsx** component, each containing a category and a number, indicating how many movies in the current filter adhere to the categories selected by the user. The **OffCanvas.tsx** component also allows the user to clear all the filters and to programmatically close it.
+**Screenings.tsx** also contains a static header, **ScreeningsHeader.tsx**, at the top, which allows for toggling between the two views and also toggling the visibility of the **FilteringOffCanvas.tsx**. 
+The **FilteringOffCanvas.tsx** component displays a list of badges, generated in the **Categories.tsx** component, each containing a category and a number, indicating how many movies in the current filter adhere to the categories selected by the user. The **FilteringOffCanvas.tsx** component also allows the user to clear all the filters and to programmatically close it.
 
 The state of this component is determined by the useSelectScreening hook, which uses the useReducer hook and a number of custom useEffect hooks and dispatch actions.
 
