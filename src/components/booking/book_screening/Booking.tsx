@@ -77,8 +77,9 @@ export const Booking = () => {
           handleTicketAmountChange={handleTicketAmountChange}
           ticketTypes={state.ticketTypes!}
           selectedSeats={state.selectedSeats!}
-          priceDeductions={priceDeductions}
-        />
+          priceDeductions={priceDeductions} 
+          screeningTime={state.screening!.time}
+          />
       </div>
       {/* Choose seats (grid) */}
       <SeatsGrid

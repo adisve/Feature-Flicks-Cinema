@@ -14,6 +14,7 @@ interface TicketSelectionProps {
   ticketTypes: TicketType[];
   selectedSeats: {[id: number]: TicketType};
   priceDeductions: { [id: string]: number };
+  screeningTime: string;
   handleTicketAmountChange: (ticketType: TicketType, amount: number) => void;
 }
 
@@ -21,6 +22,7 @@ export const TicketSelectionContainer = ({
   ticketTypes,
   selectedSeats,
   priceDeductions,
+  screeningTime,
   handleTicketAmountChange,
 }: TicketSelectionProps) => {
   const navigate = useNavigate();
@@ -78,8 +80,9 @@ export const TicketSelectionContainer = ({
         toggleModalOpen={handleCloseModal}
         selectedSeats={selectedSeats}
         onConfirm={handleModalConfirm}
-        priceDeductions={priceDeductions}
-      />
+        priceDeductions={priceDeductions} 
+        screeningTime={screeningTime}
+        />
     </div>
   );
 };

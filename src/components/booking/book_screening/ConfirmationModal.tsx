@@ -4,6 +4,7 @@ import '../../../scss/booking/ConfirmationModal.scss';
 import { TicketType } from '../../../domain/interfaces/TicketType';
 import { generateUniqueString } from '../../../data/utils/format_utils';
 import { calcualteSubTotal, calculateTotalPriceDeductions } from '../../../data/utils/ticket_utils';
+import { screeningTimeToString } from '../../../data/utils/mapping_utils';
 
 interface ConfirmationModalProps {
   modalOpen: boolean;
@@ -11,6 +12,7 @@ interface ConfirmationModalProps {
   selectedSeats: { [id: number]: TicketType };
   priceDeductions: { [id: string]: number };
   onConfirm: () => void;
+  screeningTime: string;
 }
 
 export const ConfirmationModal = ({
@@ -18,7 +20,8 @@ export const ConfirmationModal = ({
   toggleModalOpen,
   selectedSeats,
   onConfirm,
-  priceDeductions
+  priceDeductions,
+  screeningTime
 }: ConfirmationModalProps) => {
   const seats = Object.keys(selectedSeats);
   const bookingId = generateUniqueString();
@@ -35,6 +38,7 @@ export const ConfirmationModal = ({
         <Modal.Title>Your booking</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <h5>Date: {screeningTimeToString(new Date(screeningTime))}</h5>
         <h5>Booking number: {bookingId}</h5>
         <h5>Seats: {seats.join(', ')}</h5>
         <h5>Row: {row}</h5>
