@@ -1,10 +1,11 @@
-<h1 align="left">feature-flicks-cinema</h1>
+<h1 align="left">Feature Flicks Cinema</h1>
 
 <p align="left">
   The purpose of the project is to build a prototype website for a cinema called Feature Flicks, which has two auditoriums and is located in Småstad, Sweden. The goal is to create a frontend using React, React Router, and React Bootstrap that integrates with the provided backend to allow visitors to view movie information, filter by category, book tickets, and receive a receipt with a booking number.
   <br> 
 </p>
 
+## 🌁 Showcase
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 50px;">
   <img src="showcase/main.png" width=500>
   <img src="showcase/filter.png" width=500>
