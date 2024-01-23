@@ -5,6 +5,11 @@
   <br> 
 </p>
 
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 50px;">
+  <img src="showcase/main.png" width=500>
+  <img src="showcase/filter.png" width=500>
+</div>
+
 ## 📝 Table of Contents
 
 - [About](#about)
